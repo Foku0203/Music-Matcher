@@ -33,5 +33,5 @@
 
 1. Clone repository
    ```bash
-   git clone https://github.com/Foku0203/Music-Matcher-Project68.git
-   cd Music-Matcher-Project68
+   git clone https://github.com/Foku0203/Music-Matcher.git
+   cd Music-Matcher
