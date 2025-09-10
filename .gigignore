@@ -1,0 +1,65 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Django
+# =========================
+# Database (SQLite local)
+db.sqlite3
+
+# Django migrations (เก็บได้ แต่ถ้าไม่อยาก push ตอนทดลอง ให้ ignore ได้)
+# */migrations/
+
+# Static & Media files
+staticfiles/
+media/
+
+# =========================
+# Logs
+# =========================
+*.log
+*.out
+*.err
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*~
+
+# =========================
+# OS Files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# PyTorch / Machine Learning
+# =========================
+# Model checkpoints
+*.pt
+*.pth
+*.onnx
+
+# Data files
+data/
+*.csv
+*.tsv
+*.zip
+*.h5
+*.npy
+*.npz
