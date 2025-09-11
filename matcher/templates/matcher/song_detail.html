@@ -1,0 +1,8 @@
+{% extends "matcher/base.html" %}
+{% block content %}
+<h1>{{ song.title }}</h1>
+<p>Artist: <a href="{% url 'matcher:artist_detail' song.artist.id %}">{{ song.artist.name }}</a></p>
+<p>Album: {{ song.album.title }}</p>
+<p>Platform: {{ song.platform }} | External ID: {{ song.external_id }}</p>
+<p>Lyrics: {{ song.lyrics|default:"-" }}</p>
+{% endblock %}

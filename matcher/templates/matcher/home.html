@@ -1,0 +1,24 @@
+{% extends "matcher/base.html" %}
+{% block content %}
+<h1>Music Matcher</h1>
+<h2>Songs</h2>
+<ul>
+  {% for s in songs %}
+    <li><a href="{% url 'matcher:song_detail' s.id %}">{{ s.title }}</a> — {{ s.artist.name }}</li>
+  {% empty %}<li>ยังไม่มีเพลง</li>{% endfor %}
+</ul>
+
+<h2>Artists</h2>
+<ul>
+  {% for a in artists %}
+    <li><a href="{% url 'matcher:artist_detail' a.id %}">{{ a.name }}</a></li>
+  {% empty %}<li>ยังไม่มีศิลปิน</li>{% endfor %}
+</ul>
+
+<h2>Genres</h2>
+<ul>
+  {% for g in genres %}
+    <li><a href="{% url 'matcher:song_list' %}?genre={{ g.name }}">{{ g.name }}</a></li>
+  {% empty %}<li>ยังไม่มีแนวเพลง</li>{% endfor %}
+</ul>
+{% endblock %}
