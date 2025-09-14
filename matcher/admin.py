@@ -1,15 +1,28 @@
 from django.contrib import admin
-from .models import (
-    Artist, Album, Song, Genre, SongGenre,  # ลบ Emotion ออกจากที่นี่
-    SongEmotion, EmotionScan, Interaction, FavoriteSong, PlayHistory,
-    Playlist, PlaylistItem,
-    ModelVersion, Recommendation, RecommendationItem,
-    RetrainJob, AdminAction, ModelMetric, ModelAction, ModelDeployment
-)
+from .models import Artist, Album, Genre, Song, SongGenre
 
-admin.site.register([
-    Artist, Album, Song, Genre, SongGenre,  # ลบ Emotion ออกจากที่นี่
-    SongEmotion, EmotionScan, Interaction, FavoriteSong, PlayHistory,
-    Playlist, PlaylistItem, ModelVersion, Recommendation, RecommendationItem,
-    RetrainJob, AdminAction, ModelMetric, ModelAction, ModelDeployment
-])
+@admin.register(Artist)
+class ArtistAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
+
+@admin.register(Album)
+class AlbumAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "artist", "year")
+    list_filter = ("year", "artist")
+
+@admin.register(Genre)
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+    search_fields = ("name",)
+
+@admin.register(Song)
+class SongAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "artist", "album")
+    list_select_related = ("artist", "album")
+    search_fields = ("title", "artist__name", "album__title")
+
+@admin.register(SongGenre)
+class SongGenreAdmin(admin.ModelAdmin):
+    list_display = ("song", "genre")
+    list_select_related = ("song", "genre")

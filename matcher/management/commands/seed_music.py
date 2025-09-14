@@ -1,23 +1,29 @@
+# matcher/management/commands/seed_music.py
 from django.core.management.base import BaseCommand
-from matcher.models import Artist, Album, Song, Genre, SongGenre
+from matcher.models import Artist, Album, Genre, Song
 
 class Command(BaseCommand):
-    help = "Seed minimal music data"
+    help = "Seed minimal music data using current models only"
 
-    def handle(self, *args, **kwargs):
-        artist_names = ["Artist A", "Artist B", "Artist C"]
-        genre_names = ["Pop", "Rock", "Hip Hop"]
+    def handle(self, *args, **options):
+        # Artists
+        a1, _ = Artist.objects.get_or_create(name="Artist A")
+        a2, _ = Artist.objects.get_or_create(name="Artist B")
 
-        artists = [Artist.objects.get_or_create(name=name)[0] for name in artist_names]
-        genres = [Genre.objects.get_or_create(name=name)[0] for name in genre_names]
+        # Genres
+        pop, _ = Genre.objects.get_or_create(name="Pop")
+        rock, _ = Genre.objects.get_or_create(name="Rock")
 
-        album_a1 = Album.objects.get_or_create(artist=artists[0], title="Album A1", year=2020)[0]
-        album_b1 = Album.objects.get_or_create(artist=artists[1], title="Album B1", year=2021)[0]
+        # Albums (ใส่ year ให้ครบ เพราะฟิลด์ you เป็น required ใน models ตอนนี้)
+        alb1, _ = Album.objects.get_or_create(artist=a1, title="Album A1", year=2020)
+        alb2, _ = Album.objects.get_or_create(artist=a2, title="Album B1", year=2021)
 
-        song_a1 = Song.objects.get_or_create(title="Song A1", artist=artists[0], album=album_a1)[0]
-        song_b1 = Song.objects.get_or_create(title="Song B1", artist=artists[1], album=album_b1)[0]
+        # Songs
+        s1, _ = Song.objects.get_or_create(title="Song A1", artist=a1, album=alb1)
+        s2, _ = Song.objects.get_or_create(title="Song B1", artist=a2, album=alb2)
 
-        SongGenre.objects.get_or_create(song=song_a1, genre=genres[0])
-        SongGenre.objects.get_or_create(song=song_b1, genre=genres[1])
+        # Genres M2M (add ตรง ๆ ได้ ไม่ต้องผ่าน SongGenre โดยตรง)
+        s1.genres.add(pop)
+        s2.genres.add(rock, pop)
 
-        self.stdout.write(self.style.SUCCESS("Seeded music data"))
+        self.stdout.write(self.style.SUCCESS("Seeded sample data successfully."))
