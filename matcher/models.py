@@ -1,4 +1,6 @@
 from django.db import models
+import uuid
+from django.db import models
 
 class Artist(models.Model):
     name = models.CharField(max_length=200, unique=True)
@@ -29,7 +31,7 @@ class SongGenre(models.Model):
     class Meta: unique_together = ("song", "genre")
     def __str__(self): return f"{self.song.title} - {self.genre.name}"
 
-# ===================== EMOTIONS =====================
+# ===================== EMOTIONS ====================
 
 class Emotion(models.Model):
     name = models.CharField(max_length=30, unique=True)  # เช่น happy/sad/angry/calm/neutral
@@ -69,3 +71,30 @@ class SongEmotion(models.Model):
 
     def __str__(self):
         return f"{self.song.title} · {self.emotion.name} ({self.confidence})"
+
+# ===================== USERS (ERD) =====================
+
+
+class AppUser(models.Model):
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
+    username = models.CharField(max_length=50, unique=True)
+    password_hash = models.CharField(max_length=255)
+    status = models.CharField(
+        max_length=20,
+        choices=[("active", "active"), ("suspended", "suspended")],
+        default="active",
+    )
+    created_at = models.DateTimeField()
+
+    class Meta:
+        db_table = "users"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["email"], name="idx_users_email"),
+            models.Index(fields=["username"], name="idx_users_username"),
+            models.Index(fields=["status"], name="idx_users_status"),
+        ]
+
+    def __str__(self):
+        return f"{self.username} <{self.email}>"

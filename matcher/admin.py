@@ -1,5 +1,15 @@
 from django.contrib import admin
 from .models import Artist, Album, Genre, Song, SongGenre, Emotion, SongEmotion
+from django.contrib import admin
+from .models import AppUser  # + โมเดลอื่น ๆ ของคุณถ้ามี
+
+@admin.register(AppUser)
+class AppUserAdmin(admin.ModelAdmin):
+    list_display = ["user_id", "email", "username", "status", "created_at"]
+    list_filter = ["status"]
+    search_fields = ["email", "username"]
+    ordering = ["-created_at"]
+
 
 @admin.register(Artist)
 class ArtistAdmin(admin.ModelAdmin):
