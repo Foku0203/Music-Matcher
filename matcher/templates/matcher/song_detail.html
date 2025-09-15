@@ -1,12 +1,21 @@
-{% extends "matcher/base.html" %}
+<h1>{{ song.title }}</h1>
+<p>ศิลปิน: {{ song.artist.name }}</p>
+<p>อัลบั้ม: {{ song.album.title }}</p>
 
-{% block content %}
-    <h1>{{ song.title }}</h1>
-    <p>Artist: {{ song.artist.name }}</p>
-    <p>Album: {{ song.album.title }}</p>
-    <p>Genres:
-        {% for genre in song.genres.all %}
-            {{ genre.name }}{% if not forloop.last %}, {% endif %}
-        {% endfor %}
-    </p>
-{% endblock %}
+<h3>หมวดหมู่:</h3>
+<ul>
+  {% for genre in song.genres.all %}
+    <li>{{ genre.name }}</li>
+  {% empty %}
+    <li>- ไม่มี -</li>
+  {% endfor %}
+</ul>
+
+<h3>ลิงก์เพลง:</h3>
+<ul>
+  {% for link in song.links.all %}
+    <li><a href="{{ link.url }}" target="_blank">{{ link.platform }}</a></li>
+  {% empty %}
+    <li>- ไม่มี -</li>
+  {% endfor %}
+</ul>

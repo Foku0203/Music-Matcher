@@ -1,13 +1,24 @@
-{% extends "matcher/base.html" %}
+<h1>รายการเพลง</h1>
+<ul>
+  {% for song in page_obj %}
+    <li>
+      <a href="{% url 'song_detail' song.id %}">
+        {{ song.title }} - {{ song.artist.name }}
+      </a>
+    </li>
+  {% empty %}
+    <li>ไม่มีเพลง</li>
+  {% endfor %}
+</ul>
 
-{% block content %}
-    <h1>Music Matcher</h1>
-    <h2>Songs</h2>
-    <ul>
-        {% for s in songs %}
-            <li><a href="{% url 'matcher:song_detail' s.id %}">{{ s.title }}</a> - {{ s.artist.name }}</li>
-        {% empty %}
-            <li>ยังไม่มีเพลง</li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+<div class="pagination">
+  {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">ก่อนหน้า</a>
+  {% endif %}
+
+  <span>หน้า {{ page_obj.number }} จาก {{ page_obj.paginator.num_pages }}</span>
+
+  {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">ถัดไป</a>
+  {% endif %}
+</div>

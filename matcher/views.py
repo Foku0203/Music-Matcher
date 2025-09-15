@@ -1,26 +1,38 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Song
 from django.core.paginator import Paginator
+from .models import Song
 
+# หน้า Home (Song List)
 def home(request):
-    qs = (Song.objects
-          .select_related("artist","album")
-          .prefetch_related("genres")
-          .order_by("title"))
-    paginator = Paginator(qs, 20)  # สร้าง Paginator object
-    page_number = request.GET.get("page")  # ดึงหมายเลขหน้าจาก request
-    page_obj = paginator.get_page(page_number)  # ดึง object ของหน้านั้น
+    # query เพลง + preload ความสัมพันธ์ (artist, album, genres)
+    qs = (
+        Song.objects
+        .filter(is_active=True)  # แสดงเฉพาะเพลงที่ active
+        .select_related("artist", "album")
+        .prefetch_related("genres")
+        .order_by("title")
+    )
+
+    # pagination
+    paginator = Paginator(qs, 20)  # 20 เพลงต่อหน้า
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
     context = {
         "page_obj": page_obj,
     }
     return render(request, "matcher/home.html", context)
 
+
+# หน้า Song Detail
 def song_detail(request, song_id):
     song = get_object_or_404(
-        Song.objects.select_related("artist", "album").prefetch_related("genres"),
+        Song.objects.filter(is_active=True)
+        .select_related("artist", "album")
+        .prefetch_related("genres", "links"),  # preload ลิงก์เพลงด้วย
         pk=song_id
     )
+
     context = {
         "song": song,
     }
