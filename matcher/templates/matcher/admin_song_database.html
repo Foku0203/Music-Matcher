@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Song Database</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1b2a;
+            color: #fff;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #5a189a, #1d3557);
+            padding: 20px;
+        }
+        .sidebar h2 {
+            margin-bottom: 30px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            border-radius: 8px;
+        }
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .logout {
+            margin-top: 50px;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 30px;
+            background: #0b132b;
+        }
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content-header input {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 250px;
+        }
+        .btn-add {
+            background: #007bff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-add:hover {
+            background: #0056b3;
+        }
+
+        /* Table */
+        .table-container {
+            margin-top: 30px;
+            background: #1c2541;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #2a3a5c;
+        }
+        table th {
+            color: #bbb;
+            font-size: 14px;
+        }
+        table img {
+            width: 50px;
+            border-radius: 5px;
+        }
+        .btn-edit {
+            background: #28a745;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-edit:hover {
+            background: #1e7e34;
+        }
+        .btn-delete {
+            background: #dc3545;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <ul>
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'admin_user_management' %}">User Management</a></li>
+            <li><a href="{% url 'admin_behavior' %}">Behavior Analysis</a></li>
+            <li><a href="{% url 'admin_song_database' %}" class="active">Song Database</a></li>
+            <li><a href="#">Category Management</a></li>
+            <li><a href="#">Model</a></li>
+        </ul>
+        <div class="logout">
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <div class="content-header">
+            <h1>Song Database</h1>
+            <button class="btn-add">+ Add New Song</button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Album</th>
+                        <th>Song Title</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Emotion</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="https://i.scdn.co/image/ab67616d0000b2730f5e50a0a1c38b6c0e1c1e3a" alt="album"></td>
+                        <td>Lucky to Have You</td>
+                        <td>มิ้ว ศุภพัชร์</td>
+                        <td>Indie Pop</td>
+                        <td>Happy</td>
+                        <td>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="https://i.scdn.co/image/ab67616d0000b273ed5d3769b888aaa9877c7af7" alt="album"></td>
+                        <td>หน้าร้อน(ไม่ใช่ฉัน)</td>
+                        <td>4EVE, Mabelz, Victor</td>
+                        <td>T-Pop</td>
+                        <td>Happy</td>
+                        <td>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="https://i.scdn.co/image/ab67616d0000b273a4dddf85c24e02d68d6e9597" alt="album"></td>
+                        <td>TRUST ME</td>
+                        <td>LYKN</td>
+                        <td>Electronic</td>
+                        <td>Surprise</td>
+                        <td>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img src="https://i.scdn.co/image/ab67616d0000b273a8f8c8a6cdb174f2d6c1713f" alt="album"></td>
+                        <td>ความรักไม่ได้ผ่านต้มยำกุ้ง</td>
+                        <td>LYKN</td>
+                        <td>Synthpop</td>
+                        <td>Sad</td>
+                        <td>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

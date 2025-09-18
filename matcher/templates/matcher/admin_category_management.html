@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Category Management</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0d1b2a;
+            color: #fff;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: linear-gradient(180deg, #5a189a, #1d3557);
+            padding: 20px;
+        }
+        .sidebar h2 {
+            margin-bottom: 30px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+        .sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+            border-radius: 8px;
+        }
+        .sidebar ul li a:hover,
+        .sidebar ul li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .logout {
+            margin-top: 50px;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            padding: 30px;
+            background: #0b132b;
+        }
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .content-header input {
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            width: 250px;
+        }
+        .btn-add {
+            background: #007bff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-add:hover {
+            background: #0056b3;
+        }
+
+        /* Category Stats */
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .stat-box {
+            background: #1c2541;
+            padding: 15px 20px;
+            border-radius: 8px;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        /* Table */
+        .table-container {
+            margin-top: 30px;
+            background: #1c2541;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #2a3a5c;
+        }
+        table th {
+            color: #bbb;
+            font-size: 14px;
+        }
+        .btn-edit {
+            background: #28a745;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-edit:hover {
+            background: #1e7e34;
+        }
+        .btn-delete {
+            background: #dc3545;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Admin</h2>
+        <ul>
+            <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'admin_user_management' %}">User Management</a></li>
+            <li><a href="{% url 'admin_behavior' %}">Behavior Analysis</a></li>
+            <li><a href="{% url 'admin_song_database' %}">Song Database</a></li>
+            <li><a href="{% url 'admin_category_management' %}" class="active">Category Management</a></li>
+            <li><a href="#">Model</a></li>
+        </ul>
+        <div class="logout">
+            <a href="#">Logout</a>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <div class="content-header">
+            <h1>Category Management</h1>
+            <input type="text" placeholder="Search...">
+        </div>
+
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat-box">Happy (4,237)</div>
+            <div class="stat-box">Sad (3,081)</div>
+            <div class="stat-box">Angry (2,362)</div>
+            <div class="stat-box">Fear (1,003)</div>
+            <div class="stat-box">Disgust (1,277)</div>
+            <div class="stat-box">Surprise (2,241)</div>
+            <div class="stat-box">Neutral (3,965)</div>
+            <div class="stat-box">Total (18,166)</div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                <h3>Music Categories</h3>
+                <button class="btn-add">+ Add Category</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Genre</th>
+                        <th>Emotion</th>
+                        <th>Song Count</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Pop</td><td>Happy</td><td>2,163</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>2</td><td>R&B</td><td>Sad</td><td>1,202</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>3</td><td>Rock</td><td>Angry</td><td>1,800</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>4</td><td>Lo-fi</td><td>Neutral</td><td>950</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>5</td><td>Acoustic</td><td>Neutral</td><td>1,085</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>6</td><td>Indie Pop</td><td>Happy</td><td>1,152</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>7</td><td>Synthpop</td><td>Sad</td><td>723</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>8</td><td>EDM</td><td>Surprise</td><td>1,390</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>9</td><td>T-Pop</td><td>Happy</td><td>1,134</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>10</td><td>Chill</td><td>Neutral</td><td>1,016</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>11</td><td>Soul</td><td>Disgust</td><td>814</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                    <tr><td>12</td><td>Alternative</td><td>Fear</td><td>763</td>
+                        <td><button class="btn-edit">Edit</button> <button class="btn-delete">Delete</button></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

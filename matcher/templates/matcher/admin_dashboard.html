@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1221;
+      color: #fff;
+      display: flex;
+    }
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(to bottom, #6a11cb, #2575fc);
+      height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+    .sidebar h2 {
+      margin: 0 0 20px 0;
+      font-size: 22px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a {
+      text-decoration: none;
+      color: #fff;
+      padding: 10px 15px;
+      display: block;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+    .sidebar ul li a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .main-content {
+      flex: 1;
+      padding: 30px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .card {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .table-box {
+      background: #16213e;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+    th {
+      background: #1f2a48;
+    }
+    tr:nth-child(even) {
+      background: #1a213b;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Admin</h2>
+    <ul>
+      <li><a href="{% url 'matcher:admin_dashboard' %}">Dashboard</a></li>
+      <li><a href="{% url 'matcher:admin_user_management' %}">User Management</a></li>
+      <li><a href="{% url 'matcher:admin_behavior' %}">Behavior Analysis</a></li>
+      <li><a href="{% url 'matcher:admin_song_database' %}">Song Database</a></li>
+      <li><a href="{% url 'matcher:admin_category_management' %}">Category Management</a></li>
+      <li><a href="{% url 'matcher:admin_model' %}">Model</a></li>
+      <li><a href="{% url 'matcher:admin_login' %}">Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <h1>Admin Dashboard</h1>
+    
+    <div class="cards">
+      <div class="card">
+        <h3>Total User</h3>
+        <p>1,581</p>
+      </div>
+      <div class="card">
+        <h3>Active User</h3>
+        <p>1,140</p>
+      </div>
+      <div class="card">
+        <h3>Banned User</h3>
+        <p>44</p>
+      </div>
+      <div class="card">
+        <h3>New User</h3>
+        <p>+128</p>
+      </div>
+    </div>
+
+    <div class="table-box">
+      <h2>Most Likes Song</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Song Title</th>
+            <th>Artist</th>
+            <th>Likes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>ถ้าเธอรักฉันจริง</td><td>Three Man Down</td><td>924</td></tr>
+          <tr><td>2</td><td>คู่ชีวิต</td><td>Cocktail</td><td>911</td></tr>
+          <tr><td>3</td><td>ลุงขี้เมา</td><td>วัชราวลี</td><td>886</td></tr>
+          <tr><td>4</td><td>ขอบคุณ</td><td>Musketeers</td><td>852</td></tr>
+          <tr><td>5</td><td>ทน</td><td>Tilly Birds</td><td>812</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="table-box">
+      <h2>User Accounts</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Ananya Suksawat</td><td>ananya.s@gmail.com</td><td style="color:lightgreen;">Active</td></tr>
+          <tr><td>Chaiwat Inthanon</td><td>chaiwat1998@yahoo.com</td><td style="color:lightgreen;">Active</td></tr>
+          <tr><td>Kanya Wongpaipoon</td><td>kanya_wp@hotmail.com</td><td style="color:red;">Banned</td></tr>
+          <tr><td>Napat Boonlert</td><td>napat.boonlert@gmail.com</td><td style="color:lightgreen;">Active</td></tr>
+          <tr><td>Saranya Chaitong</td><td>saranya.ct@gmail.com</td><td style="color:orange;">Pending</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

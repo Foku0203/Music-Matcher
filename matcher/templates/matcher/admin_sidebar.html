@@ -1,0 +1,46 @@
+<div class="sidebar">
+    <h2>Admin</h2>
+    <ul>
+        <li><a href="{% url 'matcher:admin_dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'matcher:admin_user_management' %}">User management</a></li>
+        <li><a href="{% url 'matcher:admin_behavior_analysis' %}">Behavior Analysis</a></li>
+        <li><a href="{% url 'matcher:admin_song_database' %}">Song database</a></li>
+        <li><a href="{% url 'matcher:admin_category_management' %}">Category Management</a></li>
+        <li><a href="{% url 'matcher:admin_model_management' %}">Model</a></li>
+    </ul>
+</div>
+
+<style>
+    .sidebar {
+        width: 220px;
+        background: linear-gradient(180deg, #3a0ca3, #4361ee);
+        color: #fff;
+        height: 100vh;
+        padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+    .sidebar h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+    .sidebar ul li {
+        margin: 15px 0;
+    }
+    .sidebar ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .sidebar ul li a:hover {
+        text-decoration: underline;
+    }
+</style>
+<div class="logout">
+        <a href="#">Logout</a>
+    </div>

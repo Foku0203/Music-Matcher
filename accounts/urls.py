@@ -1,7 +1,9 @@
-from django.urls import path
-from . import views
+from django.contrib import admin
+from django.urls import path, include
 
 urlpatterns = [
-    # กำหนดรูปแบบ URL ของคุณที่นี่ ตัวอย่างเช่น:
-    # path('login/', views.login_view, name='login'),
+    path("admin/", admin.site.urls),
+    path("", include("matcher.urls", namespace="matcher")),  # เพิ่ม namespace
+    #path("accounts/", include("accounts.urls")),  # เพิ่มเส้นทางสำหรับแอป accounts
 ]
+    

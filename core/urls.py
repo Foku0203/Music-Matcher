@@ -20,7 +20,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("matcher.urls")),
-    path("accounts/", include("accounts.urls")),  # เพิ่มเส้นทางสำหรับแอป accounts
+    path("", include("matcher.urls")),   # << เพิ่มตรงนี้
+    path("accounts/", include("accounts.urls")),  # สำหรับระบบบัญชีผู้ใช้
 ]
     

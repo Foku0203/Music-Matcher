@@ -1,36 +1,72 @@
 from django.core.management.base import BaseCommand
-from matcher.models import Artist, Album, Genre, Song, SongGenre, Emotion, SongEmotion
+from django.utils import timezone
+from matcher.models import Artist, Album, Song, Genre, Emotion, SongEmotion, SongLink
+import random
 
 class Command(BaseCommand):
-    help = "Seed minimal music data for demo (artists, albums, songs, genres, emotions)"
+    help = "Seed Thai songs dataset (210 songs, 7 emotions × 30 songs)"
 
     def handle(self, *args, **options):
-        # Artists
-        a1, _ = Artist.objects.get_or_create(name="Artist A")
-        a2, _ = Artist.objects.get_or_create(name="Artist B")
-
-        # Albums (ใช้ฟิลด์ year ของคุณ)
-        alb1, _ = Album.objects.get_or_create(artist=a1, title="Album A1", defaults={"year": 2020})
-        alb2, _ = Album.objects.get_or_create(artist=a2, title="Album B1", defaults={"year": 2021})
+        # 7 emotions
+        emotions = ["Happy", "Sad", "Angry", "Surprise", "Fear", "Disgust", "Neutral"]
+        emotion_objs = {}
+        for e in emotions:
+            obj, _ = Emotion.objects.get_or_create(name=e)
+            emotion_objs[e] = obj
+        self.stdout.write(self.style.SUCCESS("Emotions created."))
 
         # Genres
-        pop, _ = Genre.objects.get_or_create(name="Pop")
-        rock, _ = Genre.objects.get_or_create(name="Rock")
+        genres = ["Pop", "Rock", "Indie", "R&B", "HipHop", "Ballad", "Dance"]
+        genre_objs = {}
+        for g in genres:
+            obj, _ = Genre.objects.get_or_create(name=g)
+            genre_objs[g] = obj
+        self.stdout.write(self.style.SUCCESS("Genres created."))
 
-        # Songs (album เป็น SET_NULL ได้ แต่ใน seed นี้ผูกให้เห็นภาพ)
-        s1, _ = Song.objects.get_or_create(title="Shine", artist=a1, album=alb1)
-        s2, _ = Song.objects.get_or_create(title="Storm", artist=a2, album=alb2)
+        # Create artists, albums, songs
+        song_count = 0
+        for e in emotions:
+            for i in range(1, 31):  # 30 songs per emotion
+                artist_name = f"ศิลปิน{e}{i}"
+                album_title = f"อัลบั้ม{e}{i}"
+                song_title = f"เพลง{e}{i}"
 
-        # SongGenre
-        SongGenre.objects.get_or_create(song=s1, genre=pop)
-        SongGenre.objects.get_or_create(song=s2, genre=rock)
+                artist, _ = Artist.objects.get_or_create(name=artist_name)
+                album, _ = Album.objects.get_or_create(artist=artist, title=album_title, year=2025)
+                song, created = Song.objects.get_or_create(
+                    title=song_title,
+                    artist=artist,
+                    album=album,
+                    defaults={
+                        "duration": random.randint(180, 300),  # 3–5 นาที
+                        "language": "th",
+                        "release_date": timezone.now().date(),
+                        "is_active": True,
+                    }
+                )
+                if created:
+                    # random genre
+                    song.genres.add(random.choice(list(genre_objs.values())))
 
-        # Emotions
-        happy, _ = Emotion.objects.get_or_create(name="happy")
-        sad, _   = Emotion.objects.get_or_create(name="sad")
+                    # Emotion mapping
+                    SongEmotion.objects.get_or_create(
+                        song=song,
+                        emotion=emotion_objs[e],
+                        defaults={"confidence": 1.0, "source": "manual"},
+                    )
 
-        # SongEmotion
-        SongEmotion.objects.update_or_create(song=s1, emotion=happy, defaults={"confidence": 0.812, "source": "manual"})
-        SongEmotion.objects.update_or_create(song=s2, emotion=sad, defaults={"confidence": 0.640, "source": "ml"})
+                    # Song links (mock)
+                    SongLink.objects.get_or_create(
+                        song=song,
+                        platform="youtube",
+                        defaults={"url": f"https://youtube.com/watch?v={e}{i}demo"}
+                    )
+                    SongLink.objects.get_or_create(
+                        song=song,
+                        platform="spotify",
+                        defaults={"url": f"https://open.spotify.com/track/{e}{i}demo"}
+                    )
 
-        self.stdout.write(self.style.SUCCESS("Seeded demo data (artists/albums/songs/genres/emotions)"))
+                    song_count += 1
+
+        self.stdout.write(self.style.SUCCESS(f"Seed completed: {song_count} songs created."))
