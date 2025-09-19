@@ -9,7 +9,7 @@ import uuid
 
 class Artist(models.Model):
     name = models.CharField(max_length=200, unique=True)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=False, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.slug:

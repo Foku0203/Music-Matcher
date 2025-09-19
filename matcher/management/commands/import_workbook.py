@@ -4,7 +4,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime, parse_date
 
-from openpyxl import load_workbook
+from openpyxl import load_workbook # type: ignore
 
 from matcher.models import AppUser, Artist, Album, Genre, Song, SongGenre
 

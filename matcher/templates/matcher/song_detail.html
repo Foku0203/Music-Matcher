@@ -1,21 +1,22 @@
-<h1>{{ song.title }}</h1>
-<p>ศิลปิน: {{ song.artist.name }}</p>
-<p>อัลบั้ม: {{ song.album.title }}</p>
-
-<h3>หมวดหมู่:</h3>
-<ul>
-  {% for genre in song.genres.all %}
-    <li>{{ genre.name }}</li>
-  {% empty %}
-    <li>- ไม่มี -</li>
-  {% endfor %}
-</ul>
-
-<h3>ลิงก์เพลง:</h3>
-<ul>
-  {% for link in song.links.all %}
-    <li><a href="{{ link.url }}" target="_blank">{{ link.platform }}</a></li>
-  {% empty %}
-    <li>- ไม่มี -</li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ object.title }}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+  <h1>{{ object.title }}</h1>
+  <p><b>Artist:</b> {{ object.artist.name }}</p>
+  <p><b>Album:</b> {{ object.album }}</p>
+  <p><b>Genres:</b>
+    {% for g in object.genres.all %}
+      {{ g.name }}
+    {% empty %}
+      None
+    {% endfor %}
+  </p>
+  <p><b>Language:</b> {{ object.language }}</p>
+  <p><b>Release Date:</b> {{ object.release_date }}</p>
+  <a href="{% url 'matcher:song_list' %}" class="btn btn-secondary">Back</a>
+</body>
+</html>

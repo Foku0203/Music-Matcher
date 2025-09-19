@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>{% block title %}Music Matcher{% endblock %}</title>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container">
-        {% block content %}{% endblock %}
-    </div>
+<body class="bg-gray-900 text-gray-100 flex">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-gradient-to-b from-purple-900 to-blue-900 p-6">
+    <h2 class="text-white text-xl font-bold mb-6">Admin</h2>
+    <nav class="space-y-4">
+      <a href="#" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+        <span>🏠</span><span>Dashboard</span>
+      </a>
+      <a href="#" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+        <span>👤</span><span>User Management</span>
+      </a>
+      <a href="#" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+        <span>📊</span><span>Behavior Analysis</span>
+      </a>
+      <a href="{% url 'matcher:song_list' %}" 
+         class="flex items-center space-x-2 text-white font-bold bg-blue-800 px-3 py-2 rounded">
+        <span>🎵</span><span>Song Database</span>
+      </a>
+      <a href="#" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+        <span>📂</span><span>Category Management</span>
+      </a>
+      <a href="#" class="flex items-center space-x-2 text-gray-200 hover:text-white">
+        <span>⚙️</span><span>Model</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1">
+    {% block content %}{% endblock %}
+  </main>
 </body>
 </html>

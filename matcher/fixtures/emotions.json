@@ -1,0 +1,9 @@
+[
+  { "model": "matcher.emotion", "pk": 1, "fields": { "name": "Happy" } },
+  { "model": "matcher.emotion", "pk": 2, "fields": { "name": "Sad" } },
+  { "model": "matcher.emotion", "pk": 3, "fields": { "name": "Angry" } },
+  { "model": "matcher.emotion", "pk": 4, "fields": { "name": "Surprise" } },
+  { "model": "matcher.emotion", "pk": 5, "fields": { "name": "Fear" } },
+  { "model": "matcher.emotion", "pk": 6, "fields": { "name": "Disgust" } },
+  { "model": "matcher.emotion", "pk": 7, "fields": { "name": "Neutral" } }
+]

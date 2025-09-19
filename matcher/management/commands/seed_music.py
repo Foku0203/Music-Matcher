@@ -4,35 +4,49 @@ from matcher.models import Artist, Album, Song, Genre, Emotion, SongEmotion, Son
 import random
 
 class Command(BaseCommand):
-    help = "Seed Thai songs dataset (210 songs, 7 emotions × 30 songs)"
+    help = "Seed Thai songs dataset (210 songs, 7 emotions × 30 songs each)"
 
     def handle(self, *args, **options):
-        # 7 emotions
+        self.stdout.write(self.style.MIGRATE_HEADING("🎵 Starting seed process..."))
+
+        # -------------------------------
+        # 1. สร้าง Emotion
+        # -------------------------------
         emotions = ["Happy", "Sad", "Angry", "Surprise", "Fear", "Disgust", "Neutral"]
-        emotion_objs = {}
-        for e in emotions:
-            obj, _ = Emotion.objects.get_or_create(name=e)
-            emotion_objs[e] = obj
-        self.stdout.write(self.style.SUCCESS("Emotions created."))
+        emotion_objs = {e: Emotion.objects.get_or_create(name=e)[0] for e in emotions}
+        self.stdout.write(self.style.SUCCESS(f"✔ Created {len(emotion_objs)} emotions."))
 
-        # Genres
+        # -------------------------------
+        # 2. สร้าง Genre
+        # -------------------------------
         genres = ["Pop", "Rock", "Indie", "R&B", "HipHop", "Ballad", "Dance"]
-        genre_objs = {}
-        for g in genres:
-            obj, _ = Genre.objects.get_or_create(name=g)
-            genre_objs[g] = obj
-        self.stdout.write(self.style.SUCCESS("Genres created."))
+        genre_objs = {g: Genre.objects.get_or_create(name=g)[0] for g in genres}
+        self.stdout.write(self.style.SUCCESS(f"✔ Created {len(genre_objs)} genres."))
 
-        # Create artists, albums, songs
+        # -------------------------------
+        # 3. Loop สร้าง Artist, Album, Song
+        # -------------------------------
         song_count = 0
         for e in emotions:
-            for i in range(1, 31):  # 30 songs per emotion
-                artist_name = f"ศิลปิน{e}{i}"
-                album_title = f"อัลบั้ม{e}{i}"
-                song_title = f"เพลง{e}{i}"
+            for i in range(1, 31):  # 30 songs per loop
+                artist_name = f"ศิลปิน {e} {i}"
+                album_title = f"อัลบั้ม {e} {i}"
+                song_title = f"เพลง {e} {i}"
 
-                artist, _ = Artist.objects.get_or_create(name=artist_name)
-                album, _ = Album.objects.get_or_create(artist=artist, title=album_title, year=2025)
+                # Artist
+                artist, _ = Artist.objects.get_or_create(
+                    name=artist_name,
+                    defaults={"slug": f"{e.lower()}-{i}-{random.randint(1000,9999)}"},  # กัน slug ซ้ำ
+                )
+
+                # Album
+                album, _ = Album.objects.get_or_create(
+                    artist=artist,
+                    title=album_title,
+                    defaults={"year": 2025},
+                )
+
+                # Song
                 song, created = Song.objects.get_or_create(
                     title=song_title,
                     artist=artist,
@@ -42,31 +56,41 @@ class Command(BaseCommand):
                         "language": "th",
                         "release_date": timezone.now().date(),
                         "is_active": True,
-                    }
+                    },
                 )
+
                 if created:
-                    # random genre
+                    # Add random genre
                     song.genres.add(random.choice(list(genre_objs.values())))
 
-                    # Emotion mapping
+                    # 👉 สุ่ม emotion
+                    random_emotion = random.choice(list(emotion_objs.values()))
                     SongEmotion.objects.get_or_create(
                         song=song,
-                        emotion=emotion_objs[e],
-                        defaults={"confidence": 1.0, "source": "manual"},
+                        emotion=random_emotion,
+                        defaults={
+                            "confidence": round(random.uniform(0.6, 1.0), 2),
+                            "source": "seed",
+                        },
                     )
 
-                    # Song links (mock)
+                    # Song links
                     SongLink.objects.get_or_create(
                         song=song,
                         platform="youtube",
-                        defaults={"url": f"https://youtube.com/watch?v={e}{i}demo"}
+                        defaults={"url": f"https://youtube.com/watch?v={e}{i}demo"},
                     )
                     SongLink.objects.get_or_create(
                         song=song,
                         platform="spotify",
-                        defaults={"url": f"https://open.spotify.com/track/{e}{i}demo"}
+                        defaults={"url": f"https://open.spotify.com/track/{e}{i}demo"},
                     )
 
                     song_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f"Seed completed: {song_count} songs created."))
+        # -------------------------------
+        # 4. Summary
+        # -------------------------------
+        self.stdout.write(
+            self.style.SUCCESS(f"🎉 Seed completed: {song_count} new songs created.")
+        )
