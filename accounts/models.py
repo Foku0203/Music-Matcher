@@ -1,13 +1,11 @@
-# filepath: d:\Music Matcher\Music-Matcher\accounts\models.py
+# accounts/models.py (ฉบับสมบูรณ์)
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.utils.translation import gettext_lazy as _
 
 
 class User(AbstractUser):
-    # เพิ่มฟิลด์ที่คุณต้องการที่นี่ เช่น
-    # bio = models.TextField(blank=True)
-
     groups = models.ManyToManyField(
         Group,
         verbose_name=_('groups'),
@@ -16,7 +14,8 @@ class User(AbstractUser):
             'The groups this user belongs to. A user will get all permissions '
             'granted to each of their groups.'
         ),
-        related_name="custom_user_set",  # สำคัญ: เพิ่ม related_name เพื่อหลีกเลี่ยงความขัดแย้ง
+        # 1. ตรวจสอบว่าชื่อนี้ถูกต้อง
+        related_name="custom_user_groups",
         related_query_name="user",
     )
     user_permissions = models.ManyToManyField(
@@ -24,7 +23,8 @@ class User(AbstractUser):
         verbose_name=_('user permissions'),
         blank=True,
         help_text=_('Specific permissions for this user.'),
-        related_name="custom_user_set",  # สำคัญ: เพิ่ม related_name เพื่อหลีกเลี่ยงความขัดแย้ง
+        # 2. ตรวจสอบว่าชื่อนี้ถูกต้อง และไม่ซ้ำกับข้างบน
+        related_name="custom_user_permissions",
         related_query_name="user",
     )
 

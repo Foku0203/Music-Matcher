@@ -1,9 +1,0 @@
-{% extends "matcher/base.html" %}
-{% block content %}
-<h1>{{ playlist.name }}</h1>
-<ul>
-  {% for it in playlist.items.all %}
-    <li>#{{ it.position }} - <a href="{% url 'matcher:song_detail' it.song.id %}">{{ it.song.title }}</a></li>
-  {% empty %}<li>ยังไม่มีเพลงในเพลย์ลิสต์นี้</li>{% endfor %}
-</ul>
-{% endblock %}

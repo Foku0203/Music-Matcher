@@ -18,9 +18,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
+    # 1. ต้องมีบรรทัดนี้ เพื่อให้เข้าหน้า Admin ได้
     path("admin/", admin.site.urls),
-    path("", include("matcher.urls")),   # << เพิ่มตรงนี้
-    path("accounts/", include("accounts.urls")),  # สำหรับระบบบัญชีผู้ใช้
+
+    # 2. เชื่อมกับแอป matcher (หน้าเว็บหลัก)
+    path("", include("matcher.urls")), 
+
+    # 3. เชื่อมกับแอป accounts (ถ้ามี)
+    path("accounts/", include("accounts.urls")), 
 ]
-    

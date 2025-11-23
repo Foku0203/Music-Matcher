@@ -1,0 +1,4204 @@
+{
+    "songs": [
+        {
+            "title": "ฤดูร้อน",
+            "artist": "Paradox",
+            "album": "Summer",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737dfc41c04e836a9eab91a774",
+            "duration_sec": 235,
+            "platform": "spotify",
+            "external_id": "5ak9IDTCRglXNw34wASfXs",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.556,
+                "energy": 0.995,
+                "valence": 0.19,
+                "tempo": 159.01,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "เขียนไว้ข้างเตียง",
+            "artist": "Paradox",
+            "album": "ETERNITY / INFINITY",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731ddbfdaff2d46e06bb7c2de2",
+            "duration_sec": 250,
+            "platform": "spotify",
+            "external_id": "0K5SoGgWcq5xIRE8CoMC7P",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.513,
+                "energy": 0.922,
+                "valence": 0.329,
+                "tempo": 164.92,
+                "key": 8,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "คิดถึง...ไม่ไหว",
+            "artist": "Paradox",
+            "album": "ETERNITY / INFINITY",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731ddbfdaff2d46e06bb7c2de2",
+            "duration_sec": 257,
+            "platform": "spotify",
+            "external_id": "2FsJDLQskdO5A5mDRXbemu",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.543,
+                "energy": 0.981,
+                "valence": 0.301,
+                "tempo": 146.42,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "คนบนฟ้า",
+            "artist": "Paradox",
+            "album": "Daydreamer",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a5e8a6a00a805b2533d1f726",
+            "duration_sec": 190,
+            "platform": "spotify",
+            "external_id": "5VyLK53MQg5NAbPJOd4S7O",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.449,
+                "energy": 0.907,
+                "valence": 0.215,
+                "tempo": 152.14,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ผงาดง้ำค้ำโลก",
+            "artist": "Paradox",
+            "album": "PARADOX X (10 years after)",
+            "release_year": 2006,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739d2dc0450b45da65126130a2",
+            "duration_sec": 240,
+            "platform": "spotify",
+            "external_id": "1LL3jQlbVGdxJiDbrGNEQ7",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.471,
+                "energy": 0.993,
+                "valence": 0.156,
+                "tempo": 137.31,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "คิดถึง...ไม่ไหว",
+            "artist": "Paradox",
+            "album": "คิดถึง...ไม่ไหว",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733b4408a0861eda3913773f5a",
+            "duration_sec": 257,
+            "platform": "spotify",
+            "external_id": "1IoICIb3DNqATl48Ud2NfX",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.416,
+                "energy": 0.92,
+                "valence": 0.183,
+                "tempo": 160.74,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "Love",
+            "artist": "Paradox",
+            "album": "Summer",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737dfc41c04e836a9eab91a774",
+            "duration_sec": 197,
+            "platform": "spotify",
+            "external_id": "0kUQQ6oNtpMoKNcJyFcQxg",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.422,
+                "energy": 0.938,
+                "valence": 0.378,
+                "tempo": 161.35,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ห้องดับจิต",
+            "artist": "Paradox",
+            "album": "BEFORE SUNRISE AFTER SUNSET (Deluxe Edition)",
+            "release_year": 2017,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2734d723db51a167ca4eb54c90f",
+            "duration_sec": 219,
+            "platform": "spotify",
+            "external_id": "5gS7bOCcpJnaN5mmZcnsbq",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.415,
+                "energy": 0.886,
+                "valence": 0.12,
+                "tempo": 155.16,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "เพียงชายคนนี้ (ไม่ใช่ผู้วิเศษ)",
+            "artist": "Paradox",
+            "album": "Play",
+            "release_year": 2009,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2730aa96532a764ca755bfa9dfb",
+            "duration_sec": 254,
+            "platform": "spotify",
+            "external_id": "0eLEEY7Ym9NMEzyvaKJ05l",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.56,
+                "energy": 0.923,
+                "valence": 0.255,
+                "tempo": 143.86,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "เขียนไว้ข้างเตียง",
+            "artist": "Paradox",
+            "album": "เขียนไว้ข้างเตียง",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cbc51c6db870807df9dd123c",
+            "duration_sec": 250,
+            "platform": "spotify",
+            "external_id": "3pBYg65e5JRnnsiJ1HVDZL",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.443,
+                "energy": 0.997,
+                "valence": 0.151,
+                "tempo": 166.92,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "มีแต่เธอ",
+            "artist": "Paradox",
+            "album": "Summer",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737dfc41c04e836a9eab91a774",
+            "duration_sec": 198,
+            "platform": "spotify",
+            "external_id": "5KAIVeJgP3gInKnNAv536q",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.597,
+                "energy": 0.861,
+                "valence": 0.175,
+                "tempo": 136.07,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ฤดูฝน",
+            "artist": "Paradox",
+            "album": "BEFORE SUNRISE AFTER SUNSET",
+            "release_year": 2016,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2734138e6fbcf44e6d8485b9e70",
+            "duration_sec": 287,
+            "platform": "spotify",
+            "external_id": "4HcWLGuvKoWJkFOGa4rDQb",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.466,
+                "energy": 0.93,
+                "valence": 0.227,
+                "tempo": 140.9,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ปลายสายรุ้ง",
+            "artist": "Paradox",
+            "album": "Daydreamer",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a5e8a6a00a805b2533d1f726",
+            "duration_sec": 257,
+            "platform": "spotify",
+            "external_id": "5VqNEJClAMXTRG6m2ExFJU",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.405,
+                "energy": 0.949,
+                "valence": 0.32,
+                "tempo": 165.52,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "KiSS me PARADOX -LiVE is Smile Always〜PiNK & BLACK〜 in 日本武道館「いちごドーナツ」-",
+            "artist": "LiSA",
+            "album": "KiSS me PARADOX -LiVE is Smile Always〜PiNK & BLACK〜 in 日本武道館「いちごドーナツ」-",
+            "release_year": 2015,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b78196754636470395eb2e0a20",
+            "duration_sec": 262,
+            "platform": "spotify",
+            "external_id": "2J7Vc3vp5IbmlgOls3qeP3",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.473,
+                "energy": 0.98,
+                "valence": 0.181,
+                "tempo": 134.95,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "นักมายากล",
+            "artist": "Paradox",
+            "album": "Freestyle",
+            "release_year": 2003,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27371ffba363409f908c7f0c37a",
+            "duration_sec": 250,
+            "platform": "spotify",
+            "external_id": "7kCS2JMn6O5z1qEAjDpbc0",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.537,
+                "energy": 0.929,
+                "valence": 0.254,
+                "tempo": 137.62,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "เพียงชายคนนี้ (ไม่ใช่ผู้วิเศษ)",
+            "artist": "Paradox",
+            "album": "PARADOX PARADE",
+            "release_year": 2009,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273466f16a117735e043bbbfe8a",
+            "duration_sec": 254,
+            "platform": "spotify",
+            "external_id": "25R5c02ZxGRkOvgvNy0cQa",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.465,
+                "energy": 0.97,
+                "valence": 0.116,
+                "tempo": 136.2,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ดาว",
+            "artist": "Paradox",
+            "album": "On The Beach",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f49d6d6f6b7e39eded9c94cd",
+            "duration_sec": 212,
+            "platform": "spotify",
+            "external_id": "4PVDKtycduPYnN2RuAfw6Y",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.405,
+                "energy": 0.925,
+                "valence": 0.193,
+                "tempo": 153.01,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ฤดูร้อน New version (feat. LHAM)",
+            "artist": "Paradox",
+            "album": "ฤดูร้อน New version (feat. LHAM)",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7cab6e2e71b348ee15f5dc088",
+            "duration_sec": 219,
+            "platform": "spotify",
+            "external_id": "1Do0u6vvCD68c1CFBYWDUY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.482,
+                "energy": 0.872,
+                "valence": 0.319,
+                "tempo": 137.73,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "PARADOX体操 - LIVE AT STUDIO COAST / 2008",
+            "artist": "RIZE",
+            "album": "PARADOX体操 (LIVE AT STUDIO COAST / 2008)",
+            "release_year": 2008,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7e56bb80c0fb9799a0faa1f68",
+            "duration_sec": 222,
+            "platform": "spotify",
+            "external_id": "2miK0j2URzdb7nIwux7OwE",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.478,
+                "energy": 0.951,
+                "valence": 0.35,
+                "tempo": 140.9,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "Paradoxal système - Voulzy Tour au Zénith de Paris 1993",
+            "artist": "Laurent Voulzy",
+            "album": "Paradoxal système (Voulzy Tour au Zénith de Paris 1993)",
+            "release_year": 1994,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b730160eab1c2228541bd38a77",
+            "duration_sec": 297,
+            "platform": "spotify",
+            "external_id": "3MAcWmkvA4C6zJgdcNXyeV",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.533,
+                "energy": 0.957,
+                "valence": 0.134,
+                "tempo": 167.35,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ทรงอย่างแบด",
+            "artist": "Paper Planes",
+            "album": "ทรงอย่างแบด",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f56bab0716c8ca9384d136b3",
+            "duration_sec": 206,
+            "platform": "spotify",
+            "external_id": "1bcUZUWKDV2jCrG5LA4k28",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.472,
+                "energy": 0.916,
+                "valence": 0.111,
+                "tempo": 143.54,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ทรงอย่างแบด แซดอย่างบ่อย",
+            "artist": "Pondering",
+            "album": "ทรงอย่างแบด แซดอย่างบ่อย",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273afdd9f465bfc179e216c67ba",
+            "duration_sec": 150,
+            "platform": "spotify",
+            "external_id": "0v6YkRBtvLKbftAqEtSlte",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.433,
+                "energy": 0.974,
+                "valence": 0.16,
+                "tempo": 163.42,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "แผ่นดินไทย",
+            "artist": "โจ๊ะ1977",
+            "album": "แผ่นดินไทย",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c3cec3430665841c012b6ff5",
+            "duration_sec": 214,
+            "platform": "spotify",
+            "external_id": "6LxRCmMkL4DxDcpRlcfyCi",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.414,
+                "energy": 0.966,
+                "valence": 0.108,
+                "tempo": 168.19,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ทรงอย่างแบด",
+            "artist": "Paper Planes",
+            "album": "1%",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27353fadb6a90025aacdd32ab1f",
+            "duration_sec": 206,
+            "platform": "spotify",
+            "external_id": "4pbp2xSN5SNsFWbYiXYItY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.566,
+                "energy": 0.877,
+                "valence": 0.307,
+                "tempo": 141.14,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "คอพับ",
+            "artist": "แบงค์ เด็กแว๊นหัวทอง",
+            "album": "คอพับ",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739a0ccb604fc8f3aa761ddeee",
+            "duration_sec": 247,
+            "platform": "spotify",
+            "external_id": "67DtUxpvA94Hut57C26C6N",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.515,
+                "energy": 0.937,
+                "valence": 0.141,
+                "tempo": 150.29,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "ชุดโกโกวา - Botcash Remix",
+            "artist": "บอทแคช",
+            "album": "ชุดโกโกวา (Botcash Remix)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731b73ad50321deecf2a0580cb",
+            "duration_sec": 132,
+            "platform": "spotify",
+            "external_id": "6iiOlBtOXjvkqOI9eZLcbW",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.551,
+                "energy": 0.878,
+                "valence": 0.144,
+                "tempo": 162.64,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "APT.",
+            "artist": "ROSÉ",
+            "album": "APT.",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27336032cb4acd9df050bc2e197",
+            "duration_sec": 169,
+            "platform": "spotify",
+            "external_id": "5vNRhkKd0yEAg8suGBpjeY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.495,
+                "energy": 0.991,
+                "valence": 0.173,
+                "tempo": 149.47,
+                "key": 7,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "Dame Tu Cosita (feat. Cutty Ranks)",
+            "artist": "El Chombo",
+            "album": "Dame Tu Cosita (feat. Cutty Ranks)",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27387bb3e23ce2c48c8fdd44ec8",
+            "duration_sec": 152,
+            "platform": "spotify",
+            "external_id": "09SNuR471zu5nVvC4IVG8j",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.548,
+                "energy": 0.871,
+                "valence": 0.375,
+                "tempo": 137.96,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "เมร่อน",
+            "artist": "Juepak",
+            "album": "เมร่อน",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737bdfcfafd1534f9b2eed4dd8",
+            "duration_sec": 163,
+            "platform": "spotify",
+            "external_id": "3KSS2LFdimgKRcs4ZamWyv",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.521,
+                "energy": 0.872,
+                "valence": 0.199,
+                "tempo": 139.39,
+                "key": 7,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "มีแต่คิดถึง",
+            "artist": "Bird Thongchai",
+            "album": "Music Box เบิร์ด ธงไชย",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731a402b987d3ddd897967db7b",
+            "duration_sec": 181,
+            "platform": "spotify",
+            "external_id": "7c5eiclD93MQsPfpAMDDzd",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.6,
+                "energy": 0.855,
+                "valence": 0.314,
+                "tempo": 163.9,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "angry"
+        },
+        {
+            "title": "กลัวลืม (The Collection)",
+            "artist": "NONT TANONT",
+            "album": "MONO / SPECTRUM",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273fbc348557597656fcc80c974",
+            "duration_sec": 233,
+            "platform": "spotify",
+            "external_id": "0yKdSAtHQZUXRd8g3OBf1E",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.589,
+                "energy": 0.584,
+                "valence": 0.35,
+                "tempo": 117.76,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "Selfmade",
+            "artist": "URBOYTJ",
+            "album": "Selfmade",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738b1d41c0d47afcae8e1bdb0a",
+            "duration_sec": 210,
+            "platform": "spotify",
+            "external_id": "413HTyay6DswSl4SQB9gkY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.687,
+                "energy": 0.55,
+                "valence": 0.247,
+                "tempo": 104.6,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ไม่ติด",
+            "artist": "URBOYTJ",
+            "album": "URMAN",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cda55dbc2aa4ba4e4a79e7fc",
+            "duration_sec": 212,
+            "platform": "spotify",
+            "external_id": "5ARFnqIJJc9OgCRB7tEygC",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.661,
+                "energy": 0.593,
+                "valence": 0.357,
+                "tempo": 97.1,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "เรื่องแค่นี้",
+            "artist": "URBOYTJ",
+            "album": "Happy Never After",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273b0f9adb7edec079313369378",
+            "duration_sec": 191,
+            "platform": "spotify",
+            "external_id": "7cQYN54DdllWUI7aloG5Ku",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.589,
+                "energy": 0.582,
+                "valence": 0.316,
+                "tempo": 108.68,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "แบกไม่ไหว",
+            "artist": "URBOYTJ",
+            "album": "แบกไม่ไหว",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273571dd6244b4b89b0a2b861d9",
+            "duration_sec": 186,
+            "platform": "spotify",
+            "external_id": "2S3r0O3Dkgf797IguE4DeY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.674,
+                "energy": 0.531,
+                "valence": 0.395,
+                "tempo": 106.04,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "TMRW (feat. OG-ANIC & URBOYTJ)",
+            "artist": "LAZYLOXY",
+            "album": "TMRW (feat. OG-ANIC & URBOYTJ)",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27339df372e0d880c2e022fe3fe",
+            "duration_sec": 209,
+            "platform": "spotify",
+            "external_id": "2m4nilqPekFwprPD3OE1UO",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.636,
+                "energy": 0.6,
+                "valence": 0.247,
+                "tempo": 118.68,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ไม่อยากฟัง",
+            "artist": "URBOYTJ",
+            "album": "ไม่อยากฟัง",
+            "release_year": 2017,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e66ba89b7fb20218954bb14b",
+            "duration_sec": 194,
+            "platform": "spotify",
+            "external_id": "1aCn29zlPjEYcIyYKNm7fP",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.631,
+                "energy": 0.558,
+                "valence": 0.214,
+                "tempo": 99.51,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "กอดได้ไหม",
+            "artist": "URBOYTJ",
+            "album": "Selfmade",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738b1d41c0d47afcae8e1bdb0a",
+            "duration_sec": 209,
+            "platform": "spotify",
+            "external_id": "4hccrJgNG1BwPa3CWw4NNg",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.632,
+                "energy": 0.636,
+                "valence": 0.311,
+                "tempo": 116.84,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "น้อง (Nong) [feat. UrboyTJ]",
+            "artist": "Three Man Down",
+            "album": "28",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c5e268d5e0e2a659f5b3eaab",
+            "duration_sec": 188,
+            "platform": "spotify",
+            "external_id": "2EjSOHwyqUXjS9PB1vXjLu",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.693,
+                "energy": 0.662,
+                "valence": 0.239,
+                "tempo": 112.5,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "BF",
+            "artist": "PUN",
+            "album": "BF",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e3d515406e3098523b390a49",
+            "duration_sec": 216,
+            "platform": "spotify",
+            "external_id": "25K1tGmiprhsC8LXgOrNjM",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.537,
+                "energy": 0.556,
+                "valence": 0.252,
+                "tempo": 119.93,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ยิ่งรู้ยิ่งโง่",
+            "artist": "URBOYTJ",
+            "album": "ยิ่งรู้ยิ่งโง่",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2735a1d0383e87b9fa3781826c4",
+            "duration_sec": 200,
+            "platform": "spotify",
+            "external_id": "3j9V5vHN3wQcHYcO433vli",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.531,
+                "energy": 0.581,
+                "valence": 0.361,
+                "tempo": 107.63,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ถ้าวันนั้น(IF I)",
+            "artist": "URBOYTJ",
+            "album": "ถ้าวันนั้น(IF I)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731e1de514cd57b3af05860876",
+            "duration_sec": 245,
+            "platform": "spotify",
+            "external_id": "7naq7gYikvPN8RTsLhyUNM",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.697,
+                "energy": 0.6,
+                "valence": 0.204,
+                "tempo": 114.45,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "BF",
+            "artist": "PUN",
+            "album": "PUN",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cc05ec584ca006c1a29e54f0",
+            "duration_sec": 213,
+            "platform": "spotify",
+            "external_id": "36zlZYQZQ6QpXwSxnBRAa0",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.632,
+                "energy": 0.601,
+                "valence": 0.243,
+                "tempo": 114.6,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ไม่เข้าใจ",
+            "artist": "URBOYTJ",
+            "album": "The Loser",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273fc1a32359347c9b8145703e7",
+            "duration_sec": 252,
+            "platform": "spotify",
+            "external_id": "3RKdWlsEEINt6RYkt8NWWZ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.59,
+                "energy": 0.589,
+                "valence": 0.233,
+                "tempo": 115.9,
+                "key": 8,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ผูกพันต้องลา",
+            "artist": "GAVIN:D",
+            "album": "ผูกพันต้องลา",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2736cd79006ecb0c1a95363b704",
+            "duration_sec": 200,
+            "platform": "spotify",
+            "external_id": "2HC3jRQilGWyFlvICAqCaP",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.681,
+                "energy": 0.579,
+                "valence": 0.294,
+                "tempo": 95.53,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ช่วยไม่ได้",
+            "artist": "URBOYTJ",
+            "album": "Selfmade",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738b1d41c0d47afcae8e1bdb0a",
+            "duration_sec": 197,
+            "platform": "spotify",
+            "external_id": "4GGNl8jiANylTJj4hfzqP7",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.622,
+                "energy": 0.649,
+                "valence": 0.344,
+                "tempo": 104.17,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "เป็นได้ทุกอย่าง",
+            "artist": "URBOYTJ",
+            "album": "เป็นได้ทุกอย่าง",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c475c4795627112c1d52c7dc",
+            "duration_sec": 191,
+            "platform": "spotify",
+            "external_id": "27qlKjzLoCOzltggfY8FPy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.552,
+                "energy": 0.52,
+                "valence": 0.315,
+                "tempo": 99.71,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "เค้าก่อน",
+            "artist": "URBOYTJ",
+            "album": "เค้าก่อน",
+            "release_year": 2016,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27346e78914890b0a939e4d43db",
+            "duration_sec": 186,
+            "platform": "spotify",
+            "external_id": "5hQQbr79cDBNtyjgLHL6nM",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.659,
+                "energy": 0.55,
+                "valence": 0.209,
+                "tempo": 115.52,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ถามคำ",
+            "artist": "URBOYTJ",
+            "album": "Selfmade",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738b1d41c0d47afcae8e1bdb0a",
+            "duration_sec": 219,
+            "platform": "spotify",
+            "external_id": "3sLTOt7ZMwEWEB7YdLaeZS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.628,
+                "energy": 0.686,
+                "valence": 0.342,
+                "tempo": 118.17,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "วายร้าย",
+            "artist": "URBOYTJ",
+            "album": "วายร้าย",
+            "release_year": 2016,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273edce2497abba04bfbeaf58b3",
+            "duration_sec": 208,
+            "platform": "spotify",
+            "external_id": "1sQFiQzibx09jpqv85ImuG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.618,
+                "energy": 0.543,
+                "valence": 0.399,
+                "tempo": 104.09,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอเถอะ",
+            "artist": "MEAN Band",
+            "album": "พอเถอะ",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cfe28dbb7c9422ad31ef36bf",
+            "duration_sec": 242,
+            "platform": "spotify",
+            "external_id": "7CFEgj1Fn9XRRV3H2WWJke",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.565,
+                "energy": 0.629,
+                "valence": 0.348,
+                "tempo": 116.65,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ปลายฝนต้นหนาวที่เพอร์เฟคพอจะตกหลุมรักใครสักคน",
+            "artist": "ธาดา",
+            "album": "ไม่ได้ทำเพื่อการกุศล",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cb5acc77dca604cbabf426a1",
+            "duration_sec": 266,
+            "platform": "spotify",
+            "external_id": "6NMoFAbrSGxj4xbMWbDugD",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.699,
+                "energy": 0.578,
+                "valence": 0.212,
+                "tempo": 108.91,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอสักที",
+            "artist": "Indulgent Band",
+            "album": "พอสักที",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273348d09d17ce505560eb587ab",
+            "duration_sec": 256,
+            "platform": "spotify",
+            "external_id": "26AV5hm3OpCC5GLsbv8PZN",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.649,
+                "energy": 0.617,
+                "valence": 0.349,
+                "tempo": 113.73,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "เมื่อไรจะพอสักที",
+            "artist": "dreambarcode",
+            "album": "เมื่อไรจะพอสักที",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27336737b30e74ca96bef610d19",
+            "duration_sec": 211,
+            "platform": "spotify",
+            "external_id": "3zKm3FYNC9lFf1uQrFJTf4",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.682,
+                "energy": 0.651,
+                "valence": 0.351,
+                "tempo": 100.29,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอสักที (No Mercy)",
+            "artist": "Girlfriend For Rent",
+            "album": "พอสักที (No Mercy)",
+            "release_year": 2017,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f87d8df1bf99721920af2089",
+            "duration_sec": 220,
+            "platform": "spotify",
+            "external_id": "5QGm5RsJy0ySLoqZfcIDZk",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.618,
+                "energy": 0.569,
+                "valence": 0.311,
+                "tempo": 90.56,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ฉันไม่ใช่เขา",
+            "artist": "First Phanupong",
+            "album": "ฉันไม่ใช่เขา",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273fc87a8ca81a0021998a81c10",
+            "duration_sec": 279,
+            "platform": "spotify",
+            "external_id": "3RcuxNSre7DXafQzgeknkD",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.665,
+                "energy": 0.558,
+                "valence": 0.366,
+                "tempo": 117.15,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอสักที (Acoustic Ver.)",
+            "artist": "LIPSMOOTH",
+            "album": "พอสักที (Acoustic Ver.)",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f922f43d9f868d02f5827f4c",
+            "duration_sec": 227,
+            "platform": "spotify",
+            "external_id": "3x5SNmSHABA8JVYOuoHazc",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.535,
+                "energy": 0.607,
+                "valence": 0.282,
+                "tempo": 110.1,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "ลามปาม (circus)",
+            "artist": "BOWKYLION",
+            "album": "ลามปาม (circus)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273977d3582882c2bd839bf7639",
+            "duration_sec": 296,
+            "platform": "spotify",
+            "external_id": "30CRjTYAXaJf5YBsNQHIvG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.515,
+                "energy": 0.649,
+                "valence": 0.278,
+                "tempo": 95.78,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอสักที",
+            "artist": "LIPSMOOTH",
+            "album": "พอสักที",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27376ec08b15ebfa7db729fee4a",
+            "duration_sec": 197,
+            "platform": "spotify",
+            "external_id": "3y6QnUIVkHwbXR2USqrALU",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.52,
+                "energy": 0.638,
+                "valence": 0.246,
+                "tempo": 117.34,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "พอสักที",
+            "artist": "pa-pao",
+            "album": "พอสักที",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737ef6239d763bd211eb1f5ddd",
+            "duration_sec": 256,
+            "platform": "spotify",
+            "external_id": "0EdQFk74IfQthNBGMairC2",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.523,
+                "energy": 0.5,
+                "valence": 0.371,
+                "tempo": 96.74,
+                "key": 8,
+                "mode": 1
+            },
+            "mood_label": "disgust"
+        },
+        {
+            "title": "Time Machine",
+            "artist": "PLASUI PLASUI",
+            "album": "Time Machine",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ba9c124dc61e85fbe7ad90c1",
+            "duration_sec": 243,
+            "platform": "spotify",
+            "external_id": "0GBOE32IaxAD3TjZsX3lKf",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.325,
+                "energy": 0.391,
+                "valence": 0.226,
+                "tempo": 89.79,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Udon Town",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 218,
+            "platform": "spotify",
+            "external_id": "0H04z6CC1gUjyfcL9A9eNJ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.439,
+                "energy": 0.38,
+                "valence": 0.218,
+                "tempo": 95.11,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Young Yaow",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 211,
+            "platform": "spotify",
+            "external_id": "2zJshBXGVNMlj4JqLGgVma",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.39,
+                "energy": 0.425,
+                "valence": 0.232,
+                "tempo": 80.95,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Every Time",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 264,
+            "platform": "spotify",
+            "external_id": "0B2suKkB0rVdzjcyVlpNIs",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.425,
+                "energy": 0.433,
+                "valence": 0.11,
+                "tempo": 85.79,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Happy Valentine's Day",
+            "artist": "Anatomy Rabbit",
+            "album": "Happy Valentine's Day",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733ca6d1a1ab594360a9c4d1d6",
+            "duration_sec": 180,
+            "platform": "spotify",
+            "external_id": "0q377elQsVqkoC01UPDUIo",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.455,
+                "energy": 0.383,
+                "valence": 0.242,
+                "tempo": 75.53,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Are You out yet ?",
+            "artist": "Anatomy Rabbit",
+            "album": "Are You out yet ?",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273120777095dee4fc81794805e",
+            "duration_sec": 286,
+            "platform": "spotify",
+            "external_id": "1fHcPiRTEUobMWUVQa0upn",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.428,
+                "energy": 0.426,
+                "valence": 0.272,
+                "tempo": 85.97,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "AntiVirus",
+            "artist": "Anatomy Rabbit",
+            "album": "AntiVirus",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731756ca610d0bc3a6a1ae2fe3",
+            "duration_sec": 258,
+            "platform": "spotify",
+            "external_id": "2BKUZR4TA8y4DMoEr5XEzG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.35,
+                "energy": 0.466,
+                "valence": 0.122,
+                "tempo": 74.81,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Wonder Why ?",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 240,
+            "platform": "spotify",
+            "external_id": "1zYPebkUkdgZLm1R1sdeEW",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.463,
+                "energy": 0.492,
+                "valence": 0.296,
+                "tempo": 92.72,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Wonder Why Lonely",
+            "artist": "Anatomy Rabbit",
+            "album": "Wonder Why Lonely",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2730c494927da9eea8dd6734e7f",
+            "duration_sec": 275,
+            "platform": "spotify",
+            "external_id": "0WakxaFNN9x39idDdZZ8XN",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.368,
+                "energy": 0.323,
+                "valence": 0.273,
+                "tempo": 84.36,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "เอเรนเดล (EARENDEL)",
+            "artist": "Anatomy Rabbit",
+            "album": "เอเรนเดล (EARENDEL)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273d8850741a8b6b16abcc38057",
+            "duration_sec": 279,
+            "platform": "spotify",
+            "external_id": "3cvnQ06TvhaROQrObb4Cai",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.301,
+                "energy": 0.436,
+                "valence": 0.109,
+                "tempo": 82.04,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "คนเดียวบนโลก(U)",
+            "artist": "Anatomy Rabbit",
+            "album": "คนเดียวบนโลก(U)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ff066cf96a16afe13a098f81",
+            "duration_sec": 248,
+            "platform": "spotify",
+            "external_id": "2rcDi4sIkOPg102RWc3dmy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.362,
+                "energy": 0.343,
+                "valence": 0.245,
+                "tempo": 89.28,
+                "key": 7,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Mars Loner",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 268,
+            "platform": "spotify",
+            "external_id": "0Lu8UmW2mkmRxUHnUNis1s",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.35,
+                "energy": 0.377,
+                "valence": 0.212,
+                "tempo": 89.56,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Kab Rod Len",
+            "artist": "Anatomy Rabbit",
+            "album": "Holland Lop",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732099bb4916293bbae5b63026",
+            "duration_sec": 240,
+            "platform": "spotify",
+            "external_id": "6MeHWlxMI8pz4LewZvsJgj",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.353,
+                "energy": 0.433,
+                "valence": 0.243,
+                "tempo": 96.18,
+                "key": 7,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Single Mom",
+            "artist": "Anatomy Rabbit",
+            "album": "Single Mom",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27310e4d3f5d34ca3e1efd0f613",
+            "duration_sec": 253,
+            "platform": "spotify",
+            "external_id": "0G6AN7RDFVU4CtfUEepzTM",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.377,
+                "energy": 0.46,
+                "valence": 0.138,
+                "tempo": 85.64,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "นอนหน่อยไหม ?",
+            "artist": "Anatomy Rabbit",
+            "album": "นอนหน่อยไหม ?",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ee9d76526943ae0e8eacff22",
+            "duration_sec": 233,
+            "platform": "spotify",
+            "external_id": "1n7SJLokzGV1IoLUEmeOuZ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.359,
+                "energy": 0.443,
+                "valence": 0.113,
+                "tempo": 81.44,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "กาลครั้งหนึ่งนานมาแล้ว",
+            "artist": "Anatomy Rabbit",
+            "album": "กาลครั้งหนึ่งนานมาแล้ว",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732783048b87474a86a3407cf7",
+            "duration_sec": 221,
+            "platform": "spotify",
+            "external_id": "266THkHmSpdcVHJTE6KJJ3",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.387,
+                "energy": 0.48,
+                "valence": 0.243,
+                "tempo": 78.26,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "คุณค่าที่เธอคู่ควร",
+            "artist": "Anatomy Rabbit",
+            "album": "คุณค่าที่เธอคู่ควร",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2735cea5bcf2343bcc59af9dcea",
+            "duration_sec": 238,
+            "platform": "spotify",
+            "external_id": "3ey4oaB0Dx9N6d4qWcORFx",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.329,
+                "energy": 0.389,
+                "valence": 0.255,
+                "tempo": 71.2,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Extraordinary",
+            "artist": "Anatomy Rabbit",
+            "album": "Extraordinary",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737a17b5129cf08a60f8b3f396",
+            "duration_sec": 241,
+            "platform": "spotify",
+            "external_id": "79yQQnouyRz6n9TEKxbHM5",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.433,
+                "energy": 0.337,
+                "valence": 0.136,
+                "tempo": 93.93,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "แอบหวัง",
+            "artist": "Anatomy Rabbit",
+            "album": "แอบหวัง",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733a80d74bea52b742239e721a",
+            "duration_sec": 235,
+            "platform": "spotify",
+            "external_id": "3qMYr2bVu2HpSKrSJ2zj8K",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.42,
+                "energy": 0.466,
+                "valence": 0.254,
+                "tempo": 85.11,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ขอให้โลกนี้ใจดีกับเธอ",
+            "artist": "Anatomy Rabbit",
+            "album": "ขอให้โลกนี้ใจดีกับเธอ",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2735cde18774ded7543549cb9d6",
+            "duration_sec": 276,
+            "platform": "spotify",
+            "external_id": "1rJZTErhdRMtm2uhfFrCSS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.386,
+                "energy": 0.363,
+                "valence": 0.148,
+                "tempo": 89.38,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ซ่อนกลิ่น",
+            "artist": "Palmy",
+            "album": "ซ่อนกลิ่น",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739215ee0213984e1b021aa54f",
+            "duration_sec": 251,
+            "platform": "spotify",
+            "external_id": "26lzabIoVuQd6Bs2fMKaWu",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.369,
+                "energy": 0.31,
+                "valence": 0.15,
+                "tempo": 97.13,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ซ่อนกลิ่น",
+            "artist": "genie Season",
+            "album": "genie Season : PALMY",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f27a0597ccb6a70c678efe3d",
+            "duration_sec": 118,
+            "platform": "spotify",
+            "external_id": "4ZBRtbX6duv9qQsJN1Uu9b",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.327,
+                "energy": 0.381,
+                "valence": 0.216,
+                "tempo": 88.55,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ซ่อน(ไม่)หา",
+            "artist": "Jeff Satur",
+            "album": "ซ่อน(ไม่)หา",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a294f5cbee1a134d1ebd678f",
+            "duration_sec": 234,
+            "platform": "spotify",
+            "external_id": "759xYXTgNDGU6i6FH4kruy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.386,
+                "energy": 0.391,
+                "valence": 0.162,
+                "tempo": 96.35,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ซ่อนกลิ่น",
+            "artist": "Palmy",
+            "album": "GMM New Release 2018, Vol. 10",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27336c18c70647b5dfda3bc2ee8",
+            "duration_sec": 251,
+            "platform": "spotify",
+            "external_id": "0GEVXlj1yZxktNbDOV9Vgs",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.456,
+                "energy": 0.397,
+                "valence": 0.269,
+                "tempo": 86.11,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ที่คั่นหนังสือ (Sometimes)",
+            "artist": "BOWKYLION",
+            "album": "ที่คั่นหนังสือ (Sometimes)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27393078ffbe895d3504ccd9881",
+            "duration_sec": 292,
+            "platform": "spotify",
+            "external_id": "6vn8nzgxByxZDKLmIKYAkn",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.429,
+                "energy": 0.393,
+                "valence": 0.214,
+                "tempo": 81.32,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "กลิ่นดอกไม้",
+            "artist": "Newery",
+            "album": "กลิ่นดอกไม้",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733cd424a8612e8a89b3116eb1",
+            "duration_sec": 232,
+            "platform": "spotify",
+            "external_id": "5OaXaynJZgklXEwzhouey5",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.443,
+                "energy": 0.403,
+                "valence": 0.299,
+                "tempo": 99.57,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "คิด(แต่ไม่)ถึง (Same Page?)",
+            "artist": "Tilly Birds",
+            "album": "คิด(แต่ไม่)ถึง (Same Page?)",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739c242d89ee5c211b0bdd861e",
+            "duration_sec": 266,
+            "platform": "spotify",
+            "external_id": "0QJIGkV7JYy6Iq5N1tcCbA",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.32,
+                "energy": 0.31,
+                "valence": 0.169,
+                "tempo": 82.99,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "สลักจิต (feat. ดา เอ็นโดรฟิน)",
+            "artist": "Pop Pongkool",
+            "album": "สลักจิต (feat. ดา เอ็นโดรฟิน)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273911786ed03d55ccb1ec19f7a",
+            "duration_sec": 264,
+            "platform": "spotify",
+            "external_id": "151RFTqNBV4hcJLOAux0FR",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.339,
+                "energy": 0.329,
+                "valence": 0.207,
+                "tempo": 97.21,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Loop (ฉันจึงวนกลับมา)",
+            "artist": "ASIA7",
+            "album": "Loop (ฉันจึงวนกลับมา)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e8ee8f9ce74264acdf966b76",
+            "duration_sec": 230,
+            "platform": "spotify",
+            "external_id": "0KPwJv67axQ02t6gI2sw2X",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.389,
+                "energy": 0.389,
+                "valence": 0.175,
+                "tempo": 90.92,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "ดาวหางฮัลเลย์",
+            "artist": "fellow fellow",
+            "album": "ดาวหางฮัลเลย์",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2735134d9777f0024fc058ed1c5",
+            "duration_sec": 224,
+            "platform": "spotify",
+            "external_id": "56wDFSIa9Tr7zbEXUVMwjP",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.376,
+                "energy": 0.351,
+                "valence": 0.289,
+                "tempo": 73.16,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "fear"
+        },
+        {
+            "title": "Salsa No Drama",
+            "artist": "4EVE",
+            "album": "Salsa No Drama",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738e250bda1daac24ac1ca56e0",
+            "duration_sec": 169,
+            "platform": "spotify",
+            "external_id": "50pfIFByCcalSljlTNIgrB",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.797,
+                "energy": 0.758,
+                "valence": 0.969,
+                "tempo": 115.49,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "hot2hot",
+            "artist": "4EVE",
+            "album": "hot2hot",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a1e6552980961e4cfdea3909",
+            "duration_sec": 253,
+            "platform": "spotify",
+            "external_id": "3XfMb9ujflvGlgIRbNKKK0",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.609,
+                "energy": 0.616,
+                "valence": 0.851,
+                "tempo": 125.2,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Like You",
+            "artist": "4EVE",
+            "album": "Like You",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731604d7f25aed4aa53e86480a",
+            "duration_sec": 124,
+            "platform": "spotify",
+            "external_id": "1iBYMUTBFJDkAW8zQQWGNl",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.697,
+                "energy": 0.612,
+                "valence": 0.906,
+                "tempo": 121.0,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ใจเปิดใจ (Love Mode)",
+            "artist": "PROXIE",
+            "album": "ใจเปิดใจ (Love Mode)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27326049f52ebe39e02ef46f5c8",
+            "duration_sec": 248,
+            "platform": "spotify",
+            "external_id": "42LKtuud0GdgtOhAHpa2gy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.778,
+                "energy": 0.865,
+                "valence": 0.941,
+                "tempo": 118.74,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Life is a Movie",
+            "artist": "4EVE",
+            "album": "GLOW",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27301b854147d608ba00423fa18",
+            "duration_sec": 159,
+            "platform": "spotify",
+            "external_id": "2mB2Y5DNtmObnXI1toHx28",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.708,
+                "energy": 0.647,
+                "valence": 0.837,
+                "tempo": 118.44,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Starry Night",
+            "artist": "4EVE",
+            "album": "GLOW",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27301b854147d608ba00423fa18",
+            "duration_sec": 176,
+            "platform": "spotify",
+            "external_id": "6hXlbmbhbJm5KgoZf7HgLz",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.662,
+                "energy": 0.648,
+                "valence": 0.958,
+                "tempo": 117.09,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Keep a Secret",
+            "artist": "4EVE",
+            "album": "GLOW",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27301b854147d608ba00423fa18",
+            "duration_sec": 130,
+            "platform": "spotify",
+            "external_id": "1ipDqVFgmVOAcboxe9Yiei",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.632,
+                "energy": 0.608,
+                "valence": 0.825,
+                "tempo": 100.75,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ข้อยกเว้น (Exceptional)",
+            "artist": "4EVE",
+            "album": "ข้อยกเว้น (Exceptional)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733bdbbd0c4bc078125e1fa3fa",
+            "duration_sec": 183,
+            "platform": "spotify",
+            "external_id": "4oxpwiRaoy0vOhCj82flb4",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.727,
+                "energy": 0.724,
+                "valence": 0.82,
+                "tempo": 123.8,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "VROOM VROOM",
+            "artist": "4EVE",
+            "album": "VROOM VROOM",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ebce40db6c58a076707be9ed",
+            "duration_sec": 174,
+            "platform": "spotify",
+            "external_id": "02WxRoBbNQCLIOmVpF8RE9",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.61,
+                "energy": 0.761,
+                "valence": 0.774,
+                "tempo": 124.27,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คิดคิด (Let Me Know)",
+            "artist": "4EVE",
+            "album": "คิดคิด (Let Me Know)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739902430b6f063bdb960fa0ca",
+            "duration_sec": 225,
+            "platform": "spotify",
+            "external_id": "1QMcI36M0NbwuHILpxYfiu",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.729,
+                "energy": 0.819,
+                "valence": 0.855,
+                "tempo": 121.3,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ไม่รู้จักฉันไม่รู้จักเธอ - The Gentlemen Live2 Ver.",
+            "artist": "ตูน BODYSLAM",
+            "album": "ไม่รู้จักฉันไม่รู้จักเธอ (The Gentlemen Live2 Ver.)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27347793a16c79bb01255967839",
+            "duration_sec": 237,
+            "platform": "spotify",
+            "external_id": "4z1sOCkYCrCmLHLcK9Q0Vb",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.792,
+                "energy": 0.659,
+                "valence": 0.849,
+                "tempo": 120.36,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Situationship",
+            "artist": "4EVE",
+            "album": "Situationship",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f59582a66fd4953c1b826fa2",
+            "duration_sec": 190,
+            "platform": "spotify",
+            "external_id": "1XdH9vMOhkIincviA7IuD2",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.74,
+                "energy": 0.796,
+                "valence": 0.787,
+                "tempo": 121.5,
+                "key": 8,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "สิ่งเล็กน้อย (LESS IS MORE)",
+            "artist": "4EVE",
+            "album": "สิ่งเล็กน้อย (LESS IS MORE)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a1bef34b9394f71abb50f091",
+            "duration_sec": 207,
+            "platform": "spotify",
+            "external_id": "6xWdWaWeDeGHCccTQ49GQm",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.664,
+                "energy": 0.887,
+                "valence": 0.97,
+                "tempo": 110.32,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "หยดน้ำตา (Tears)",
+            "artist": "4EVE",
+            "album": "หยดน้ำตา (Tears)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f20c74644a8126efe988319e",
+            "duration_sec": 204,
+            "platform": "spotify",
+            "external_id": "4MUWeg3ujmhJyO2RgMIWHd",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.746,
+                "energy": 0.6,
+                "valence": 0.79,
+                "tempo": 129.8,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Life Boy (พูดไปก็ไลฟ์บอย)",
+            "artist": "4EVE",
+            "album": "Life Boy (พูดไปก็ไลฟ์บอย)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27366f4519bd3b803a32e7cdf68",
+            "duration_sec": 200,
+            "platform": "spotify",
+            "external_id": "0euFQDocrWr5dfjcCfpkxy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.675,
+                "energy": 0.756,
+                "valence": 0.979,
+                "tempo": 118.06,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "วัดปะหล่ะ? (TEST ME)",
+            "artist": "4EVE",
+            "album": "The First Album",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ae40d4231cab5ce7537a14c9",
+            "duration_sec": 220,
+            "platform": "spotify",
+            "external_id": "2zjiva5XJ3tCrg78NpGrvv",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.672,
+                "energy": 0.728,
+                "valence": 0.8,
+                "tempo": 128.26,
+                "key": 7,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Too Perfect for You (สวย เริ่ด เชิด)",
+            "artist": "4EVE",
+            "album": "Too Perfect for You (สวย เริ่ด เชิด)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273444572566bd517026502cd10",
+            "duration_sec": 186,
+            "platform": "spotify",
+            "external_id": "4XpxNZcQdqRk6MC6JtG1US",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.634,
+                "energy": 0.786,
+                "valence": 0.915,
+                "tempo": 111.03,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ruin everything - ambf live rendition sessions",
+            "artist": "44phantom",
+            "album": "ruin everything (ambf live rendition sessions)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7e0a964babfa757cbe25af61d",
+            "duration_sec": 165,
+            "platform": "spotify",
+            "external_id": "11lU5mI8uuBdTIOs5y8QNc",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.785,
+                "energy": 0.815,
+                "valence": 0.953,
+                "tempo": 123.19,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Snooze",
+            "artist": "4EVE",
+            "album": "GLOW",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27301b854147d608ba00423fa18",
+            "duration_sec": 179,
+            "platform": "spotify",
+            "external_id": "6C5WwJEDLnOYSWFU8AGfEk",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.611,
+                "energy": 0.785,
+                "valence": 0.803,
+                "tempo": 101.8,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คลั่งรัก",
+            "artist": "First Anuwat",
+            "album": "First Anuwat",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27399742014baf3e36bd3a04605",
+            "duration_sec": 181,
+            "platform": "spotify",
+            "external_id": "4H4tmChksqbaqdqxn6JuoG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.757,
+                "energy": 0.68,
+                "valence": 0.837,
+                "tempo": 108.11,
+                "key": 8,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Starlight - From \"ClaireBell\"",
+            "artist": "Violette Wautier",
+            "album": "Starlight (From \"ClaireBell\")",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c85f5549b228345de4eb3ca2",
+            "duration_sec": 205,
+            "platform": "spotify",
+            "external_id": "77ewKfPWQCadanKBGHhrFG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.737,
+                "energy": 0.851,
+                "valence": 0.946,
+                "tempo": 125.34,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คลั่งเธอ (Dopamine)",
+            "artist": "NONT TANONT",
+            "album": "คลั่งเธอ (Dopamine)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27374839ca5c1f4a13e7eac6490",
+            "duration_sec": 281,
+            "platform": "spotify",
+            "external_id": "7mKWZhB6AdIPqRMuzuiRsO",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.673,
+                "energy": 0.74,
+                "valence": 0.981,
+                "tempo": 119.02,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คลั่งเธอ (Dopamine)",
+            "artist": "NONT TANONT",
+            "album": "MONO / SPECTRUM",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273fbc348557597656fcc80c974",
+            "duration_sec": 281,
+            "platform": "spotify",
+            "external_id": "6R7HEq0CsyPImro1uDhUcx",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.783,
+                "energy": 0.87,
+                "valence": 0.824,
+                "tempo": 125.7,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "Proud",
+            "artist": "fellow fellow",
+            "album": "Proud",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c74b9ea7acadfc83eb14062b",
+            "duration_sec": 225,
+            "platform": "spotify",
+            "external_id": "2MuJCv3nCgHYlgOrAvCAT6",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.626,
+                "energy": 0.605,
+                "valence": 0.83,
+                "tempo": 121.59,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "หลงรัก",
+            "artist": "Newery",
+            "album": "หลงรัก",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2734bfbcf2b6a2d4551a2cdd487",
+            "duration_sec": 229,
+            "platform": "spotify",
+            "external_id": "1yrifw3LDWawZHMsDuPCBh",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.679,
+                "energy": 0.813,
+                "valence": 0.938,
+                "tempo": 115.3,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คลั่งรักไม่ไหวแล้ว",
+            "artist": "NICXKY",
+            "album": "คลั่งรักไม่ไหวแล้ว",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a0f2ee5268dea503419d0223",
+            "duration_sec": 197,
+            "platform": "spotify",
+            "external_id": "3Gvd6hEtSsdCODP6O11BiW",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.646,
+                "energy": 0.854,
+                "valence": 0.885,
+                "tempo": 103.0,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ล้มแชมป์ (Only You Can)",
+            "artist": "Tilly Birds",
+            "album": "ล้มแชมป์ (Only You Can)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739e726ca7df9ca67a561b61cf",
+            "duration_sec": 208,
+            "platform": "spotify",
+            "external_id": "7pvu8UPXXIex1bChP4yyiS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.723,
+                "energy": 0.759,
+                "valence": 0.856,
+                "tempo": 104.22,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ตั้งแต่มีเธอฉันมีความสุข (This Time)",
+            "artist": "Violette Wautier",
+            "album": "ตั้งแต่มีเธอฉันมีความสุข (This Time)",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f6634b84275383c8bdfaa385",
+            "duration_sec": 240,
+            "platform": "spotify",
+            "external_id": "126PlW2V73OM9n1s1zOKW9",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.767,
+                "energy": 0.84,
+                "valence": 0.769,
+                "tempo": 113.91,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "รักรักรักรักรักรักรัก (Talk Less)",
+            "artist": "D Gerrard",
+            "album": "รักรักรักรักรักรักรัก (Talk Less)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733bbe9a40aecfd804e1b5567b",
+            "duration_sec": 244,
+            "platform": "spotify",
+            "external_id": "1LV7y6Foa5JFMOUc0qyj4b",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.634,
+                "energy": 0.633,
+                "valence": 0.907,
+                "tempo": 105.58,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "คลั่งรักเธอ",
+            "artist": "ijiro",
+            "album": "คลั่งรักเธอ",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cfc8e47afc88414f8786f97a",
+            "duration_sec": 226,
+            "platform": "spotify",
+            "external_id": "1dolMnc7GEUhtNNCvvOnBJ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.719,
+                "energy": 0.835,
+                "valence": 0.901,
+                "tempo": 101.98,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "happy"
+        },
+        {
+            "title": "ทิ้งให้จำ",
+            "artist": "Indigo",
+            "album": "ทิ้งให้จำ",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273254c77fd5d563e8d17c7e025",
+            "duration_sec": 225,
+            "platform": "spotify",
+            "external_id": "5aZuCHYKhx8IIlRBWuFN58",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.43,
+                "energy": 0.277,
+                "valence": 0.165,
+                "tempo": 76.53,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "เส้นบางๆ",
+            "artist": "Indigo",
+            "album": "INDIGO",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273764bbc099b3bf1fc8b15212e",
+            "duration_sec": 270,
+            "platform": "spotify",
+            "external_id": "2qZQa0feL1j3hxFB3vJ15d",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.446,
+                "energy": 0.245,
+                "valence": 0.052,
+                "tempo": 82.1,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "The Indigo Streak - Live",
+            "artist": "Greta Van Fleet",
+            "album": "The Indigo Streak (Live)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b770494e6394ec75e084080801",
+            "duration_sec": 286,
+            "platform": "spotify",
+            "external_id": "3C6kIr3A4tNazeK3Venglb",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.329,
+                "energy": 0.238,
+                "valence": 0.197,
+                "tempo": 77.41,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Indigo Girl - Live At The Barnyard Cresta / 2006",
+            "artist": "Watershed",
+            "album": "Indigo Girl (Live At The Barnyard Cresta / 2006)",
+            "release_year": 2006,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7dc9ae99e86660a1d79e02571",
+            "duration_sec": 424,
+            "platform": "spotify",
+            "external_id": "5IsAv5rld9hLRJY4UTqsBo",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.303,
+                "energy": 0.245,
+                "valence": 0.225,
+                "tempo": 63.63,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ยังคง(Kept) (Special Version)",
+            "artist": "Indigo",
+            "album": "ยังคง(Kept) (Special Version)",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2731a3cc3d5d4d8bcb418138eea",
+            "duration_sec": 262,
+            "platform": "spotify",
+            "external_id": "0eblpTxRCkD2xZUTedNmXi",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.395,
+                "energy": 0.342,
+                "valence": 0.064,
+                "tempo": 76.18,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "แค่เราไม่ได้รักกัน",
+            "artist": "Indigo",
+            "album": "แค่เราไม่ได้รักกัน",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27379f7c45eff6b19265b0a9793",
+            "duration_sec": 262,
+            "platform": "spotify",
+            "external_id": "1SikpG11l6KlTWtlYWMeac",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.368,
+                "energy": 0.286,
+                "valence": 0.159,
+                "tempo": 60.86,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Closer to Fine - Live At The Fillmore",
+            "artist": "Indigo Girls",
+            "album": "Closer to Fine (Live At The Fillmore)",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7e7a6295175e6eb2a5f0b5472",
+            "duration_sec": 261,
+            "platform": "spotify",
+            "external_id": "2iwZYaoDZq3Q8hh1wTklmz",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.379,
+                "energy": 0.235,
+                "valence": 0.118,
+                "tempo": 68.69,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ใครเจ็บกว่ากัน",
+            "artist": "Indigo",
+            "album": "ใครเจ็บกว่ากัน",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273aa57b3313acd91e2fa10b040",
+            "duration_sec": 218,
+            "platform": "spotify",
+            "external_id": "0J17d8nLJyzsY9pE0GBgKp",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.371,
+                "energy": 0.337,
+                "valence": 0.205,
+                "tempo": 89.13,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Galileo - Live At The Fillmore",
+            "artist": "Indigo Girls",
+            "album": "Galileo (Live At The Fillmore)",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7b50208fc9230cac8e35a5a5c",
+            "duration_sec": 250,
+            "platform": "spotify",
+            "external_id": "3Mar1BQE6s7t5xlbLgbFdh",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.361,
+                "energy": 0.38,
+                "valence": 0.169,
+                "tempo": 79.03,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Indigo Girl - Live at Mothership Studios",
+            "artist": "Karen Zoid",
+            "album": "Indigo Girl (Live at Mothership Studios)",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7ccda3cb213f67cc82ab8ddb8",
+            "duration_sec": 350,
+            "platform": "spotify",
+            "external_id": "5KtJmOdURcxy2J0hPOIfQ0",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.385,
+                "energy": 0.428,
+                "valence": 0.18,
+                "tempo": 60.68,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Faye Tucker - Live At The Fillmore",
+            "artist": "Indigo Girls",
+            "album": "Faye Tucker (Live At The Fillmore)",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b73e90734e945cfb6abd42224a",
+            "duration_sec": 324,
+            "platform": "spotify",
+            "external_id": "4NfMwmXqrGyIauzupyMU99",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.499,
+                "energy": 0.399,
+                "valence": 0.065,
+                "tempo": 87.34,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "เส้นบางๆ",
+            "artist": "Indigo",
+            "album": "เส้นบางๆ",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273d15bf850c3f1a2a79f48a914",
+            "duration_sec": 271,
+            "platform": "spotify",
+            "external_id": "5n3UhHQI7SHKkhI69u69Yq",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.462,
+                "energy": 0.258,
+                "valence": 0.267,
+                "tempo": 77.46,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Compromise - Live At The Fillmore",
+            "artist": "Indigo Girls",
+            "album": "Compromise (Live At The Fillmore)",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b729ed5e71a4f3f8231773c614",
+            "duration_sec": 154,
+            "platform": "spotify",
+            "external_id": "7ohp2C0ljWW6mUqByjI0w2",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.378,
+                "energy": 0.261,
+                "valence": 0.297,
+                "tempo": 68.61,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ตลอดเวลา",
+            "artist": "Indigo",
+            "album": "ตลอดเวลา",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27368ea53a380765d1edf954309",
+            "duration_sec": 215,
+            "platform": "spotify",
+            "external_id": "0Ubs2A05g3mO9x9vzfVCqo",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.403,
+                "energy": 0.404,
+                "valence": 0.271,
+                "tempo": 84.75,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Cold Beer and Remote Control - Live At The Fillmore",
+            "artist": "Indigo Girls",
+            "album": "Cold Beer and Remote Control (Live At The Fillmore)",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7d9209c3918b720ded133a1be",
+            "duration_sec": 229,
+            "platform": "spotify",
+            "external_id": "3bNfaiOX6DMmITQ4Hpsca4",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.385,
+                "energy": 0.388,
+                "valence": 0.055,
+                "tempo": 63.14,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ถ้าฉันเป็นเขา",
+            "artist": "Indigo",
+            "album": "ถ้าฉันเป็นเขา",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f05ac6725b0dfc02027f1597",
+            "duration_sec": 241,
+            "platform": "spotify",
+            "external_id": "0Pew0RU5UBIIO4L2f5GTQf",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.438,
+                "energy": 0.32,
+                "valence": 0.158,
+                "tempo": 73.93,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ถ้าฉันเป็นเขา",
+            "artist": "Indigo",
+            "album": "INDIGO",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273764bbc099b3bf1fc8b15212e",
+            "duration_sec": 241,
+            "platform": "spotify",
+            "external_id": "5kWEorPV6WHYf5htPXONcL",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.302,
+                "energy": 0.387,
+                "valence": 0.092,
+                "tempo": 83.64,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "พัง",
+            "artist": "Indigo",
+            "album": "พัง",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27324a9b9a59f6f3944186d7e1b",
+            "duration_sec": 228,
+            "platform": "spotify",
+            "external_id": "3cvB1dbPnCmkz91btcldOk",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.303,
+                "energy": 0.302,
+                "valence": 0.176,
+                "tempo": 71.09,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Indigo (feat. Avery Anna)",
+            "artist": "Sam Barber",
+            "album": "Indigo (feat. Avery Anna)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7570e967758c162034a0aab33",
+            "duration_sec": 334,
+            "platform": "spotify",
+            "external_id": "2XREhhabpZhBMnzx8w4GQs",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.334,
+                "energy": 0.207,
+                "valence": 0.074,
+                "tempo": 73.15,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "The Indigo Streak - Live From RCA Studio A",
+            "artist": "Greta Van Fleet",
+            "album": "The Indigo Streak (Live From RCA Studio A)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7f034a51c74fb0a86db6d12ff",
+            "duration_sec": 238,
+            "platform": "spotify",
+            "external_id": "1DvRSDqiZn6R8TR8gVObq4",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.359,
+                "energy": 0.308,
+                "valence": 0.249,
+                "tempo": 60.4,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกไหม",
+            "artist": "Three Man Down",
+            "album": "ฝนตกไหม",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ae1b6c8d329a8039985ce37e",
+            "duration_sec": 261,
+            "platform": "spotify",
+            "external_id": "5RkyMu9lpyMLu3lYEaA8Qt",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.324,
+                "energy": 0.45,
+                "valence": 0.169,
+                "tempo": 68.19,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ความคิดถึงที่ฉันได้เคยส่งไปในคืนที่ฝนโปรยลงมา",
+            "artist": "Three Man Down",
+            "album": "ความคิดถึงที่ฉันได้เคยส่งไปในคืนที่ฝนโปรยลงมา",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a77bd9499106f152e23f3556",
+            "duration_sec": 258,
+            "platform": "spotify",
+            "external_id": "1X7b8OqwOFVd0iq7l6u7jn",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.41,
+                "energy": 0.323,
+                "valence": 0.142,
+                "tempo": 80.71,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกที่หน้าต่าง",
+            "artist": "Loso",
+            "album": "ปกแดง",
+            "release_year": 2001,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27333754915131be02d2a2a3bea",
+            "duration_sec": 216,
+            "platform": "spotify",
+            "external_id": "42PdVPQB1TM8jRyNNHT62i",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.334,
+                "energy": 0.351,
+                "valence": 0.074,
+                "tempo": 86.46,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกไหม",
+            "artist": "Bird Thongchai",
+            "album": "BIRD 22",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732a8c1835e5ac7d701ec41441",
+            "duration_sec": 236,
+            "platform": "spotify",
+            "external_id": "08bNaZeEAfaudqIwAMN4er",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.415,
+                "energy": 0.267,
+                "valence": 0.146,
+                "tempo": 88.38,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกไหม - Live At Impact Arena 2023",
+            "artist": "Three Man Down",
+            "album": "Three Man Down Live At Impact Arena 2023",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273548ecd4905d28ea169bb6c4c",
+            "duration_sec": 572,
+            "platform": "spotify",
+            "external_id": "2HyHJQvy7pwwUp9XLJNMtg",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.347,
+                "energy": 0.36,
+                "valence": 0.223,
+                "tempo": 74.13,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกไหม",
+            "artist": "Three Man Down",
+            "album": "This City Won't Be Lonely Anymore",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273cc36ac31439d0a223ac981a2",
+            "duration_sec": 261,
+            "platform": "spotify",
+            "external_id": "28LO3kx9x3fPRbXfAHprp2",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.419,
+                "energy": 0.266,
+                "valence": 0.221,
+                "tempo": 74.97,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "อยากมานั่งคุยกันหน่อยไหม",
+            "artist": "รัชนก ศรีโลพันธุ์",
+            "album": "ชุดที่ 2 ฝนตกในทะเล",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2739ba3aadcbec479127ff7a98f",
+            "duration_sec": 261,
+            "platform": "spotify",
+            "external_id": "5AVPyASj6bxQcg6FnXPvLI",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.312,
+                "energy": 0.243,
+                "valence": 0.275,
+                "tempo": 70.08,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ฝนตกไหม - Live Session",
+            "artist": "Stephen Nanchakorn",
+            "album": "ฝนตกไหม (Live Session)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2737b9bba1f1f04231425f563e4",
+            "duration_sec": 155,
+            "platform": "spotify",
+            "external_id": "2RWF3C6vXqjIGxttVxMnUL",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.36,
+                "energy": 0.369,
+                "valence": 0.209,
+                "tempo": 69.68,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ที่เทอยืนนี่ฝนตกไหม v2",
+            "artist": "NellyNTZ",
+            "album": "ที่เทอยืนนี่ฝนตกไหม v2",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273979898b35f8a33c939761d3a",
+            "duration_sec": 113,
+            "platform": "spotify",
+            "external_id": "6QX9gsYjB26WUZE8x0AMaH",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.314,
+                "energy": 0.333,
+                "valence": 0.255,
+                "tempo": 74.82,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "Is it Raining ? (ฝนตกไหม ?)",
+            "artist": "LZYXLR",
+            "album": "Is it Raining ? (ฝนตกไหม ?)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273dcd845db8279767b6f3cb212",
+            "duration_sec": 172,
+            "platform": "spotify",
+            "external_id": "2hPCw3kEgbv86nCJCoPbtB",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.417,
+                "energy": 0.259,
+                "valence": 0.216,
+                "tempo": 64.62,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "sad"
+        },
+        {
+            "title": "ตื่นเต้น",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 211,
+            "platform": "spotify",
+            "external_id": "4WDVkhjwHPQxJ5bJKtEVqY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.799,
+                "energy": 0.909,
+                "valence": 0.731,
+                "tempo": 145.49,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ตื่นเช้า",
+            "artist": "memories can wait",
+            "album": "ตื่นเช้า",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273db86d579d012c5518d10d9af",
+            "duration_sec": 260,
+            "platform": "spotify",
+            "external_id": "6b7e2oe7pXtqCLWoevTf7c",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.77,
+                "energy": 0.952,
+                "valence": 0.723,
+                "tempo": 150.09,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "จริงใจเสมอ",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 181,
+            "platform": "spotify",
+            "external_id": "2A9fF0IvWvbw84u8LRO8oS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.926,
+                "energy": 0.86,
+                "valence": 0.733,
+                "tempo": 153.56,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "วันนี้อากาศดี",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 233,
+            "platform": "spotify",
+            "external_id": "2QXJEXVdJVGP3Sn85Imbah",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.79,
+                "energy": 0.978,
+                "valence": 0.717,
+                "tempo": 139.18,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "นึกถึงกันหน่อย",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 195,
+            "platform": "spotify",
+            "external_id": "1sngVlTAkLWOSQSQ9zrl7T",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.83,
+                "energy": 0.86,
+                "valence": 0.748,
+                "tempo": 134.25,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ยิ้มแย้มแก้มแดง",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 217,
+            "platform": "spotify",
+            "external_id": "2jtJFEiEC3kPAnczVQGmOe",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.791,
+                "energy": 0.93,
+                "valence": 0.881,
+                "tempo": 130.48,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "เสียดาย",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 212,
+            "platform": "spotify",
+            "external_id": "6xeP3qKHMdto7DwUDwXYEc",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.709,
+                "energy": 0.932,
+                "valence": 0.67,
+                "tempo": 141.7,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "เผลอใจ",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 155,
+            "platform": "spotify",
+            "external_id": "42N1WkICn6lknL7CwI5Prm",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.784,
+                "energy": 0.977,
+                "valence": 0.848,
+                "tempo": 137.44,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "วันหนึ่งวันนั้น",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 260,
+            "platform": "spotify",
+            "external_id": "3uKP5zAi0HHuXeuqvfYpRs",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.755,
+                "energy": 0.801,
+                "valence": 0.688,
+                "tempo": 157.7,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "รู้แล้ว รู้แล้ว",
+            "artist": "WHATFALSE",
+            "album": "ตื่นเต้น",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273735449f870ab6b1090738794",
+            "duration_sec": 182,
+            "platform": "spotify",
+            "external_id": "6CocePSAKWWkaMT5nM16uB",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.894,
+                "energy": 0.902,
+                "valence": 0.75,
+                "tempo": 158.06,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ตื่น...เต้น ตื่น...เต้น",
+            "artist": "BAZOO",
+            "album": "Yo!",
+            "release_year": 2002,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2736c7cb46d6e544985e58004fe",
+            "duration_sec": 220,
+            "platform": "spotify",
+            "external_id": "5pXvb012pJJIMnPfzSQMVG",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.875,
+                "energy": 0.868,
+                "valence": 0.878,
+                "tempo": 140.58,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ตื่นเต้น",
+            "artist": "Yoyeah Music",
+            "album": "ตื่นเต้น",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273f500563c02d14ed394f9a837",
+            "duration_sec": 190,
+            "platform": "spotify",
+            "external_id": "7GKl2dS9bVAwDwuGP7PGOn",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.89,
+                "energy": 0.963,
+                "valence": 0.621,
+                "tempo": 159.78,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "Dancing",
+            "artist": "Musketeers",
+            "album": "Uprising",
+            "release_year": 2015,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e4bd381e15ab140ef2076c93",
+            "duration_sec": 240,
+            "platform": "spotify",
+            "external_id": "59IUrad3yjFGJ3M8FSyWsM",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.702,
+                "energy": 0.926,
+                "valence": 0.7,
+                "tempo": 150.57,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "งานเต้นรำในคืนพระจันทร์เต็มดวง (feat. นิว นภัสสร)",
+            "artist": "Cocktail",
+            "album": "Ten Thousand Tears",
+            "release_year": 2011,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ca4fe2eb55e514b872079e70",
+            "duration_sec": 295,
+            "platform": "spotify",
+            "external_id": "5zXYZPPSVH3lp0qGbmKT2Q",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.935,
+                "energy": 0.976,
+                "valence": 0.617,
+                "tempo": 149.77,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "Vivienne Westwood",
+            "artist": "2Ectasy",
+            "album": "Vivienne Westwood",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273583de95ee8ca36bbaa2276f2",
+            "duration_sec": 157,
+            "platform": "spotify",
+            "external_id": "6gf3gCFZloUNpXnrZZd15z",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.712,
+                "energy": 0.868,
+                "valence": 0.747,
+                "tempo": 150.0,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "เอวติดไฟ",
+            "artist": "Bear Knuckle",
+            "album": "เอวติดไฟ",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e8c5996cc5982db14dd5cd13",
+            "duration_sec": 195,
+            "platform": "spotify",
+            "external_id": "6LyEPpvkmI2ATOAgdKyWnf",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.828,
+                "energy": 0.962,
+                "valence": 0.669,
+                "tempo": 133.62,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "สิ่งสำคัญ",
+            "artist": "Endorphine",
+            "album": "พริก",
+            "release_year": 2004,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27345cc0a7113b6bb07d666775c",
+            "duration_sec": 231,
+            "platform": "spotify",
+            "external_id": "1qKvmd1fFtjOK7GgFrQqCK",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.776,
+                "energy": 0.853,
+                "valence": 0.607,
+                "tempo": 136.09,
+                "key": 2,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "GOOD BYE",
+            "artist": "2T FLOW",
+            "album": "GOOD BYE",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a047091884a04fee91591280",
+            "duration_sec": 180,
+            "platform": "spotify",
+            "external_id": "4kLKToezqxaLF9kJQJ30Pt",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.79,
+                "energy": 0.894,
+                "valence": 0.855,
+                "tempo": 159.65,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ขี้หึง",
+            "artist": "Silly Fools",
+            "album": "Juicy",
+            "release_year": 2002,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732e05fd2e7fa984c228bdd637",
+            "duration_sec": 266,
+            "platform": "spotify",
+            "external_id": "1nmdJTwB575vxvNm6PdXHq",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.924,
+                "energy": 0.93,
+                "valence": 0.638,
+                "tempo": 156.79,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "จิ๊จ๊ะ",
+            "artist": "Silly Fools",
+            "album": "Mint",
+            "release_year": 2000,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273eee96b89dd9b964a048b34fd",
+            "duration_sec": 265,
+            "platform": "spotify",
+            "external_id": "6V7y6ItkLqcwwA6Bw4PAj6",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.755,
+                "energy": 0.905,
+                "valence": 0.724,
+                "tempo": 136.44,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "กุหลาบ",
+            "artist": "F.HERO",
+            "album": "กุหลาบ",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2732874f11bddff3c6b6c9eca97",
+            "duration_sec": 235,
+            "platform": "spotify",
+            "external_id": "1uFvvFnus5WZFizuRH02Q0",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.853,
+                "energy": 0.866,
+                "valence": 0.867,
+                "tempo": 159.0,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "จำเก่ง (Slipped Your Mind)",
+            "artist": "F.HERO",
+            "album": "จำเก่ง (Slipped Your Mind)",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27331235d39f5b8ff147d999430",
+            "duration_sec": 220,
+            "platform": "spotify",
+            "external_id": "5orIQnWm5K5RJ08CTYXgPb",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.826,
+                "energy": 0.856,
+                "valence": 0.84,
+                "tempo": 159.98,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "นอนได้แล้ว",
+            "artist": "THE TOYS",
+            "album": "SUN",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27347c587fa897e538e0bf05e0f",
+            "duration_sec": 212,
+            "platform": "spotify",
+            "external_id": "27U1bliRSSlmQAGUtUNewu",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.817,
+                "energy": 0.888,
+                "valence": 0.77,
+                "tempo": 136.48,
+                "key": 9,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "คอแห้ง",
+            "artist": "F.HERO",
+            "album": "คอแห้ง",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273344eb352b6fc735bd988aecf",
+            "duration_sec": 221,
+            "platform": "spotify",
+            "external_id": "2wocHVmXMhEiKATaUpU4O9",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.82,
+                "energy": 0.967,
+                "valence": 0.675,
+                "tempo": 152.14,
+                "key": 0,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "มีแค่เรา",
+            "artist": "F.HERO",
+            "album": "มีแค่เรา",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27307bc261f32b715e92310e5ee",
+            "duration_sec": 265,
+            "platform": "spotify",
+            "external_id": "1KV2PPaLpNXQmLM1SaWCuz",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.931,
+                "energy": 0.91,
+                "valence": 0.756,
+                "tempo": 135.05,
+                "key": 11,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "จำเลยรัก (Defendant Of Love)",
+            "artist": "F.HERO",
+            "album": "จำเลยรัก (Defendant Of Love)",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273a73e4c63db9decb068e6d1e5",
+            "duration_sec": 264,
+            "platform": "spotify",
+            "external_id": "5Tvycz8M6zpI4QX8ls2HAx",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.895,
+                "energy": 0.81,
+                "valence": 0.791,
+                "tempo": 154.31,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ไม่สนิทบิดหมด",
+            "artist": "F.HERO",
+            "album": "ไม่สนิทบิดหมด",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e08dabb2ecc6478bf78b0dda",
+            "duration_sec": 238,
+            "platform": "spotify",
+            "external_id": "6ywcmAqGVW2BYtDflTJB86",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.788,
+                "energy": 0.829,
+                "valence": 0.686,
+                "tempo": 155.55,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "Juke Box Hero - Live at Auditorium Stravinsky, Montreux, Switzerland, 11/20/1984",
+            "artist": "Foreigner",
+            "album": "Juke Box Hero (Live at Auditorium Stravinsky, Montreux, Switzerland, 11/20/1984)",
+            "release_year": 1984,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7632e5db8db26d6438af3e5a0",
+            "duration_sec": 318,
+            "platform": "spotify",
+            "external_id": "2PdePPlUS2QIp5B7f7NECY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.754,
+                "energy": 0.852,
+                "valence": 0.673,
+                "tempo": 159.32,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "กุหลาบ - No Rap Remix",
+            "artist": "F.HERO",
+            "album": "กุหลาบ (No Rap Remix)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273769ff9d87c7ceb17890e4cdd",
+            "duration_sec": 233,
+            "platform": "spotify",
+            "external_id": "7M5q3CDTYxJf5lvSGrrNMh",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.944,
+                "energy": 0.926,
+                "valence": 0.772,
+                "tempo": 154.43,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "Héroe Favorito - Premio Lo Nuestro 2017",
+            "artist": "Romeo Santos",
+            "album": "Héroe Favorito (Premio Lo Nuestro 2017)",
+            "release_year": 2017,
+            "cover_url": "https://i.scdn.co/image/ab6742d3000053b7bb5688d78db0f2dc4056a3eb",
+            "duration_sec": 239,
+            "platform": "spotify",
+            "external_id": "0veiidQ3VpqAt1yToLPeaf",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.906,
+                "energy": 0.977,
+                "valence": 0.754,
+                "tempo": 147.68,
+                "key": 4,
+                "mode": 1
+            },
+            "mood_label": "surprise"
+        },
+        {
+            "title": "ปลายฝนต้นหนาว (Winter Breeze)",
+            "artist": "LANDOKMAI",
+            "album": "ปลายฝนต้นหนาว (Winter Breeze)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ea94337130a814a033c6b140",
+            "duration_sec": 177,
+            "platform": "spotify",
+            "external_id": "1WIZ3l4fZemVHoL8LjaAXS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.579,
+                "energy": 0.598,
+                "valence": 0.442,
+                "tempo": 96.05,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Mr. Masterpiece",
+            "artist": "LANDOKMAI",
+            "album": "WHAT EVE?",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2730e469a4669bdd3c8a3e04ac8",
+            "duration_sec": 242,
+            "platform": "spotify",
+            "external_id": "4S5XLaAuwfanNK3xChXyRU",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.667,
+                "energy": 0.45,
+                "valence": 0.495,
+                "tempo": 107.59,
+                "key": 5,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "เพลงรักเพลงแรก (Blooming)",
+            "artist": "LANDOKMAI",
+            "album": "All My Purple Feelings",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27363a2ef2fbd9920e0d66fa114",
+            "duration_sec": 243,
+            "platform": "spotify",
+            "external_id": "7diW11heEjn0BL02wUXewc",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.551,
+                "energy": 0.314,
+                "valence": 0.566,
+                "tempo": 96.8,
+                "key": 1,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "เก็บดอกไม้",
+            "artist": "LANDOKMAI",
+            "album": "เก็บดอกไม้",
+            "release_year": 2018,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273d15c4bee9909800042833e81",
+            "duration_sec": 320,
+            "platform": "spotify",
+            "external_id": "5sWQQYLbuULHqDnGZ6i1YX",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.574,
+                "energy": 0.344,
+                "valence": 0.425,
+                "tempo": 99.89,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "I miss you when I’m drunk",
+            "artist": "LANDOKMAI",
+            "album": "All My Purple Feelings",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27363a2ef2fbd9920e0d66fa114",
+            "duration_sec": 238,
+            "platform": "spotify",
+            "external_id": "4jJ678dXGNSEtDnL2sM98i",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.667,
+                "energy": 0.394,
+                "valence": 0.546,
+                "tempo": 107.79,
+                "key": 8,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ห้องเล็ก (Wishful)",
+            "artist": "LANDOKMAI",
+            "album": "ห้องเล็ก (Wishful)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273705f3af91f6322da217e0ae2",
+            "duration_sec": 230,
+            "platform": "spotify",
+            "external_id": "5H7ZSCZGxfkWWNj9FnOM7n",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.526,
+                "energy": 0.483,
+                "valence": 0.569,
+                "tempo": 109.22,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ฤดูฝัน (Drizzle)",
+            "artist": "LANDOKMAI",
+            "album": "All My Purple Feelings",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27363a2ef2fbd9920e0d66fa114",
+            "duration_sec": 109,
+            "platform": "spotify",
+            "external_id": "4UuTS25Z7Bosdj4YJmHif8",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.51,
+                "energy": 0.543,
+                "valence": 0.431,
+                "tempo": 109.18,
+                "key": 5,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Hearsay",
+            "artist": "LANDOKMAI",
+            "album": "Hearsay",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ec6e2b1cc6a32435baa6d6b6",
+            "duration_sec": 215,
+            "platform": "spotify",
+            "external_id": "6SwnPNYCf3q4WsUQkMzAiI",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.691,
+                "energy": 0.451,
+                "valence": 0.595,
+                "tempo": 92.16,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Please be true",
+            "artist": "LANDOKMAI",
+            "album": "Please be true",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273bd1bc86dbb911768b00b3a77",
+            "duration_sec": 313,
+            "platform": "spotify",
+            "external_id": "6bCmfEBvHTkcWnVE0yzqpz",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.652,
+                "energy": 0.573,
+                "valence": 0.555,
+                "tempo": 89.14,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "On the Train",
+            "artist": "LANDOKMAI",
+            "album": "On the Train",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733f7a5d594ae4f86fb138e63f",
+            "duration_sec": 299,
+            "platform": "spotify",
+            "external_id": "0KcMOGhJqbm9mqkeNG7OH8",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.522,
+                "energy": 0.406,
+                "valence": 0.498,
+                "tempo": 108.63,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Birdsong",
+            "artist": "Dept",
+            "album": "Birdsong",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27354e9824a287eba93d0a48519",
+            "duration_sec": 252,
+            "platform": "spotify",
+            "external_id": "2NW2wj8mEZMRJ8bmbJSIHk",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.558,
+                "energy": 0.551,
+                "valence": 0.536,
+                "tempo": 94.47,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "รักเธอทั้งหมดของหัวใจ (For My Brother)",
+            "artist": "LANDOKMAI",
+            "album": "Back To The Bakery Vol.1",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2730b961aaf51a891f379cc97cd",
+            "duration_sec": 268,
+            "platform": "spotify",
+            "external_id": "2RRWRJaRxzX2yCtIr1sewK",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.687,
+                "energy": 0.331,
+                "valence": 0.449,
+                "tempo": 84.67,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "นิยายรัก",
+            "artist": "มนัสวีร์",
+            "album": "นิยายรัก",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27396ae150b7cdd3bcddccdf393",
+            "duration_sec": 320,
+            "platform": "spotify",
+            "external_id": "2KamxVTJOgSU1bNuXFg6fY",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.687,
+                "energy": 0.522,
+                "valence": 0.477,
+                "tempo": 84.19,
+                "key": 6,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "The Diary",
+            "artist": "LANDOKMAI",
+            "album": "The Diary",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273d263fa71842e47607610a174",
+            "duration_sec": 258,
+            "platform": "spotify",
+            "external_id": "3gDONtKnX385TjJo0328TS",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.692,
+                "energy": 0.571,
+                "valence": 0.567,
+                "tempo": 101.15,
+                "key": 0,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "เมื่อไหร่ที่คิดถึงเธอ (Echo)",
+            "artist": "LANDOKMAI",
+            "album": "All My Purple Feelings",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27363a2ef2fbd9920e0d66fa114",
+            "duration_sec": 255,
+            "platform": "spotify",
+            "external_id": "21un4sObMk8LfbhfVu2k5K",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.674,
+                "energy": 0.368,
+                "valence": 0.527,
+                "tempo": 94.53,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Summertime",
+            "artist": "YEW",
+            "album": "Pauley & Jeen",
+            "release_year": 2020,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27352e22b6e5d64f137f690ae7a",
+            "duration_sec": 246,
+            "platform": "spotify",
+            "external_id": "0ZcyX8hFV1jdJNWOI8mMXF",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.611,
+                "energy": 0.379,
+                "valence": 0.525,
+                "tempo": 80.09,
+                "key": 10,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ด้วยใจยินดี (Willingly)",
+            "artist": "LANDOKMAI",
+            "album": "ด้วยใจยินดี (Willingly)",
+            "release_year": 2021,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2733c66df35e19f566371f5d5bf",
+            "duration_sec": 304,
+            "platform": "spotify",
+            "external_id": "1AWDmbj5NBA4lsJIpPXfBy",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.501,
+                "energy": 0.443,
+                "valence": 0.515,
+                "tempo": 91.18,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "Tsuki (พระจันทร์)",
+            "artist": "LANDOKMAI",
+            "album": "Tsuki (พระจันทร์)",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273907a59d8cf9854e3328eb861",
+            "duration_sec": 216,
+            "platform": "spotify",
+            "external_id": "4Ocm7fnUyRBW1AkaL5HU45",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.519,
+                "energy": 0.354,
+                "valence": 0.495,
+                "tempo": 92.94,
+                "key": 3,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ยอม (White Flag)",
+            "artist": "LANDOKMAI",
+            "album": "All My Purple Feelings",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27363a2ef2fbd9920e0d66fa114",
+            "duration_sec": 211,
+            "platform": "spotify",
+            "external_id": "1e26lzfwUFqrZsU2M2rLF9",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.552,
+                "energy": 0.392,
+                "valence": 0.457,
+                "tempo": 95.95,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "เพลงรักเพลงแรก (Blooming)",
+            "artist": "LANDOKMAI",
+            "album": "เพลงรักเพลงแรก (Blooming)",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e6bec37391daf28a28b01557",
+            "duration_sec": 257,
+            "platform": "spotify",
+            "external_id": "3VF5FY85jdhfZ2cqUHVrGD",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.602,
+                "energy": 0.58,
+                "valence": 0.52,
+                "tempo": 105.5,
+                "key": 7,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "หรือไม่ใช่",
+            "artist": "Dept",
+            "album": "หรือไม่ใช่",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738d2c6fa63d72dd37a04f1df7",
+            "duration_sec": 330,
+            "platform": "spotify",
+            "external_id": "3tvNs4Os0PY4pnoci7lxCQ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.697,
+                "energy": 0.494,
+                "valence": 0.402,
+                "tempo": 86.76,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ต้องห้ามน้ำตาแบบไหน (Lacrimal Gland)",
+            "artist": "Dept",
+            "album": "ต้องห้ามน้ำตาแบบไหน (Lacrimal Gland)",
+            "release_year": 2024,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273ae1ac954a3b613cbdf32fc60",
+            "duration_sec": 252,
+            "platform": "spotify",
+            "external_id": "39VELAPLYYqNYjKBpkeYJH",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.522,
+                "energy": 0.474,
+                "valence": 0.446,
+                "tempo": 95.83,
+                "key": 10,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ลา ลา ลา",
+            "artist": "Dept",
+            "album": "ลา ลา ลา",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273d7f88aacdc8b214df5ccf7ba",
+            "duration_sec": 253,
+            "platform": "spotify",
+            "external_id": "27OEf7iSIOJ14txp16xweP",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.591,
+                "energy": 0.507,
+                "valence": 0.582,
+                "tempo": 90.36,
+                "key": 1,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "คงต้องบอกลาแล้ว (Farewell)",
+            "artist": "Dept",
+            "album": "Ceramics Runway",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e18441d2aa0f87de9c9654a7",
+            "duration_sec": 270,
+            "platform": "spotify",
+            "external_id": "4SAHOroe7DThzEjgNOJ54T",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.612,
+                "energy": 0.514,
+                "valence": 0.45,
+                "tempo": 98.96,
+                "key": 11,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "หมดนี้ให้เธอ (All In)",
+            "artist": "Dept",
+            "album": "Ceramics Runway",
+            "release_year": 2022,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e18441d2aa0f87de9c9654a7",
+            "duration_sec": 223,
+            "platform": "spotify",
+            "external_id": "429ZU9IN1FRiFl2fYFChe2",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.562,
+                "energy": 0.423,
+                "valence": 0.514,
+                "tempo": 98.8,
+                "key": 9,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ที่ข้างๆฉัน (Bolster)",
+            "artist": "Dept",
+            "album": "Hey Mom,Did You See Me In The Newspaper?",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273c69684257b89cb5abec33ec7",
+            "duration_sec": 216,
+            "platform": "spotify",
+            "external_id": "1LaVe5YHUEU4qQ8wt3TZHR",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.679,
+                "energy": 0.34,
+                "valence": 0.498,
+                "tempo": 93.22,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ยังมีหน้ากลับมา? (How Dare You?)",
+            "artist": "Dept",
+            "album": "ยังมีหน้ากลับมา? (How Dare You?)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b2738e8b4844a224cd6fda522dad",
+            "duration_sec": 257,
+            "platform": "spotify",
+            "external_id": "5GFhuaQZgF240TDr6VMfKZ",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.545,
+                "energy": 0.304,
+                "valence": 0.58,
+                "tempo": 97.34,
+                "key": 3,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ถ้ารู้ว่าจะหายไป",
+            "artist": "Dept",
+            "album": "ถ้ารู้ว่าจะหายไป",
+            "release_year": 2023,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273be80b8c992bd72ad8a87134e",
+            "duration_sec": 290,
+            "platform": "spotify",
+            "external_id": "1QdtmtakBfgvdXz1wEm2S9",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.686,
+                "energy": 0.363,
+                "valence": 0.557,
+                "tempo": 108.33,
+                "key": 4,
+                "mode": 0
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ชาติหน้าช้าไป (K.O.)",
+            "artist": "Dept",
+            "album": "ชาติหน้าช้าไป (K.O.)",
+            "release_year": 2025,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b27348083057f23184dd7c60ea07",
+            "duration_sec": 231,
+            "platform": "spotify",
+            "external_id": "0lQPdxfV1So2QbRrOLz0ft",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.642,
+                "energy": 0.363,
+                "valence": 0.434,
+                "tempo": 86.37,
+                "key": 2,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        },
+        {
+            "title": "ทำได้หรือเปล่า",
+            "artist": "Dept",
+            "album": "ทำได้หรือเปล่า",
+            "release_year": 2019,
+            "cover_url": "https://i.scdn.co/image/ab67616d0000b273e0db400733b0a4e264c385fb",
+            "duration_sec": 206,
+            "platform": "spotify",
+            "external_id": "2zTsqbgzS3AWUwwHHaAjT7",
+            "lyrics": "",
+            "audio_features": {
+                "danceability": 0.59,
+                "energy": 0.58,
+                "valence": 0.571,
+                "tempo": 99.26,
+                "key": 6,
+                "mode": 1
+            },
+            "mood_label": "neutral"
+        }
+    ]
+}

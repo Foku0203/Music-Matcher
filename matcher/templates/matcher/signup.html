@@ -1,0 +1,271 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* 1. ตั้งค่าพื้นหลังและฟอนต์ (เหมือนหน้า Login) */
+    nav.navbar { display: none; } /* ซ่อน Navbar เดิม */
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #2980b9, #8e44ad, #ff7e5f); /* Gradient เดียวกับ Login */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 20px 0; /* เผื่อที่ว่างเวลาเลื่อนมือถือ */
+    }
+
+    /* 2. คลื่นด้านล่าง (Wave) */
+    .wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        line-height: 0;
+        z-index: 1;
+    }
+    .wave svg {
+        position: relative;
+        display: block;
+        width: calc(138% + 1.3px);
+        height: 150px;
+    }
+    .wave .shape-fill { fill: #FFFFFF; }
+
+    /* wrapper สำหรับจัดการ์ดให้อยู่กลางจอแบบเป๊ะ */
+    .signup-wrapper {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        z-index: 5;
+        box-sizing: border-box;
+    }
+
+    /* 3. การ์ด Sign Up (ปรับให้ยาวขึ้นเพื่อรองรับข้อมูล) */
+    .signup-card {
+        background: white;
+        width: 90%;
+        max-width: 500px; /* กว้างกว่า Login นิดหน่อย */
+        padding: 40px 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        text-align: center;
+        position: relative;
+        z-index: 10;
+    }
+
+    .signup-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #2d3436;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* 4. Input Fields (ทรงแคปซูล เหมือนหน้า Login) */
+    .input-group {
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .input-icon {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        color: #aaa;
+        font-size: 1.1rem;
+        z-index: 2;
+    }
+    .form-control-custom {
+        width: 100%;
+        padding: 15px 20px 15px 50px; /* เว้นที่ให้ไอคอน */
+        font-size: 1rem;
+        border: 2px solid #eee;
+        border-radius: 50px; /* ทรงแคปซูล */
+        outline: none;
+        transition: 0.3s;
+        background-color: #f9f9f9;
+        color: #333;
+        box-sizing: border-box;
+    }
+    .form-control-custom:focus {
+        border-color: #8e44ad; /* สีม่วงตอนกด */
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(142, 68, 173, 0.2);
+    }
+
+    /* จัดการแถวคู่ (อายุ/เพศ) */
+    .row-split {
+        display: flex;
+        gap: 10px;
+    }
+    .row-split .input-group {
+        flex: 1;
+    }
+
+    /* 5. ปุ่ม Sign Up (สีเดียวกับ Login) */
+    .btn-signup {
+        background: linear-gradient(to right, #2980b9, #8e44ad);
+        color: white;
+        font-weight: 600;
+        width: 100%;
+        padding: 15px;
+        border-radius: 50px;
+        border: none;
+        font-size: 1.3rem;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+        box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
+    }
+    .btn-signup:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(142, 68, 173, 0.6);
+    }
+
+    /* 6. ลิงก์กลับหน้าแรก */
+    .back-link {
+        position: absolute;
+        top: 30px;
+        left: 30px;
+        color: rgba(255,255,255,0.9);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        z-index: 20;
+        text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .back-link:hover { transform: translateX(-5px); }
+
+    .bottom-links {
+        margin-top: 25px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+    .bottom-links a {
+        color: #8e44ad;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    /* Error Box */
+    .alert-error {
+        background: #ffecec;
+        color: #d63031;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        text-align: left;
+        border-left: 5px solid #d63031;
+    }
+
+    /* ไอคอนจดหมายลอย ๆ */
+    .mail-icon {
+        position: absolute;
+        color: rgba(255,255,255,0.25);
+        font-size: 70px;
+        z-index: 2;
+        animation: floatMail 6s ease-in-out infinite;
+        pointer-events: none;
+    }
+    .mail-1 { top: 12%; left: 8%; animation-delay: 0s; }
+    .mail-2 { top: 20%; right: 10%; font-size: 60px; animation-delay: 2s; }
+    .mail-3 { bottom: 18%; left: 15%; font-size: 55px; animation-delay: 4s; }
+
+    @keyframes floatMail {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(8deg); }
+    }
+</style>
+
+<a href="{% url 'matcher:landing' %}" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Home
+</a>
+
+<!-- ไอคอนจดหมายลอยรอบ ๆ การ์ด -->
+<i class="fas fa-envelope mail-icon mail-1"></i>
+<i class="fas fa-paper-plane mail-icon mail-2"></i>
+<i class="fas fa-envelope-open-text mail-icon mail-3"></i>
+
+<div class="wave">
+    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+</div>
+
+<div class="signup-wrapper">
+    <div class="signup-card">
+        <h1 class="signup-title">Sign Up</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert-error">
+                    <i class="fas fa-exclamation-circle"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="input-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" name="username" class="form-control-custom" placeholder="Create Username" required>
+            </div>
+
+            <div class="input-group">
+                <i class="far fa-envelope input-icon"></i>
+                <input type="email" name="email" class="form-control-custom" placeholder="Your Email" required>
+            </div>
+
+            <div class="row-split">
+                <div class="input-group">
+                    <i class="fas fa-calendar-alt input-icon"></i>
+                    <input type="number" name="age" class="form-control-custom" placeholder="Age" min="10" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-venus-mars input-icon"></i>
+                    <select name="gender" class="form-control-custom" style="-webkit-appearance: none; appearance: none;" required>
+                        <option value="" disabled selected>Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="LGBTQ+">LGBTQ+</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <i class="fas fa-chevron-down" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #aaa; pointer-events: none;"></i>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock input-icon"></i>
+                <input type="password" name="password" class="form-control-custom" placeholder="Password" required>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" name="confirm_password" class="form-control-custom" placeholder="Confirm Password" required>
+            </div>
+
+            <button type="submit" class="btn-signup">
+                CREATE ACCOUNT
+            </button>
+        </form>
+
+        <div class="bottom-links">
+            Have no account? <a href="{% url 'matcher:signup' %}">Sign up here</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
