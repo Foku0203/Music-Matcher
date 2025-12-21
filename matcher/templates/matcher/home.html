@@ -1,13 +1,137 @@
-{% extends "matcher/base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover Music</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #2d2d2d;
+      color: #333;
+      text-align: center;
+    }
 
-{% block content %}
-    <h1>Music Matcher</h1>
-    <h2>Songs</h2>
-    <ul>
-        {% for s in songs %}
-            <li><a href="{% url 'matcher:song_detail' s.id %}">{{ s.title }}</a> - {{ s.artist.name }}</li>
-        {% empty %}
-            <li>ยังไม่มีเพลง</li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #4a148c, #ff6f00);
+      color: white;
+      padding: 15px 30px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header span {
+      font-weight: bold;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      transition: opacity 0.3s;
+    }
+    header a:hover {
+      opacity: 0.8;
+    }
+
+    /* Hero */
+    .hero {
+      background: url("https://i.ibb.co/1bH8s8b/music-bg.jpg") no-repeat center/cover;
+      min-height: 250px;
+      margin-top: 70px; /* กัน header ทับ */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      border-bottom: 5px solid #ff6f00;
+    }
+
+    /* Content */
+    .content {
+      background: #fff;
+      padding: 40px 20px;
+      border-radius: 8px;
+      margin: -50px auto 0 auto;
+      max-width: 600px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 2.5rem;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* Button */
+    .btn {
+      background-color: #1976d2;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      background-color: #0d47a1;
+    }
+
+    /* Icons */
+    .icons {
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      gap: 40px;
+    }
+    .icons div {
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .icons img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <span>Guest1</span>
+    <a href="{% url 'matcher:admin_login' %}">LOGIN</a>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <!-- background image -->
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <h1>Discover Music</h1>
+    <p>Get song recommendations based on your facial expressions.</p>
+    <button class="btn">Capture mood</button>
+
+    <div class="icons">
+      <div>
+        <img src="https://img.icons8.com/ios/50/000000/camera.png" alt="snap">
+        <div>snap a photo</div>
+      </div>
+      <div>
+        <img src="https://img.icons8.com/color/48/spotify--v1.png" alt="spotify">
+        <img src="https://img.icons8.com/color/48/youtube-play.png" alt="youtube">
+        <div>Play song<br>spotify / youtube</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

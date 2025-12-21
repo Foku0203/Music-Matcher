@@ -2,5 +2,4 @@ from django.apps import AppConfig
 
 class MatcherConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "matcher"        # ต้องตรงกับชื่อโฟลเดอร์แอป
-    # ห้ามกำหนด label เอง
+    name = "matcher"

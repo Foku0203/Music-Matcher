@@ -1,0 +1,65 @@
+@startuml
+skinparam State {
+  BackgroundColor White
+  BorderColor #2C3E50
+  ArrowColor #2C3E50
+  BackgroundColor<<Admin>> #FFE4E1
+  BackgroundColor<<AuthCheck>> #FFFFCC
+}
+skinparam Shadowing false
+
+title Music Matcher - Upload Trigger Auth Flow
+
+state "Landing Page" as Landing
+state "Login / Register (FR-01)" as Auth
+state "Image Upload Page (FR-02)" as UploadPage
+state "User Dashboard / Playlist" as UserDash
+state "AI Processing (FR-03)" as AIProcess
+state "Result & Player (FR-04, FR-05)" as Player
+state "Admin Dashboard (FR-12)" as AdminDash <<Admin>>
+
+[*] --> Landing
+
+' จุดเช็คสิทธิ์ (Decision Point)
+state check_auth <<choice>>
+
+Landing --> check_auth : กดปุ่ม "อัปโหลดรูปภาพ"
+
+' เงื่อนไขการเปลี่ยนหน้า
+check_auth --> Auth : ยังไม่เป็นสมาชิก / ยังไม่ Login
+check_auth --> UploadPage : Login อยู่แล้ว (Member)
+
+' Flow การยืนยันตัวตน
+Auth --> UploadPage : สมัครสมาชิก/Login สำเร็จ (User)
+Auth --> AdminDash : Login สำเร็จ (Admin)
+Auth --> Landing : ยกเลิก / กลับหน้าแรก
+
+' Flow การทำงานหลัก
+UploadPage --> AIProcess : เลือกไฟล์ & ยืนยัน
+UploadPage --> UserDash : ไปที่หน้าจัดการข้อมูลส่วนตัว
+
+AIProcess --> Player : วิเคราะห์เสร็จสิ้น
+
+state Player {
+    state "Music List (Spotify/YT)" as Links
+    state "Feedback (Like/Dislike)" as Feedback
+}
+
+Player --> UploadPage : Reset / New Image (FR-07)
+Player --> UserDash : จัดการ Playlist (FR-10)
+Player --> Landing : Logout
+
+' User Dash interactions
+UserDash --> UploadPage : กลับไปหน้าวิเคราะห์
+UserDash --> Landing : Logout
+
+' Admin Flow
+AdminDash --> Landing : Logout
+
+note left of check_auth
+  **Condition:**
+  ตรวจสอบสถานะการ Login
+  เมื่อมีการกดปุ่มอัปโหลด
+end note
+
+@enduml

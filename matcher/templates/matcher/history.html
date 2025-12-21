@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Reset & Layout */
+    body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #181818; overflow: hidden; }
+    
+    .dashboard-container {
+        display: flex;
+        height: 100vh;
+        width: 100%;
+    }
+
+    /* --- SIDEBAR (Left) --- */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, #2980b9 0%, #8e44ad 100%); /* ไล่สีฟ้าม่วงตามรูป */
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        color: white;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+        z-index: 10;
+    }
+
+    .sidebar-icon-home { font-size: 2rem; margin-bottom: 40px; cursor: pointer; }
+    
+    .menu-group { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+
+    .menu-item {
+        display: flex; align-items: center; gap: 15px;
+        padding: 12px 20px;
+        color: rgba(255,255,255,0.7);
+        text-decoration: none;
+        font-size: 1.1rem;
+        border-radius: 15px;
+        transition: 0.3s;
+    }
+
+    .menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    /* Active State (ปุ่ม History จะสว่าง) */
+    .menu-item.active {
+        background: rgba(255,255,255,0.2);
+        color: white;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .logout-btn {
+        margin-top: auto; /* ดันไปล่างสุด */
+        display: flex; align-items: center; gap: 10px;
+        color: rgba(255,255,255,0.6);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .logout-btn:hover { color: white; }
+
+    /* --- MAIN CONTENT (Right) --- */
+    .main-content {
+        flex: 1;
+        background: linear-gradient(135deg, #1e0b24 0%, #100516 100%); /* พื้นหลังมืดอมม่วง */
+        padding: 30px 50px;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    /* Background Decoration (เส้นคลื่นจางๆ) */
+    .bg-wave {
+        position: absolute; top: 0; right: 0; width: 100%; height: 100%;
+        background-image: url('https://www.transparenttextures.com/patterns/sound-wave.png'); /* Pattern สมมติ */
+        opacity: 0.05; pointer-events: none;
+    }
+
+    /* Top Bar */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .page-title { font-size: 2rem; color: white; font-weight: 500; }
+    
+    .user-actions { display: flex; align-items: center; gap: 20px; }
+    .search-box {
+        background: rgba(255,255,255,0.1);
+        border-radius: 20px;
+        padding: 8px 15px;
+        display: flex; align-items: center;
+        color: white;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .search-box input { background: transparent; border: none; color: white; margin-left: 10px; outline: none; }
+    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ddd; background-size: cover; }
+
+    /* Song List Table */
+    .song-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
+    
+    .song-row { transition: 0.3s; cursor: pointer; }
+    .song-row:hover .song-inner { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+
+    .song-inner {
+        background: transparent;
+        display: flex; align-items: center;
+        padding: 10px 15px;
+        border-radius: 10px;
+    }
+
+    .col-index { color: white; font-weight: bold; width: 40px; text-align: center; }
+    .col-cover img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+    
+    .col-info { flex: 1; display: flex; flex-direction: column; }
+    .s-title { color: white; font-size: 1rem; font-weight: 500; }
+    .s-artist { color: #aaa; font-size: 0.8rem; margin-top: 2px; }
+
+    .col-time { color: #888; font-size: 0.8rem; width: 150px; text-align: right; margin-right: 20px; }
+    
+    .col-action { color: white; font-size: 1.2rem; width: 30px; text-align: center; opacity: 0.5; transition: 0.3s; }
+    .song-row:hover .col-action { opacity: 1; }
+
+</style>
+
+<div class="dashboard-container">
+    
+    <div class="sidebar">
+        <a href="{% url 'matcher:home' %}" style="color:white;"><i class="fas fa-home sidebar-icon-home"></i></a>
+        
+        <div class="menu-group">
+            <a href="{% url 'matcher:home' %}" class="menu-item">
+                <i class="fas fa-compact-disc"></i> Discover
+            </a>
+            
+            <a href="#" class="menu-item">
+                <i class="fas fa-heart"></i> Favorite
+            </a>
+            
+            <a href="{% url 'matcher:history' %}" class="menu-item active">
+                <i class="fas fa-history"></i> History
+            </a>
+        </div>
+
+        <a href="{% url 'matcher:logout' %}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="bg-wave"></div>
+
+        <div class="top-bar">
+            <div class="page-title">Listening History</div>
+            <div class="user-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search history...">
+                </div>
+                <div class="user-avatar" style="background-image: url('{% static "images/default_avatar.png" %}');"></div>
+            </div>
+        </div>
+
+        <div class="song-table">
+            {% for item in history_list %}
+            <div class="song-row" onclick="window.open('http://open.spotify.com/track/{{ item.song.external_id }}', '_blank')">
+                <div class="song-inner">
+                    <div class="col-index">{{ forloop.counter }}</div>
+                    
+                    <div class="col-cover">
+                        <img src="{{ item.song.album.cover_url|default:'https://via.placeholder.com/50' }}" alt="Cover">
+                    </div>
+                    
+                    <div class="col-info">
+                        <span class="s-title">{{ item.song.title }}</span>
+                        <span class="s-artist">{{ item.song.artist.name }}</span>
+                    </div>
+
+                    <div class="col-time">
+                        <i class="far fa-clock"></i> {{ item.listened_at|timesince }} ago
+                    </div>
+
+                    <div class="col-action">
+                        <i class="fas fa-ellipsis-h"></i>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+                <div style="text-align:center; color: #666; margin-top: 50px;">
+                    <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 20px;"></i><br>
+                    No history yet. Start scanning your mood!
+                </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,391 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* --- 1. Background & Decorations --- */
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #2980b9, #8e44ad, #ff7e5f);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .music-note { position: absolute; color: rgba(255, 255, 255, 0.2); animation: float 6s ease-in-out infinite; z-index: 1; pointer-events: none; }
+    .note-1 { top: 15%; left: 10%; font-size: 100px; animation-delay: 0s; }
+    .note-2 { top: 60%; right: 10%; font-size: 80px; animation-delay: 2s; }
+    .note-3 { top: 10%; right: 30%; font-size: 50px; animation-delay: 4s; }
+    .note-4 { bottom: 20%; left: 5%; font-size: 60px; animation-delay: 1s; }
+    .note-5 { bottom: 25%; right: 6%; font-size: 70px; animation-delay: 3s; }
+    .note-6 { top: 40%; left: 45%; font-size: 40px; animation-delay: 4.5s; }
+
+    @keyframes float { 
+        0%, 100% { transform: translateY(0) rotate(0deg); } 
+        50% { transform: translateY(-20px) rotate(10deg); } 
+    }
+
+    .wave { position: absolute; width: 100%; line-height: 0; z-index: 1; opacity: 0.8; }
+    .wave-bottom { bottom: 0; left: 0; }
+    .wave-top { top: 0; left: 0; transform: rotate(180deg); }
+    .wave svg { position: relative; display: block; width: calc(138% + 1.3px); height: 120px; }
+    .wave .shape-fill { fill: #FFFFFF; }
+
+    /* --- 2. Result Card Styling --- */
+    .result-card {
+        background: white;
+        width: 1050px;
+        height: 550px; /* ปรับความสูงเล็กน้อยเพื่อให้สมดุลกับ Footer */
+        display: flex;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        overflow: hidden;
+        z-index: 10;
+        position: absolute;      
+        top: 48%; /* ขยับขึ้นนิดนึงหนี Footer */
+        left: 50%;              
+        transform: translate(-50%, -50%); 
+        max-width: 95vw;
+        max-height: 80vh;
+    }
+
+    /* --- Left Panel --- */
+    .left-panel {
+        width: 40%;
+        background: linear-gradient(135deg, #2c3e50, #4ca1af); 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .face-container {
+        width: 180px; /* ลดขนาดนิดนึง */
+        height: 180px;
+        background-color: #ddd; 
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        margin-bottom: 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        border: 4px solid rgba(255,255,255,0.2);
+    }
+    
+    .scan-frame { position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; }
+    .scan-corner { position: absolute; width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.8); }
+    .tl { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 10px 0 0 0; }
+    .tr { top: 0; right: 0; border-left: none; border-bottom: none; border-radius: 0 10px 0 0; }
+    .bl { bottom: 0; left: 0; border-right: none; border-top: none; border-radius: 0 0 0 10px; }
+    .br { bottom: 0; right: 0; border-left: none; border-top: none; border-radius: 0 0 10px 0; }
+
+    .face-grid {
+        width: 100%; height: 100%;
+        background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Face_landmarks.svg/1024px-Face_landmarks.svg.png');
+        background-size: 80%;
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.3;
+        filter: invert(1);
+        border-radius: 16px;
+    }
+
+    .mood-title { font-size: 1rem; margin-bottom: 5px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+    .mood-result { font-size: 2rem; font-weight: 700; color: #f1c40f; margin-bottom: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+
+    .btn-retry {
+        background: white;
+        color: #333;
+        padding: 10px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
+    .btn-retry:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.2); color: #8e44ad; }
+
+    /* --- Right Panel --- */
+    .right-panel {
+        width: 60%;
+        background: #fdfdfd;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .panel-header {
+        padding: 15px 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        background: white;
+        z-index: 5;
+    }
+    
+    .panel-header h3 { 
+        margin: 0; 
+        color: #2c3e50; 
+        font-size: 1.2rem; 
+        font-weight: 700; 
+        white-space: nowrap;
+        display: flex; align-items: center; gap: 8px;
+    }
+
+    .song-count { background: #f1f2f6; color: #7f8fa6; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+
+    .search-wrapper { flex-grow: 1; position: relative; display: flex; align-items: center; }
+    .search-input {
+        width: 100%; padding: 8px 15px 8px 35px; border: 1px solid #eee; background-color: #f8f9fa;
+        border-radius: 25px; font-family: 'Poppins', sans-serif; font-size: 0.9rem; outline: none; transition: 0.3s; color: #333;
+    }
+    .search-input:focus { background-color: #fff; border-color: #8e44ad; box-shadow: 0 0 8px rgba(142, 68, 173, 0.1); }
+    .search-icon { position: absolute; left: 12px; color: #aaa; font-size: 0.9rem; }
+
+    .panel-header .refresh-btn { color: #8e44ad; transition: 0.3s; cursor: pointer; font-size: 1.1rem; padding: 5px; border-radius: 50%; }
+    .panel-header .refresh-btn:hover { background: #f3e5f5; transform: rotate(180deg); }
+
+    .song-list { flex: 1; overflow-y: auto; padding: 10px 15px; scroll-behavior: smooth; }
+    .song-list::-webkit-scrollbar { width: 6px; }
+    .song-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
+
+    .song-card {
+        display: flex; align-items: center; padding: 10px;
+        border-radius: 12px; margin-bottom: 8px;
+        transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent; background: white;
+    }
+    .song-card.hidden { display: none !important; }
+    .song-card:hover { background-color: #fff; border-color: #e2e8f0; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+
+    .song-index { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; margin-right: 12px; min-width: 25px; text-align: center; }
+    .song-card:hover .song-index { color: #8e44ad; }
+
+    .album-cover {
+        width: 45px; height: 45px; border-radius: 8px;
+        background-color: #f0f0f0; margin-right: 15px;
+        background-size: cover; background-position: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0;
+    }
+
+    .song-info { flex: 1; overflow: hidden; white-space: nowrap; }
+    .song-title { font-size: 0.95rem; font-weight: 600; color: #2d3748; margin-bottom: 2px; text-overflow: ellipsis; overflow: hidden; }
+    .song-artist { font-size: 0.8rem; color: #718096; text-overflow: ellipsis; overflow: hidden; }
+    
+    .spotify-badge {
+        font-size: 0.65rem; color: #1db954; background: rgba(29, 185, 84, 0.1);
+        padding: 2px 8px; border-radius: 10px; margin-top: 4px; display: inline-block; font-weight: 600;
+    }
+
+    .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; }
+    .actions i:hover { color: #e74c3c; transform: scale(1.2); transition: 0.2s; }
+
+    .close-x {
+        position: absolute; top: 15px; right: 20px;
+        font-size: 1.5rem; color: #bbb; cursor: pointer; z-index: 100; transition: 0.2s;
+    }
+    .close-x:hover { color: #e74c3c; }
+
+    /* --- [NEW] Footer Menu Style --- */
+    .footer-menu { 
+        position: absolute; 
+        bottom: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 80px; 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        gap: 30px; 
+        z-index: 100; /* อยู่บนสุด */
+    }
+    
+    .menu-item { 
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        text-decoration: none; 
+        color: rgba(255,255,255,0.8); 
+        font-weight: 600; 
+        font-size: 0.9rem; 
+        transition: 0.3s; 
+        padding: 12px 25px; 
+        border-radius: 30px; 
+        background: rgba(255,255,255,0.2); 
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,255,255,0.3);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .menu-item:hover { 
+        background: white; 
+        color: #8e44ad; 
+        transform: translateY(-5px); 
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2); 
+    }
+    
+    .menu-item.active { 
+        color: #2980b9; 
+        background: white; 
+        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); 
+    }
+
+    /* Style ปุ่ม Back มุมซ้ายบน */
+    .btn-back {
+        position: absolute;
+        top: 30px; left: 30px; z-index: 100; color: white;
+        text-decoration: none; font-weight: 600; font-size: 1rem;
+        background: rgba(255, 255, 255, 0.2); padding: 10px 25px;
+        border-radius: 30px; backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .btn-back:hover { background: white; color: #2980b9; transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+</style>
+
+<a href="{% url 'matcher:scan' %}" class="btn-back">
+    <i class="fas fa-arrow-left"></i> New Scan
+</a>
+
+<i class="fas fa-music music-note note-1"></i>
+<i class="fas fa-music music-note note-2"></i>
+<i class="fas fa-compact-disc music-note note-3"></i>
+<i class="fas fa-music music-note note-4"></i>
+<i class="fas fa-music music-note note-5"></i>
+<i class="fas fa-music music-note note-6"></i>
+
+<div class="wave wave-top">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+</div>
+
+<div class="wave wave-bottom">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+    </svg>
+</div>
+
+<div class="result-card">
+    <a href="{% url 'matcher:home' %}" class="close-x"><i class="fas fa-times"></i></a>
+
+    <div class="left-panel">
+        <div class="face-container" style="background-image: url('{{ image_url }}');">
+            <div class="scan-frame">
+                <div class="scan-corner tl"></div>
+                <div class="scan-corner tr"></div>
+                <div class="scan-corner bl"></div>
+                <div class="scan-corner br"></div>
+            </div>
+            <div class="face-grid"></div>
+        </div>
+        
+        <div class="mood-title">Mood Detected</div>
+        <div class="mood-result">{{ mood_name|title }}</div>
+        
+        <a href="{% url 'matcher:scan' %}" class="btn-retry">Scan Again</a>
+    </div>
+
+    <div class="right-panel">
+        <div class="panel-header">
+            <h3>Recommended <span class="song-count">{{ recommended_songs|length }}</span></h3>
+            
+            <div class="search-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" class="search-input" placeholder="Find song or artist...">
+            </div>
+            <i class="fas fa-sync-alt refresh-btn" onclick="location.reload()" title="Refresh"></i>
+        </div>
+
+        <div class="song-list" id="songList">
+            {% for item in recommended_songs %}
+            <a href="http://open.spotify.com/track/{{ item.obj.external_id }}" target="_blank" 
+               class="song-card" 
+               data-title="{{ item.obj.title|lower }}" 
+               data-artist="{{ item.obj.artist.name|lower }}">
+                
+                <div class="song-index">{{ forloop.counter }}</div>
+                <div class="album-cover" style="background-image: url('{{ item.obj.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
+                
+                <div class="song-info">
+                    <div class="song-title">{{ item.obj.title }}</div>
+                    <div class="song-artist">{{ item.obj.artist.name }}</div>
+                    <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
+                </div>
+
+                <div class="actions">
+                    <i class="far fa-heart" title="Save"></i>
+                    <i class="fas fa-share-alt" title="Share"></i>
+                </div>
+            </a>
+            {% empty %}
+                <div style="padding:40px; text-align:center; color:#999; margin-top: 50px;">
+                    <i class="fas fa-music" style="font-size:3rem; margin-bottom:15px; display:block; color:#ddd;"></i>
+                    <p>No songs found for this mood.</p>
+                </div>
+            {% endfor %}
+            
+            <div id="noResultMsg" style="display:none; padding:40px; text-align:center; color:#999; margin-top: 50px;">
+                <i class="fas fa-search" style="font-size:2rem; margin-bottom:10px; display:block; color:#ddd;"></i>
+                No match found.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer-menu">
+    <a href="{% url 'matcher:scan' %}" class="menu-item active">
+        <i class="fas fa-camera"></i> <span>Snap Photo</span>
+    </a>
+    <a href="#" class="menu-item">
+        <i class="fas fa-list"></i> <span>Playlist</span>
+    </a>
+    <a href="{% url 'matcher:home' %}" class="menu-item">
+        <i class="fab fa-spotify"></i> <span>Browse</span>
+    </a>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const songCards = document.querySelectorAll('.song-card');
+        const noResultMsg = document.getElementById('noResultMsg');
+
+        searchInput.addEventListener('keyup', function(e) {
+            const term = e.target.value.toLowerCase().trim();
+            let hasVisibleItems = false;
+
+            songCards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const artist = card.getAttribute('data-artist');
+
+                if (title.includes(term) || artist.includes(term)) {
+                    card.classList.remove('hidden');
+                    hasVisibleItems = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (hasVisibleItems) {
+                noResultMsg.style.display = 'none';
+            } else {
+                noResultMsg.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+{% endblock %}
