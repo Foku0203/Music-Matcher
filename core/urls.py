@@ -20,12 +20,8 @@ from django.urls import path, include
 
 
 urlpatterns = [
-    # 1. ต้องมีบรรทัดนี้ เพื่อให้เข้าหน้า Admin ได้
     path("admin/", admin.site.urls),
-
-    # 2. เชื่อมกับแอป matcher (หน้าเว็บหลัก)
     path("", include("matcher.urls")), 
-
-    # 3. เชื่อมกับแอป accounts (ถ้ามี)
     path("accounts/", include("accounts.urls")), 
 ]
+

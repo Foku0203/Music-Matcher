@@ -24,11 +24,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "matcher.apps.MatcherConfig",   
     "accounts",
+    'rest_framework',        # เพื่อใช้สร้าง API 
 ]
 
 
 # settings.py
-AUTH_USER_MODEL = 'matcher.User'
+AUTH_USER_MODEL = "matcher.User"
 
 
 MIDDLEWARE = [
@@ -65,9 +66,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mmdb',      # ⬅ ชื่อ Database ที่เราสร้างไว้ใน VS Code
+        'USER': 'postgres',           # ⬅ User หลักของ PostgreSQL (ถ้าไม่ได้เปลี่ยน)
+        'PASSWORD': '123456',  # ⬅ **แก้รหัสผ่านของคุณตรงนี้**
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 

@@ -1,0 +1,77 @@
+@startuml
+skinparam Activity {
+  BackgroundColor White
+  BorderColor #2C3E50
+  ArrowColor #2C3E50
+  BarColor #2C3E50
+}
+skinparam Shadowing false
+
+|User|
+start
+:เข้าสู่เว็บไซต์ (Landing Page);
+:กดปุ่ม "อัปโหลดรูปภาพ" (Upload);
+
+|System|
+if (ตรวจสอบสถานะการเข้าสู่ระบบ?) then (ยังไม่เข้าสู่ระบบ)
+    |User|
+    :เข้าสู่หน้า สมัครสมาชิก / เข้าสู่ระบบ;
+    if (เลือกดำเนินการ) then (สมัครสมาชิก)
+        :กรอกข้อมูลสมาชิก;
+        |System|
+        :บันทึกข้อมูลสมาชิกใหม่;
+    else (เข้าสู่ระบบ)
+        |User|
+        :กรอก Username/Password;
+        |System|
+        :ตรวจสอบความถูกต้อง;
+    endif
+    
+    if (Login/Register สำเร็จ?) then (No)
+        |System|
+        :แจ้งเตือนข้อผิดพลาด;
+        stop
+    else (Yes)
+    endif
+else (เข้าสู่ระบบอยู่แล้ว)
+endif
+
+|System|
+:เปลี่ยนหน้าไปยัง "หน้าอัปโหลดรูปภาพ";
+
+|User|
+repeat
+    :เลือกไฟล์รูปภาพใบหน้า;
+    :กด Confirm อัปโหลด;
+
+    |System|
+    :รับไฟล์รูปภาพ;
+    :วิเคราะห์ภาพด้วย AI (FER2013);
+    :ระบุอารมณ์ (7 Types);
+    :ประมวลผลแนะนำเพลง (Emotion + CF);
+    :แสดงผลอารมณ์และรายการเพลง;
+
+    |User|
+    :ดูผลลัพธ์และรายการเพลง;
+    
+    fork
+        :กดฟังเพลง (Spotify/YouTube);
+    fork again
+        :กด Like / Dislike;
+        |System|
+        :บันทึก Feedback (FR-08);
+        :ปรับปรุง Model (CF Learning);
+    fork again
+        :เพิ่มเพลงลง Playlist;
+        |System|
+        :บันทึกข้อมูลลง Playlist (FR-10);
+    end fork
+
+|User|
+repeat while (ต้องการวิเคราะห์ใหม่?) is (กดปุ่ม Reset)
+-> (ไม่ใช่ / เลิกใช้งาน);
+
+:กด Logout หรือ ปิดเว็บไซต์;
+stop
+
+@enduml

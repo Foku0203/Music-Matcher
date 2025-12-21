@@ -15,7 +15,7 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
 
     # *** สำคัญ: ต้องมีหน้านี้ ***
-    path('scan/', views.scan_face, name='scan'), 
+    path('scan/', views.scan_face, name='scan'),
 
     # หน้าผลลัพธ์
     path("match/", views.match_view, name="match"),

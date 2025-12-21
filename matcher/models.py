@@ -5,11 +5,9 @@ from django.contrib.auth.models import AbstractUser
 # ===================== 1. USER MANAGEMENT =====================
 
 class User(AbstractUser):
-    # [แก้ Error admin.E108] เพิ่มฟิลด์ status ที่ Admin เรียกหา
     status = models.CharField(max_length=20, default='Active', help_text="User status (e.g., Active, Banned)")
 
 class UserProfile(models.Model):
-    # ใช้ settings.AUTH_USER_MODEL เพื่อลิงก์กับ User ตัวจริง
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=20, null=True, blank=True)
@@ -21,7 +19,6 @@ class UserProfile(models.Model):
 class Role(models.Model):
     role_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, unique=True)
-
     def __str__(self):
         return self.name
 
@@ -37,15 +34,14 @@ class UserSuspension(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-    def __str__(self):
-        return f"Suspension: {self.user.username}"
-
-# ===================== 2. CATALOG (Artist / Song) =====================
+# ===================== 2. CATALOG (เชื่อมกับตารางที่มีข้อมูล 966 เพลง) =====================
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     spotify_id = models.CharField(max_length=255, null=True, blank=True)
+    class Meta:
+        db_table = 'artists'
 
     def __str__(self):
         return self.name
@@ -56,6 +52,8 @@ class Album(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     release_year = models.IntegerField(null=True, blank=True)
     cover_url = models.CharField(max_length=500, null=True, blank=True)
+    class Meta:
+        db_table = 'albums'
 
     def __str__(self):
         return self.title
@@ -65,12 +63,14 @@ class Song(models.Model):
     title = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
-    platform = models.CharField(max_length=50, default='Spotify')
-    external_id = models.CharField(max_length=255, null=True, blank=True)
-    duration_sec = models.IntegerField(default=0, help_text="Duration in seconds")
+    platform = models.CharField(max_length=50, default='spotify')
+    external_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
+    duration_sec = models.IntegerField(null=True, blank=True, default=0)
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    audio_features = models.JSONField(null=True, blank=True)
+    lyrics = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    class Meta:
+        db_table = 'songs'
 
     def __str__(self):
         return self.title
@@ -78,7 +78,6 @@ class Song(models.Model):
 class Genre(models.Model):
     genre_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-
     def __str__(self):
         return self.name
 
@@ -88,7 +87,9 @@ class SongGenre(models.Model):
 
 class Emotion(models.Model):
     emotion_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
+    class Meta:
+        db_table = 'emotions'
 
     def __str__(self):
         return self.name
@@ -96,9 +97,12 @@ class Emotion(models.Model):
 class SongEmotion(models.Model):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     emotion = models.ForeignKey(Emotion, on_delete=models.CASCADE)
-    confidence = models.FloatField(default=0.0)
-    source = models.CharField(max_length=50, default='AI')
+    confidence = models.FloatField(default=1.0)
+    source = models.CharField(max_length=50, default='manual_import')
     updated_at = models.DateTimeField(auto_now=True)
+    class Meta:
+        db_table = 'song_emotions'
+        unique_together = (('song', 'emotion'),)
 
 class EmotionScan(models.Model):
     scan_id = models.AutoField(primary_key=True)
@@ -107,7 +111,7 @@ class EmotionScan(models.Model):
     status = models.CharField(max_length=20, default='Pending')
     raw_data = models.TextField(null=True, blank=True)
 
-# ===================== 3. USER ACTIVITY =====================
+# ===================== 3. USER ACTIVITY & OTHERS =====================
 
 class Interaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -135,15 +139,10 @@ class Playlist(models.Model):
     is_public = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
-
 class PlaylistItem(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
-
-# ===================== 4. AI / MLOPS =====================
 
 class ModelVersion(models.Model):
     name = models.CharField(max_length=100)
@@ -151,9 +150,6 @@ class ModelVersion(models.Model):
     algorithm = models.CharField(max_length=100)
     status = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.name} v{self.version}"
 
 class Recommendation(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
