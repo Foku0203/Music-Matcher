@@ -17,11 +17,18 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("", include("matcher.urls")), 
-    path("accounts/", include("accounts.urls")), 
+    # Default Admin ของ Django (เก็บไว้ใช้จัดการ DB หลังบ้านได้)
+    path('admin/', admin.site.urls),
+    
+    # เชื่อมไปยัง App "matcher" ของเรา
+    path('', include('matcher.urls')), 
 ]
 
+# ตั้งค่าให้รองรับการแสดงผลไฟล์รูปภาพ (Media Files) ในโหมด DEBUG
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
