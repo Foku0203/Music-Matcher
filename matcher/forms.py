@@ -1,18 +1,19 @@
 from django import forms
-from .models import Song
+from django.contrib.auth.forms import UserCreationForm
+from .models import User
 
-class SongForm(forms.ModelForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
-        model = Song
-        # เลือกเฉพาะฟิลด์ที่มีจริงใน Model ใหม่
-        fields = ['title', 'artist', 'album', 'duration_sec', 'platform', 'external_id', 'is_active']
+        model = User
+        fields = ('username', 'email', 'age', 'gender')
         
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'age', 'gender']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'artist': forms.Select(attrs={'class': 'form-control'}),
-            'album': forms.Select(attrs={'class': 'form-control'}),
-            'duration_sec': forms.NumberInput(attrs={'class': 'form-control'}),
-            'platform': forms.Select(attrs={'class': 'form-control'}),
-            'external_id': forms.TextInput(attrs={'class': 'form-control'}),
-            'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'age': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Age'}),
+            'gender': forms.Select(attrs={'class': 'form-control'}),
         }

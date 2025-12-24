@@ -1,0 +1,213 @@
+{% extends 'matcher/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* ใช้ Theme เดียวกับหน้าอื่น */
+    body {
+        margin: 0;
+        height: 100vh;
+        font-family: 'Poppins', sans-serif;
+        background: #1e1e2e;
+        display: flex;
+        overflow: hidden;
+    }
+
+    /* --- Sidebar (เหมือนหน้า History) --- */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, #2980b9, #8e44ad);
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        color: white;
+    }
+    
+    .menu-item {
+        display: flex; align-items: center; gap: 15px;
+        padding: 15px; margin-bottom: 10px;
+        color: rgba(255,255,255,0.7); text-decoration: none;
+        border-radius: 15px; transition: 0.3s; font-size: 1.1rem;
+    }
+    .menu-item:hover, .menu-item.active {
+        background: rgba(255,255,255,0.2); color: white;
+        backdrop-filter: blur(10px);
+    }
+    
+    .logout-btn {
+        margin-top: auto; display: flex; align-items: center; gap: 10px;
+        color: rgba(255,255,255,0.6); text-decoration: none;
+        padding: 10px; transition: 0.3s;
+    }
+    .logout-btn:hover { color: #e74c3c; }
+
+    /* --- Main Content --- */
+    .main-content {
+        flex: 1;
+        background: #18181b; /* สีพื้นหลังเข้มตามรูป */
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+
+    /* Background Gradient Effect */
+    .bg-glow {
+        position: absolute; width: 100%; height: 100%;
+        background: radial-gradient(circle at 80% 20%, rgba(142, 68, 173, 0.15), transparent 40%),
+                    radial-gradient(circle at 20% 80%, rgba(41, 128, 185, 0.15), transparent 40%);
+        pointer-events: none;
+    }
+
+    /* --- Profile Form Container --- */
+    .profile-card {
+        width: 100%; max-width: 800px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 30px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* Avatar */
+    .avatar-wrapper {
+        position: relative; margin-bottom: 30px;
+        margin-top: -80px; /* ดึงรูปขึ้นไป */
+    }
+    .avatar {
+        width: 150px; height: 150px;
+        border-radius: 50%;
+        border: 4px solid #8e44ad;
+        object-fit: cover;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .edit-icon {
+        position: absolute; bottom: 5px; right: 5px;
+        background: white; color: #333;
+        width: 35px; height: 35px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    /* Form Grid */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        width: 100%;
+    }
+    
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-group label { color: #ccc; font-size: 0.9rem; margin-left: 5px; }
+    
+    .form-input {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 12px 15px; border-radius: 12px;
+        color: white; font-size: 1rem; outline: none;
+        display: flex; align-items: center; justify-content: space-between;
+    }
+    .form-input:focus { border-color: #8e44ad; background: rgba(255, 255, 255, 0.15); }
+    
+    .input-icon { color: #aaa; cursor: pointer; }
+
+    /* Submit Button */
+    .btn-submit {
+        margin-top: 30px;
+        background: #2980b9;
+        color: white; border: none;
+        padding: 12px 50px; border-radius: 10px;
+        font-size: 1rem; font-weight: 600; cursor: pointer;
+        box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
+        transition: 0.3s;
+    }
+    .btn-submit:hover { transform: translateY(-3px); background: #3498db; }
+
+</style>
+
+<div class="sidebar">
+    <div style="font-size: 1.5rem; font-weight: bold; margin-bottom: 40px; display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-home"></i> Matcher
+    </div>
+    
+    <a href="{% url 'matcher:home' %}" class="menu-item">
+        <i class="fas fa-home"></i> Home
+    </a>
+    <a href="{% url 'matcher:scan' %}" class="menu-item">
+        <i class="fas fa-camera"></i> Scan
+    </a>
+    <a href="{% url 'matcher:history' %}" class="menu-item">
+        <i class="fas fa-history"></i> History
+    </a>
+    <a href="#" class="menu-item active">
+        <i class="fas fa-user"></i> Profile
+    </a>
+
+    <a href="{% url 'matcher:login' %}" class="logout-btn">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+</div>
+
+<div class="main-content">
+    <div class="bg-glow"></div>
+
+    <form method="POST" class="profile-card" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="avatar-wrapper">
+            <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" class="avatar" alt="User Profile">
+            <label for="id_avatar" class="edit-icon">
+                <i class="fas fa-pen"></i>
+            </label>
+            <input type="file" name="avatar" id="id_avatar" style="display: none;">
+        </div>
+
+        <div class="form-grid">
+            <div class="form-group">
+                <label>UID</label>
+                <div class="form-input" style="opacity: 0.6;">{{ user.id|stringformat:"010d" }}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" class="form-input" value="{{ user.username }}">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" class="form-input" value="{{ user.email }}">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <div class="form-input">
+                    ******** <i class="fas fa-pen input-icon"></i>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Province</label>
+                <input type="text" name="province" class="form-input" value="Ubon Ratchathani">
+            </div>
+
+            <div class="form-group">
+                <label>Age</label>
+                <input type="number" name="age" class="form-input" value="21">
+            </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+                <label>Gender</label>
+                <select name="gender" class="form-input" style="background: rgba(255,255,255,0.1); color: white;">
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

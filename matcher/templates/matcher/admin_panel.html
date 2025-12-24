@@ -1,0 +1,362 @@
+{% extends 'matcher/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Reset & Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    
+    /* ซ่อน Navbar เดิม */
+    nav.navbar { display: none !important; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #0f1219; /* สีพื้นหลังดำเข้ม */
+        margin: 0;
+        padding: 0;
+        color: white;
+        overflow-x: hidden;
+    }
+
+    /* --- LAYOUT GRID --- */
+    .admin-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* --- SIDEBAR (ซ้าย) --- */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%); /* ไล่สีม่วง-ดำ */
+        padding: 30px 20px;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 50px;
+        color: white;
+    }
+
+    .menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 12px 20px;
+        color: #a0a0a0;
+        text-decoration: none;
+        font-size: 0.95rem;
+        transition: 0.3s;
+        border-radius: 12px;
+    }
+
+    .menu-item:hover, .menu-item.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+    
+    /* ไอคอนจุดสีฟ้าหน้า Active menu */
+    .menu-item.active {
+        position: relative;
+        background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
+    }
+    .menu-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        height: 100%;
+        width: 4px;
+        background: #3498db;
+        border-radius: 0 5px 5px 0;
+    }
+
+    .logout-btn {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .logout-btn:hover { color: #e74c3c; }
+
+    /* --- MAIN CONTENT (ขวา) --- */
+    .main-content {
+        flex: 1;
+        margin-left: 250px;
+        padding: 30px 40px;
+        background-color: #121622;
+    }
+
+    /* Top Bar */
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    .page-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+    
+    .search-box {
+        position: relative;
+    }
+    .search-box input {
+        background: #1e2333;
+        border: 1px solid #2e3446;
+        padding: 10px 15px 10px 40px;
+        border-radius: 8px;
+        color: #ccc;
+        outline: none;
+        width: 250px;
+    }
+    .search-box i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #777;
+    }
+
+    /* --- DASHBOARD GRID SYSTEM --- */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1.8fr; /* ซ้ายเล็กกว่าขวานิดหน่อย */
+        gap: 25px;
+        margin-bottom: 25px;
+    }
+
+    /* Cards */
+    .card {
+        background: #1b202e;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .card-header {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #eee;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    /* Most Liked Song Table (Left) */
+    .song-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+    .song-table th { color: #777; text-align: left; padding: 10px 5px; font-weight: 500; }
+    .song-table td { padding: 12px 5px; border-bottom: 1px solid #2a3040; color: #ccc; }
+    .song-table tr:last-child td { border-bottom: none; }
+    
+    .rank-badge { color: #aaa; font-weight: 600; }
+    .rank-1 { color: #f1c40f; } /* ทอง */
+    .rank-2 { color: #bdc3c7; } /* เงิน */
+    .rank-3 { color: #cd7f32; } /* ทองแดง */
+
+    /* Stats Grid (Right) */
+    .stats-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    .stat-card {
+        background: #1b202e;
+        border-radius: 15px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .stat-title { font-size: 0.9rem; color: #888; margin-bottom: 5px; }
+    .stat-value { font-size: 2rem; font-weight: 600; color: white; }
+    .stat-sub { font-size: 0.8rem; color: #2ecc71; margin-top: 5px; } /* สีเขียว */
+
+    /* Emotions Card */
+    .emotion-card {
+        background: #1b202e;
+        border-radius: 15px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .emo-box h4 { margin: 0; font-size: 0.9rem; color: #888; }
+    .emo-box .emo-val { font-size: 1.6rem; font-weight: bold; color: white; margin-top: 5px; }
+    .emo-box .emo-small { font-size: 0.8rem; color: #777; font-weight: normal; }
+
+    /* User Table (Bottom) */
+    .user-table-card {
+        background: #1b202e;
+        border-radius: 15px;
+        padding: 25px;
+    }
+    .full-table { width: 100%; border-collapse: collapse; }
+    .full-table th { text-align: left; padding: 15px; background: #23293a; color: #aaa; border-radius: 5px; font-size: 0.9rem;}
+    .full-table td { padding: 15px; border-bottom: 1px solid #2a3040; color: #ddd; vertical-align: middle; }
+    
+    .status-active { color: #2ecc71; font-weight: 500; }
+    .status-banned { color: #e74c3c; font-weight: 500; }
+    .status-pending { color: #f1c40f; font-weight: 500; }
+
+</style>
+
+<div class="admin-container">
+    
+    <div class="sidebar">
+        <div class="brand">Admin</div>
+        
+        <div class="menu-list">
+            <a href="#" class="menu-item active">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-user"></i> User Management
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-chart-line"></i> Behavior Analysis
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-database"></i> Song Database
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-th-large"></i> Category Management
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cube"></i> Model
+            </a>
+        </div>
+
+        <a href="{% url 'matcher:logout' %}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="top-bar">
+            <div class="page-title">Admin Dashboard</div>
+            <div style="display: flex; gap: 20px; align-items: center;">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search">
+                </div>
+                <div style="font-size: 1.5rem; color: white;">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            
+            <div class="card">
+                <div class="card-header">Most likes song</div>
+                <table class="song-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Song Title</th>
+                            <th>Artist</th>
+                            <th>Like</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for song in most_liked_songs %}
+                        <tr>
+                            <td class="rank-badge rank-{{ forloop.counter }}">{{ forloop.counter }}</td>
+                            <td>{{ song.title }}</td>
+                            <td>{{ song.artist }}</td>
+                            <td>{{ song.likes_count }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4">No data available</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <div class="stats-group">
+                    <div class="stat-card">
+                        <div class="stat-title">Total User</div>
+                        <div class="stat-value">{{ total_users }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Active User</div>
+                        <div class="stat-value">{{ active_users }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Banned User</div>
+                        <div class="stat-value">{{ banned_users }}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">New User</div>
+                        <div class="stat-value">+{{ new_users_count }}</div>
+                    </div>
+                </div>
+
+                <div class="emotion-card">
+                    <div class="emo-box">
+                        <h4>Top Emotions Detect</h4>
+                        <div class="emo-val">Happy <span class="emo-small">(61%)</span></div>
+                    </div>
+                    <div class="emo-box">
+                        <h4>Most Emotions Detect</h4>
+                        <div class="emo-val">Happy <span class="emo-small">(2,045)</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="user-table-card">
+            <div class="card-header">User account</div>
+            <table class="full-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in recent_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            {% if user.is_active %}
+                                <span class="status-active">Active</span>
+                            {% else %}
+                                <span class="status-banned">Banned</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3">No user found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

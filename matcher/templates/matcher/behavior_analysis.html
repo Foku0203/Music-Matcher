@@ -1,0 +1,271 @@
+{% extends 'matcher/base.html' %}
+{% load static %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* --- Core Theme --- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    nav.navbar { display: none !important; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #0f1219;
+        margin: 0;
+        color: white;
+        overflow-x: hidden;
+    }
+
+    .admin-container { display: flex; min-height: 100vh; }
+
+    /* --- Sidebar (เหมือนหน้าอื่นๆ) --- */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
+        padding: 30px 20px;
+        position: fixed;
+        height: 100vh;
+        z-index: 100;
+        display: flex; flex-direction: column;
+    }
+    .brand { font-size: 1.5rem; font-weight: 700; margin-bottom: 50px; color: white; }
+    .menu-list { display: flex; flex-direction: column; gap: 15px; }
+    .menu-item {
+        display: flex; align-items: center; gap: 15px; padding: 12px 20px;
+        color: #a0a0a0; text-decoration: none; font-size: 0.95rem;
+        transition: 0.3s; border-radius: 12px;
+    }
+    .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.1); color: white; }
+    
+    /* Active State (ย้ายมาที่ Behavior) */
+    .menu-item.active { position: relative; background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent); }
+    .menu-item.active::before {
+        content: ''; position: absolute; left: 0; height: 100%; width: 4px;
+        background: #3498db; border-radius: 0 5px 5px 0;
+    }
+    .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 10px; color: #7f8c8d; }
+
+    /* --- Main Content --- */
+    .main-content {
+        flex: 1; margin-left: 250px; padding: 30px 40px; background-color: #121622;
+    }
+
+    .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .page-title { font-size: 1.8rem; font-weight: 600; }
+
+    /* Stats Row (Cards) */
+    .stats-row {
+        display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px;
+    }
+    .kpi-card {
+        background: #1b202e; border-radius: 15px; padding: 20px;
+        border-bottom: 3px solid transparent;
+        transition: 0.3s;
+    }
+    .kpi-card:hover { transform: translateY(-5px); }
+    .kpi-title { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
+    .kpi-value { font-size: 1.8rem; font-weight: 700; color: white; }
+    .kpi-sub { font-size: 0.8rem; margin-top: 5px; }
+    
+    /* Chart Grid Layout */
+    .charts-grid {
+        display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px;
+    }
+    
+    .chart-container {
+        background: #1b202e; border-radius: 15px; padding: 25px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .chart-header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+    .chart-title { font-size: 1.1rem; font-weight: 600; color: #eee; }
+
+    /* Bottom Section */
+    .bottom-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+    }
+
+</style>
+
+<div class="admin-container">
+    
+    <div class="sidebar">
+        <div class="brand">Admin</div>
+        <div class="menu-list">
+            <a href="{% url 'matcher:admin_panel' %}" class="menu-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="{% url 'matcher:user_management' %}" class="menu-item">
+                <i class="fas fa-user"></i> User Management
+            </a>
+            <a href="#" class="menu-item active"> <i class="fas fa-chart-line"></i> Behavior Analysis
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-database"></i> Song Database
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-th-large"></i> Category Management
+            </a>
+            <a href="#" class="menu-item">
+                <i class="fas fa-cube"></i> Model
+            </a>
+        </div>
+        <a href="{% url 'matcher:logout' %}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="top-header">
+            <div class="page-title">Behavior Analysis</div>
+            <div style="color: #888;">Last updated: Just now</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="kpi-card" style="border-color: #3498db;">
+                <div class="kpi-title">Total Scans</div>
+                <div class="kpi-value">14,205</div>
+                <div class="kpi-sub" style="color: #2ecc71;">+12% this week</div>
+            </div>
+            <div class="kpi-card" style="border-color: #9b5de5;">
+                <div class="kpi-title">Top Emotion</div>
+                <div class="kpi-value">Happy</div>
+                <div class="kpi-sub" style="color: #aaa;">61% of all scans</div>
+            </div>
+            <div class="kpi-card" style="border-color: #e67e22;">
+                <div class="kpi-title">Avg. Usage Time</div>
+                <div class="kpi-value">12m 30s</div>
+                <div class="kpi-sub" style="color: #2ecc71;">+5% vs last month</div>
+            </div>
+            <div class="kpi-card" style="border-color: #e74c3c;">
+                <div class="kpi-title">Peak Time</div>
+                <div class="kpi-value">20:00</div>
+                <div class="kpi-sub" style="color: #aaa;">User active most at night</div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">Emotion Trends (Last 7 Days)</div>
+                </div>
+                <canvas id="trendChart" height="120"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-header">
+                    <div class="chart-title">Genre Preference</div>
+                </div>
+                <div style="height: 200px; display: flex; justify-content: center;">
+                    <canvas id="genreChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom: 20px;">User Age Distribution</div>
+                <canvas id="ageChart" height="150"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title" style="margin-bottom: 20px;">Mood Complexity Analysis</div>
+                <div style="height: 250px; display:flex; justify-content:center;">
+                    <canvas id="radarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // ตั้งค่าสีตัวหนังสือให้เข้ากับ Dark Mode
+    Chart.defaults.color = '#888';
+    Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+    // 1. Trend Chart (Line)
+    const ctxTrend = document.getElementById('trendChart').getContext('2d');
+    new Chart(ctxTrend, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Happy',
+                data: [65, 59, 80, 81, 56, 55, 90],
+                borderColor: '#2ecc71',
+                tension: 0.4
+            }, {
+                label: 'Sad',
+                data: [28, 48, 40, 19, 86, 27, 40],
+                borderColor: '#3498db',
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { position: 'top' } }
+        }
+    });
+
+    // 2. Genre Chart (Doughnut)
+    const ctxGenre = document.getElementById('genreChart').getContext('2d');
+    new Chart(ctxGenre, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pop', 'Rock', 'Jazz', 'Hip-Hop'],
+            datasets: [{
+                data: [300, 50, 100, 80],
+                backgroundColor: ['#9b5de5', '#e91e63', '#f1c40f', '#00d2d3'],
+                borderWidth: 0
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    // 3. Age Chart (Bar)
+    const ctxAge = document.getElementById('ageChart').getContext('2d');
+    new Chart(ctxAge, {
+        type: 'bar',
+        data: {
+            labels: ['15-20', '21-25', '26-30', '31-40', '40+'],
+            datasets: [{
+                label: 'Users',
+                data: [120, 190, 150, 80, 40],
+                backgroundColor: '#3498db',
+                borderRadius: 5
+            }]
+        },
+        options: { responsive: true }
+    });
+
+    // 4. Radar Chart
+    const ctxRadar = document.getElementById('radarChart').getContext('2d');
+    new Chart(ctxRadar, {
+        type: 'radar',
+        data: {
+            labels: ['Energy', 'Danceability', 'Valence', 'Acoustic', 'Tempo'],
+            datasets: [{
+                label: 'Avg. Scan Profile',
+                data: [80, 70, 60, 40, 75],
+                backgroundColor: 'rgba(230, 126, 34, 0.2)',
+                borderColor: '#e67e22',
+                pointBackgroundColor: '#e67e22'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    pointLabels: { color: '#ccc' }
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}

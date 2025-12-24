@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'matcher/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -193,7 +193,6 @@
     <i class="fas fa-arrow-left"></i> Back to Home
 </a>
 
-<!-- ไอคอนจดหมายลอยรอบ ๆ การ์ด -->
 <i class="fas fa-envelope mail-icon mail-1"></i>
 <i class="fas fa-paper-plane mail-icon mail-2"></i>
 <i class="fas fa-envelope-open-text mail-icon mail-3"></i>
@@ -238,10 +237,10 @@
                     <i class="fas fa-venus-mars input-icon"></i>
                     <select name="gender" class="form-control-custom" style="-webkit-appearance: none; appearance: none;" required>
                         <option value="" disabled selected>Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="LGBTQ+">LGBTQ+</option>
-                        <option value="Other">Other</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="LG">LGBTQ+</option>
+                        <option value="O">Other</option>
                     </select>
                     <i class="fas fa-chevron-down" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #aaa; pointer-events: none;"></i>
                 </div>
@@ -249,12 +248,12 @@
 
             <div class="input-group">
                 <i class="fas fa-lock input-icon"></i>
-                <input type="password" name="password" class="form-control-custom" placeholder="Password" required>
+                <input type="password" name="password1" class="form-control-custom" placeholder="Password" required>
             </div>
 
             <div class="input-group">
                 <i class="fas fa-key input-icon"></i>
-                <input type="password" name="confirm_password" class="form-control-custom" placeholder="Confirm Password" required>
+                <input type="password" name="password2" class="form-control-custom" placeholder="Confirm Password" required>
             </div>
 
             <button type="submit" class="btn-signup">
@@ -263,7 +262,7 @@
         </form>
 
         <div class="bottom-links">
-            Have no account? <a href="{% url 'matcher:signup' %}">Sign up here</a>
+            Already have an account? <a href="{% url 'matcher:login' %}">Login here</a>
         </div>
     </div>
 </div>

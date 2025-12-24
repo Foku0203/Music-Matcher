@@ -1,191 +1,223 @@
-{% extends 'base.html' %}
+{% extends 'matcher/base.html' %}
 {% load static %}
 
 {% block content %}
 <style>
-    /* Reset & Layout */
-    body { margin: 0; font-family: 'Poppins', sans-serif; background-color: #181818; overflow: hidden; }
-    
-    .dashboard-container {
-        display: flex;
+    /* =========================================
+       Theme Style & Animation (คงเดิมสวยๆ ไว้)
+       ========================================= */
+    body {
+        margin: 0;
         height: 100vh;
-        width: 100%;
-    }
-
-    /* --- SIDEBAR (Left) --- */
-    .sidebar {
-        width: 250px;
-        background: linear-gradient(180deg, #2980b9 0%, #8e44ad 100%); /* ไล่สีฟ้าม่วงตามรูป */
-        padding: 30px 20px;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #2980b9, #8e44ad, #ff7e5f);
         display: flex;
         flex-direction: column;
-        color: white;
-        box-shadow: 4px 0 15px rgba(0,0,0,0.3);
-        z-index: 10;
-    }
-
-    .sidebar-icon-home { font-size: 2rem; margin-bottom: 40px; cursor: pointer; }
-    
-    .menu-group { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
-
-    .menu-item {
-        display: flex; align-items: center; gap: 15px;
-        padding: 12px 20px;
-        color: rgba(255,255,255,0.7);
-        text-decoration: none;
-        font-size: 1.1rem;
-        border-radius: 15px;
-        transition: 0.3s;
-    }
-
-    .menu-item:hover { background: rgba(255,255,255,0.1); color: white; }
-
-    /* Active State (ปุ่ม History จะสว่าง) */
-    .menu-item.active {
-        background: rgba(255,255,255,0.2);
-        color: white;
-        font-weight: 600;
-        backdrop-filter: blur(10px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    .logout-btn {
-        margin-top: auto; /* ดันไปล่างสุด */
-        display: flex; align-items: center; gap: 10px;
-        color: rgba(255,255,255,0.6);
-        text-decoration: none;
-        font-size: 0.9rem;
-        transition: 0.3s;
-    }
-    .logout-btn:hover { color: white; }
-
-    /* --- MAIN CONTENT (Right) --- */
-    .main-content {
-        flex: 1;
-        background: linear-gradient(135deg, #1e0b24 0%, #100516 100%); /* พื้นหลังมืดอมม่วง */
-        padding: 30px 50px;
-        overflow-y: auto;
+        align-items: center;
+        justify-content: center;
         position: relative;
+        overflow: hidden;
     }
 
-    /* Background Decoration (เส้นคลื่นจางๆ) */
-    .bg-wave {
-        position: absolute; top: 0; right: 0; width: 100%; height: 100%;
-        background-image: url('https://www.transparenttextures.com/patterns/sound-wave.png'); /* Pattern สมมติ */
-        opacity: 0.05; pointer-events: none;
+    /* Floating Notes */
+    .music-note { position: absolute; color: rgba(255, 255, 255, 0.2); animation: float 6s ease-in-out infinite; z-index: 1; pointer-events: none; }
+    .note-1 { top: 15%; left: 10%; font-size: 100px; animation-delay: 0s; }
+    .note-2 { top: 60%; right: 10%; font-size: 80px; animation-delay: 2s; }
+    .note-3 { top: 10%; right: 30%; font-size: 50px; animation-delay: 4s; }
+    .note-4 { bottom: 20%; left: 5%; font-size: 60px; animation-delay: 1s; }
+    @keyframes float { 
+        0%, 100% { transform: translateY(0) rotate(0deg); } 
+        50% { transform: translateY(-20px) rotate(10deg); } 
     }
 
-    /* Top Bar */
-    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .page-title { font-size: 2rem; color: white; font-weight: 500; }
-    
-    .user-actions { display: flex; align-items: center; gap: 20px; }
-    .search-box {
-        background: rgba(255,255,255,0.1);
-        border-radius: 20px;
-        padding: 8px 15px;
-        display: flex; align-items: center;
-        color: white;
+    /* Dashboard Container */
+    .dashboard-container {
+        width: 1100px;
+        height: 650px;
+        max-width: 95vw;
+        max-height: 85vh;
+        background: rgba(20, 20, 35, 0.85);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 30px;
+        display: flex;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         border: 1px solid rgba(255,255,255,0.1);
-    }
-    .search-box input { background: transparent; border: none; color: white; margin-left: 10px; outline: none; }
-    .user-avatar { width: 40px; height: 40px; border-radius: 50%; background: #ddd; background-size: cover; }
-
-    /* Song List Table */
-    .song-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
-    
-    .song-row { transition: 0.3s; cursor: pointer; }
-    .song-row:hover .song-inner { background: rgba(255,255,255,0.1); transform: translateX(5px); }
-
-    .song-inner {
-        background: transparent;
-        display: flex; align-items: center;
-        padding: 10px 15px;
-        border-radius: 10px;
+        z-index: 10;
+        color: white;
     }
 
-    .col-index { color: white; font-weight: bold; width: 40px; text-align: center; }
-    .col-cover img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; margin-right: 15px; box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+    /* Sidebar */
+    .sidebar {
+        width: 250px;
+        background: linear-gradient(180deg, rgba(41, 128, 185, 0.2), rgba(142, 68, 173, 0.2));
+        border-right: 1px solid rgba(255,255,255,0.05);
+        padding: 40px 20px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .brand {
+        font-size: 1.5rem; font-weight: 700; margin-bottom: 50px; color: white; display: flex; align-items: center; gap: 10px;
+    }
     
+    .nav-menu { display: flex; flex-direction: column; gap: 15px; flex-grow: 1; }
+
+    .nav-item {
+        display: flex; align-items: center; gap: 15px; padding: 12px 20px;
+        color: #a0a0b0; text-decoration: none; border-radius: 15px;
+        transition: all 0.3s ease; font-weight: 500;
+    }
+
+    .nav-item:hover { color: white; background: rgba(255,255,255,0.05); }
+
+    /* Active State (Playlist) */
+    .nav-item.active {
+        background: linear-gradient(90deg, #3f86ed, #9b5de5);
+        color: white;
+        box-shadow: 0 5px 15px rgba(63, 134, 237, 0.4);
+    }
+
+    .nav-icon { width: 24px; text-align: center; }
+    .logout-btn { margin-top: auto; color: #ff6b6b; }
+
+    /* Main Content */
+    .main-content { flex: 1; padding: 40px; display: flex; flex-direction: column; overflow: hidden; }
+
+    .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .page-title { font-size: 2rem; font-weight: 600; margin: 0; }
+    
+    .user-profile { display: flex; align-items: center; gap: 15px; }
+    .user-avatar { width: 40px; height: 40px; background: #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #333; }
+
+    /* Song List */
+    .list-container { flex: 1; overflow-y: auto; padding-right: 10px; }
+    .list-container::-webkit-scrollbar { width: 6px; }
+    .list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+
+    .song-row {
+        display: flex; align-items: center; padding: 15px 10px;
+        border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s; color: #ccc;
+        text-decoration: none;
+    }
+    .song-row:hover { background: rgba(255,255,255,0.05); color: white; border-radius: 10px; }
+
+    .col-idx { width: 40px; text-align: center; font-weight: bold; color: #666; }
+    .col-cover { width: 60px; }
+    .cover-img { width: 45px; height: 45px; border-radius: 8px; background-size: cover; background-position: center; background-color: #333; }
     .col-info { flex: 1; display: flex; flex-direction: column; }
-    .s-title { color: white; font-size: 1rem; font-weight: 500; }
-    .s-artist { color: #aaa; font-size: 0.8rem; margin-top: 2px; }
-
-    .col-time { color: #888; font-size: 0.8rem; width: 150px; text-align: right; margin-right: 20px; }
+    .col-date { width: 120px; font-size: 0.8rem; color: #666; text-align: right; }
     
-    .col-action { color: white; font-size: 1.2rem; width: 30px; text-align: center; opacity: 0.5; transition: 0.3s; }
-    .song-row:hover .col-action { opacity: 1; }
-
+    /* Play on Spotify Button (Small) */
+    .spotify-btn {
+        font-size: 0.7rem; padding: 3px 10px; border-radius: 20px;
+        background: #1db954; color: white; display: inline-block;
+        margin-top: 5px; width: fit-content;
+    }
 </style>
 
-<div class="dashboard-container">
-    
-    <div class="sidebar">
-        <a href="{% url 'matcher:home' %}" style="color:white;"><i class="fas fa-home sidebar-icon-home"></i></a>
-        
-        <div class="menu-group">
-            <a href="{% url 'matcher:home' %}" class="menu-item">
-                <i class="fas fa-compact-disc"></i> Discover
-            </a>
-            
-            <a href="#" class="menu-item">
-                <i class="fas fa-heart"></i> Favorite
-            </a>
-            
-            <a href="{% url 'matcher:history' %}" class="menu-item active">
-                <i class="fas fa-history"></i> History
-            </a>
-        </div>
+<div class="music-note note-1">♪</div>
+<div class="music-note note-2">♫</div>
+<div class="music-note note-3">♩</div>
+<div class="music-note note-4">♬</div>
 
-        <a href="{% url 'matcher:logout' %}" class="logout-btn">
-            <i class="fas fa-sign-out-alt"></i> Logout
+<div class="dashboard-container">
+    <div class="sidebar">
+        <div>
+            <div class="brand">
+                <i class="fas fa-compact-disc"></i> Matcher
+            </div>
+            <nav class="nav-menu">
+                <a href="{% url 'matcher:home' %}" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-home"></i></span> Home
+                </a>
+                <a href="{% url 'matcher:scan' %}" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-camera"></i></span> Scan New
+                </a>
+                <a href="{% url 'matcher:history' %}" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-heart"></i></span> Liked Songs
+                </a>
+            </nav>
+        </div>
+        
+        <a href="{% url 'matcher:logout' %}" class="nav-item logout-btn">
+            <span class="nav-icon"><i class="fas fa-sign-out-alt"></i></span> Logout
         </a>
     </div>
 
     <div class="main-content">
-        <div class="bg-wave"></div>
-
-        <div class="top-bar">
-            <div class="page-title">Listening History</div>
-            <div class="user-actions">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search history...">
+        
+        <div class="header-section">
+            <h2 class="page-title">My Liked Songs</h2>
+            <div class="user-profile">
+                <div style="text-align: right;">
+                    <div style="font-size: 0.9rem; font-weight: bold;">{{ request.user.username }}</div>
+                    <div style="font-size: 0.7rem; color: #aaa;">Music Lover</div>
                 </div>
-                <div class="user-avatar" style="background-image: url('{% static "images/default_avatar.png" %}');"></div>
+
+                <a href="{% url 'matcher:edit_profile' %}" title="Edit Profile" 
+                   style="color: #aaa; font-size: 1.2rem; transition: 0.3s; display: flex; align-items: center;"
+                   onmouseover="this.style.color='white'; this.style.transform='rotate(90deg)'"
+                   onmouseout="this.style.color='#aaa'; this.style.transform='rotate(0deg)'">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
             </div>
         </div>
 
-        <div class="song-table">
-            {% for item in history_list %}
-            <div class="song-row" onclick="window.open('http://open.spotify.com/track/{{ item.song.external_id }}', '_blank')">
-                <div class="song-inner">
-                    <div class="col-index">{{ forloop.counter }}</div>
+        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+            <div style="width: 50px; height: 50px; background: #e74c3c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);">
+                <i class="fas fa-play"></i>
+            </div>
+            <div style="color: #888; font-size: 0.9rem;">
+                <i class="fas fa-heart" style="margin-right: 5px; color: #e74c3c;"></i> {{ saved_songs|length }} Songs
+            </div>
+        </div>
+
+        <div class="list-container">
+            {% if saved_songs %}
+                {% for item in saved_songs %}
+                <div class="song-row">
+                    <div class="col-idx">{{ forloop.counter }}</div>
                     
                     <div class="col-cover">
-                        <img src="{{ item.song.album.cover_url|default:'https://via.placeholder.com/50' }}" alt="Cover">
+                        {% if item.song.cover_url %}
+                            <div class="cover-img" style="background-image: url('{{ item.song.cover_url }}');"></div>
+                        {% else %}
+                             <div class="cover-img" style="display:flex; align-items:center; justify-content:center; background:#444;">
+                                <i class="fas fa-music" style="color:#666;"></i>
+                            </div>
+                        {% endif %}
                     </div>
-                    
+
                     <div class="col-info">
-                        <span class="s-title">{{ item.song.title }}</span>
-                        <span class="s-artist">{{ item.song.artist.name }}</span>
+                        <div style="font-size: 1rem; font-weight: 500; color: white;">
+                            {{ item.song.title }}
+                        </div>
+                        <div style="font-size: 0.8rem; color: #888; margin-top: 4px;">
+                            {{ item.song.artist }}
+                        </div>
                     </div>
 
-                    <div class="col-time">
-                        <i class="far fa-clock"></i> {{ item.listened_at|timesince }} ago
+                    <div class="col-date">
+                        <i class="fas fa-heart" style="color: #e74c3c; margin-right: 10px;"></i>
                     </div>
 
-                    <div class="col-action">
-                        <i class="fas fa-ellipsis-h"></i>
+                    <div style="width: 40px; text-align: center; cursor: pointer; color: #666;">
+                        <i class="fas fa-ellipsis-v"></i>
                     </div>
                 </div>
-            </div>
-            {% empty %}
-                <div style="text-align:center; color: #666; margin-top: 50px;">
-                    <i class="fas fa-history" style="font-size: 3rem; margin-bottom: 20px;"></i><br>
-                    No history yet. Start scanning your mood!
+                {% endfor %}
+            {% else %}
+                <div style="text-align: center; margin-top: 50px; color: #aaa;">
+                    <i class="far fa-heart" style="font-size: 3rem; margin-bottom: 10px; opacity: 0.5;"></i><br>
+                    You haven't liked any songs yet.<br>
+                    <a href="{% url 'matcher:scan' %}" style="color: #e74c3c; text-decoration: none;">Go discover some music!</a>
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
 
     </div>

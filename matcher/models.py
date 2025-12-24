@@ -5,13 +5,17 @@ from django.contrib.auth.models import AbstractUser
 # ===================== 1. USER MANAGEMENT =====================
 
 class User(AbstractUser):
+    # ขยายจาก Django User เพื่อเก็บข้อมูลเพิ่ม
     status = models.CharField(max_length=20, default='Active', help_text="User status (e.g., Active, Banned)")
+    age = models.PositiveIntegerField(null=True, blank=True)
+    gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other'), ('LG', 'LGBTQ+')], null=True, blank=True)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     age = models.IntegerField(null=True, blank=True)
     gender = models.CharField(max_length=20, null=True, blank=True)
     province = models.CharField(max_length=100, null=True, blank=True)
+    bio = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -34,7 +38,45 @@ class UserSuspension(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-# ===================== 2. CATALOG (เชื่อมกับตารางที่มีข้อมูล 966 เพลง) =====================
+# ===================== 2. CATEGORY & METADATA (NEW) =====================
+
+class Category(models.Model):
+    # ตารางหมวดหมู่หลัก (ใช้ในหน้า Category Management)
+    CATEGORY_TYPES = [('MOOD', 'Mood'), ('GENRE', 'Genre')]
+    
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=10, choices=CATEGORY_TYPES, default='GENRE')
+    
+    # Field สำหรับ UI (สีและไอคอน)
+    icon_class = models.CharField(max_length=50, default='fas fa-music', help_text="FontAwesome class")
+    color_code = models.CharField(max_length=100, default='linear-gradient(135deg, #667eea, #764ba2)')
+    
+    description = models.TextField(null=True, blank=True)
+    song_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.type})"
+
+class Genre(models.Model):
+    genre_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+    # ผูกกับ Category หลัก (Option)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='sub_genres')
+    
+    def __str__(self):
+        return self.name
+
+class Emotion(models.Model):
+    emotion_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50, unique=True)
+    class Meta:
+        db_table = 'emotions'
+
+    def __str__(self):
+        return self.name
+
+# ===================== 3. CATALOG (Songs & Artists) =====================
 
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
@@ -63,6 +105,10 @@ class Song(models.Model):
     title = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    # เชื่อมกับ Category (ถ้าต้องการจัดหมวดหมู่โดยตรง)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    
     platform = models.CharField(max_length=50, default='spotify')
     external_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
     duration_sec = models.IntegerField(null=True, blank=True, default=0)
@@ -75,24 +121,9 @@ class Song(models.Model):
     def __str__(self):
         return self.title
 
-class Genre(models.Model):
-    genre_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
-    def __str__(self):
-        return self.name
-
 class SongGenre(models.Model):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-
-class Emotion(models.Model):
-    emotion_id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=50, unique=True)
-    class Meta:
-        db_table = 'emotions'
-
-    def __str__(self):
-        return self.name
 
 class SongEmotion(models.Model):
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
@@ -104,6 +135,18 @@ class SongEmotion(models.Model):
         db_table = 'song_emotions'
         unique_together = (('song', 'emotion'),)
 
+# ===================== 4. USER ACTIVITY & AI LOGS =====================
+
+class UserScanLog(models.Model):
+    scan_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    input_image = models.ImageField(upload_to='user_scans/', null=True, blank=True)
+    detected_emotion = models.CharField(max_length=50, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.detected_emotion}"
+
 class EmotionScan(models.Model):
     scan_id = models.AutoField(primary_key=True)
     song = models.ForeignKey(Song, on_delete=models.CASCADE, null=True)
@@ -111,12 +154,10 @@ class EmotionScan(models.Model):
     status = models.CharField(max_length=20, default='Pending')
     raw_data = models.TextField(null=True, blank=True)
 
-# ===================== 3. USER ACTIVITY & OTHERS =====================
-
 class Interaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    type = models.CharField(max_length=50)
+    type = models.CharField(max_length=50) # like, play, skip
     rating = models.IntegerField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -143,6 +184,8 @@ class PlaylistItem(models.Model):
     playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
     song = models.ForeignKey(Song, on_delete=models.CASCADE)
     added_at = models.DateTimeField(auto_now_add=True)
+
+# ===================== 5. AI MODEL VERSIONING =====================
 
 class ModelVersion(models.Model):
     name = models.CharField(max_length=100)

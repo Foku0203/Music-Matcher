@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'matcher/base.html' %}
 {% load static %}
 
 {% block content %}
@@ -40,14 +40,14 @@
     .result-card {
         background: white;
         width: 1050px;
-        height: 550px; /* ปรับความสูงเล็กน้อยเพื่อให้สมดุลกับ Footer */
+        height: 550px;
         display: flex;
         border-radius: 20px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         overflow: hidden;
         z-index: 10;
         position: absolute;      
-        top: 48%; /* ขยับขึ้นนิดนึงหนี Footer */
+        top: 48%;
         left: 50%;              
         transform: translate(-50%, -50%); 
         max-width: 95vw;
@@ -69,7 +69,7 @@
     }
 
     .face-container {
-        width: 180px; /* ลดขนาดนิดนึง */
+        width: 180px;
         height: 180px;
         background-color: #ddd; 
         background-size: cover;
@@ -135,12 +135,8 @@
     }
     
     .panel-header h3 { 
-        margin: 0; 
-        color: #2c3e50; 
-        font-size: 1.2rem; 
-        font-weight: 700; 
-        white-space: nowrap;
-        display: flex; align-items: center; gap: 8px;
+        margin: 0; color: #2c3e50; font-size: 1.2rem; font-weight: 700; 
+        white-space: nowrap; display: flex; align-items: center; gap: 8px;
     }
 
     .song-count { background: #f1f2f6; color: #7f8fa6; font-size: 0.8rem; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
@@ -160,13 +156,21 @@
     .song-list::-webkit-scrollbar { width: 6px; }
     .song-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
 
+    /* --- Modified Song Card Logic --- */
+    /* เปลี่ยนจาก a เป็น div เพื่อแก้ปัญหา Link ซ้อน Link */
     .song-card {
         display: flex; align-items: center; padding: 10px;
         border-radius: 12px; margin-bottom: 8px;
-        transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent; background: white;
+        transition: all 0.2s ease; border: 1px solid transparent; background: white;
+        color: inherit;
     }
     .song-card.hidden { display: none !important; }
-    .song-card:hover { background-color: #fff; border-color: #e2e8f0; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    
+    /* Hover Effect */
+    .song-card:hover { 
+        background-color: #fff; border-color: #e2e8f0; 
+        transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+    }
 
     .song-index { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; margin-right: 12px; min-width: 25px; text-align: center; }
     .song-card:hover .song-index { color: #8e44ad; }
@@ -178,6 +182,12 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0;
     }
 
+    /* Link wrapper สำหรับส่วนข้อมูล (เพื่อให้คลิกแล้วไป Spotify) */
+    .song-content-link {
+        display: flex; flex: 1; align-items: center;
+        text-decoration: none; color: inherit; overflow: hidden;
+    }
+
     .song-info { flex: 1; overflow: hidden; white-space: nowrap; }
     .song-title { font-size: 0.95rem; font-weight: 600; color: #2d3748; margin-bottom: 2px; text-overflow: ellipsis; overflow: hidden; }
     .song-artist { font-size: 0.8rem; color: #718096; text-overflow: ellipsis; overflow: hidden; }
@@ -187,8 +197,14 @@
         padding: 2px 8px; border-radius: 10px; margin-top: 4px; display: inline-block; font-weight: 600;
     }
 
-    .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; }
-    .actions i:hover { color: #e74c3c; transform: scale(1.2); transition: 0.2s; }
+    .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; align-items: center; }
+    
+    /* Action Buttons Style */
+    .action-btn { 
+        color: #cbd5e0; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; font-size: 1rem;
+    }
+    .action-btn:hover { color: #e74c3c; transform: scale(1.2); }
+    .action-btn.share:hover { color: #3498db; }
 
     .close-x {
         position: absolute; top: 15px; right: 20px;
@@ -196,61 +212,12 @@
     }
     .close-x:hover { color: #e74c3c; }
 
-    /* --- [NEW] Footer Menu Style --- */
-    .footer-menu { 
-        position: absolute; 
-        bottom: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 80px; 
-        display: flex; 
-        justify-content: center; 
-        align-items: center; 
-        gap: 30px; 
-        z-index: 100; /* อยู่บนสุด */
-    }
-    
-    .menu-item { 
-        display: flex; 
-        align-items: center; 
-        gap: 10px; 
-        text-decoration: none; 
-        color: rgba(255,255,255,0.8); 
-        font-weight: 600; 
-        font-size: 0.9rem; 
-        transition: 0.3s; 
-        padding: 12px 25px; 
-        border-radius: 30px; 
-        background: rgba(255,255,255,0.2); 
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255,255,255,0.3);
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    
-    .menu-item:hover { 
-        background: white; 
-        color: #8e44ad; 
-        transform: translateY(-5px); 
-        box-shadow: 0 8px 15px rgba(0,0,0,0.2); 
-    }
-    
-    .menu-item.active { 
-        color: #2980b9; 
-        background: white; 
-        box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); 
-    }
-
-    /* Style ปุ่ม Back มุมซ้ายบน */
-    .btn-back {
-        position: absolute;
-        top: 30px; left: 30px; z-index: 100; color: white;
-        text-decoration: none; font-weight: 600; font-size: 1rem;
-        background: rgba(255, 255, 255, 0.2); padding: 10px 25px;
-        border-radius: 30px; backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        transition: all 0.3s ease; display: flex; align-items: center; gap: 10px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
+    /* Footer & Back Button Styles (Same as yours) */
+    .footer-menu { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 50px; z-index: 100; }
+    .menu-item { display: flex; align-items: center; gap: 8px; text-decoration: none; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 0.9rem; transition: 0.3s; padding: 10px 20px; border-radius: 30px; background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+    .menu-item.active { color: #2980b9; background: white; box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); }
+    .btn-back { position: absolute; top: 30px; left: 30px; z-index: 100; color: white; text-decoration: none; font-weight: 600; font-size: 1rem; background: rgba(255, 255, 255, 0.2); padding: 10px 25px; border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .btn-back:hover { background: white; color: #2980b9; transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
 </style>
@@ -311,25 +278,36 @@
 
         <div class="song-list" id="songList">
             {% for item in recommended_songs %}
-            <a href="http://open.spotify.com/track/{{ item.obj.external_id }}" target="_blank" 
-               class="song-card" 
-               data-title="{{ item.obj.title|lower }}" 
-               data-artist="{{ item.obj.artist.name|lower }}">
+            
+            <div class="song-card" 
+                 data-title="{{ item.obj.title|lower }}" 
+                 data-artist="{{ item.obj.artist.name|lower }}">
                 
-                <div class="song-index">{{ forloop.counter }}</div>
-                <div class="album-cover" style="background-image: url('{{ item.obj.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
-                
-                <div class="song-info">
-                    <div class="song-title">{{ item.obj.title }}</div>
-                    <div class="song-artist">{{ item.obj.artist.name }}</div>
-                    <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
-                </div>
+                <a href="http://open.spotify.com/track/{{ item.obj.external_id }}" 
+                   target="_blank" 
+                   class="song-content-link">
+                    
+                    <div class="song-index">{{ forloop.counter }}</div>
+                    <div class="album-cover" style="background-image: url('{{ item.obj.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
+                    
+                    <div class="song-info">
+                        <div class="song-title">{{ item.obj.title }}</div>
+                        <div class="song-artist">{{ item.obj.artist.name }}</div>
+                        <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
+                    </div>
+                </a>
 
                 <div class="actions">
-                    <i class="far fa-heart" title="Save"></i>
-                    <i class="fas fa-share-alt" title="Share"></i>
+                    <a href="{% url 'matcher:add_to_playlist' item.obj.id %}" class="action-btn" title="Save to Favorites">
+                        <i class="far fa-heart"></i>
+                    </a>
+                    
+                    <button class="action-btn share" title="Share">
+                        <i class="fas fa-share-alt"></i>
+                    </button>
                 </div>
-            </a>
+            </div>
+            
             {% empty %}
                 <div style="padding:40px; text-align:center; color:#999; margin-top: 50px;">
                     <i class="fas fa-music" style="font-size:3rem; margin-bottom:15px; display:block; color:#ddd;"></i>
@@ -349,11 +327,11 @@
     <a href="{% url 'matcher:scan' %}" class="menu-item active">
         <i class="fas fa-camera"></i> <span>Snap Photo</span>
     </a>
-    <a href="#" class="menu-item">
-        <i class="fas fa-list"></i> <span>Playlist</span>
+    <a href="{% url 'matcher:history' %}" class="menu-item">
+        <i class="fas fa-heart" style="color: #e74c3c;"></i> <span>Like/History</span>
     </a>
     <a href="{% url 'matcher:home' %}" class="menu-item">
-        <i class="fab fa-spotify"></i> <span>Browse</span>
+        <i class="fab fa-spotify" style="color: #1db954;"></i> <span>Browse Songs</span>
     </a>
 </div>
 

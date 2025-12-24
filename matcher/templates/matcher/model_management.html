@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    .glass-panel {
+        background: rgba(20, 20, 35, 0.6);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        color: white;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: bold;
+        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .btn-train {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 25px;
+        font-weight: bold;
+        transition: transform 0.2s;
+        text-decoration: none; /* แก้เส้นใต้ */
+        display: inline-block;
+    }
+
+    .btn-train:hover {
+        transform: scale(1.05);
+        color: white;
+        box-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
+    }
+
+    .status-badge {
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .status-active { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid #2ecc71; }
+    .status-training { background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid #f1c40f; }
+    .status-archived { background: rgba(149, 165, 166, 0.2); color: #95a5a6; border: 1px solid #95a5a6; }
+
+    /* Table Styles */
+    .custom-table {
+        width: 100%;
+        color: #e0e0e0;
+        border-collapse: separate;
+        border-spacing: 0 10px;
+    }
+    .custom-table th {
+        text-align: left;
+        padding: 15px;
+        color: #a0a0a0;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .custom-table td {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+    }
+    .custom-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+    .custom-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+</style>
+
+<div class="container-fluid p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white fw-bold">AI Model Management</h2>
+        
+        <div class="input-group" style="width: 300px;">
+            <input type="text" class="form-control" placeholder="Search version..." style="background: rgba(255,255,255,0.1); border: none; color: white;">
+            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6 class="text-muted text-uppercase mb-2">Current Version</h6>
+                <div class="stat-number">{{ active_model.version|default:"v1.0.0" }}</div>
+                <small class="text-success"><i class="fas fa-check-circle"></i> Active</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6 class="text-muted text-uppercase mb-2">Accuracy</h6>
+                <div class="stat-number">{{ active_metrics.accuracy|default:"92.5" }}%</div>
+                <small class="text-white">+1.2% from last ver.</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6 class="text-muted text-uppercase mb-2">Loss</h6>
+                <div class="stat-number">{{ active_metrics.loss|default:"0.15" }}</div>
+                <small class="text-white">Validation Loss</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <h6 class="text-muted text-uppercase mb-2">Total Scans</h6>
+                <div class="stat-number">18,166</div>
+                <small class="text-white">Training Data</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="glass-panel">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Model Version History</h4>
+            <form method="post" action="#"> 
+                {% csrf_token %}
+                <button type="submit" name="action" value="retrain" class="btn-train">
+                    <i class="fas fa-robot me-2"></i> Retrain New Model
+                </button>
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Algorithm</th>
+                        <th>Created Date</th>
+                        <th>Status</th>
+                        <th>Metrics (Acc / Loss)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in model_list %}
+                    <tr>
+                        <td class="fw-bold text-white">{{ model.version }}</td>
+                        <td>{{ model.algorithm }}</td>
+                        <td>{{ model.created_at|date:"d M Y, H:i" }}</td>
+                        <td>
+                            {% if model.status == 'Active' %}
+                                <span class="status-badge status-active">Active</span>
+                            {% elif model.status == 'Training' %}
+                                <span class="status-badge status-training">Training...</span>
+                            {% else %}
+                                <span class="status-badge status-archived">Archived</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="text-info">{{ model.accuracy }}%</span> / 
+                            <span class="text-muted">{{ model.loss }}</span>
+                        </td>
+                        <td>
+                            {% if model.status != 'Active' and model.status != 'Training' %}
+                                <a href="#" class="btn btn-sm btn-outline-light rounded-pill px-3">Switch to this</a>
+                            {% endif %}
+                            <button class="btn btn-sm btn-outline-danger rounded-circle ms-2" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td class="fw-bold text-white">v1.2.0 (Latest)</td>
+                        <td>CNN + MobileNetV2</td>
+                        <td>24 Dec 2024, 10:30</td>
+                        <td><span class="status-badge status-active">Active</span></td>
+                        <td><span class="text-info">94.5%</span> / 0.12</td>
+                        <td><span class="text-muted">-</span></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold text-white">v1.1.5</td>
+                        <td>CNN Basic</td>
+                        <td>20 Dec 2024, 14:15</td>
+                        <td><span class="status-badge status-archived">Archived</span></td>
+                        <td><span class="text-info">89.2%</span> / 0.21</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-light rounded-pill px-3">Deploy</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
