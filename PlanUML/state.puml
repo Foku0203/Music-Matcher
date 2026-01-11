@@ -12,7 +12,7 @@ title Music Matcher - Upload Trigger Auth Flow
 
 state "Landing Page" as Landing
 state "Login / Register (FR-01)" as Auth
-state "Image Upload Page (FR-02)" as UploadPage
+state "Image Upload Page (FR-02)" as  UploadPage 
 state "User Dashboard / Playlist" as UserDash
 state "AI Processing (FR-03)" as AIProcess
 state "Result & Player (FR-04, FR-05)" as Player

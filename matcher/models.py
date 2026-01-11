@@ -5,17 +5,17 @@ from django.contrib.auth.models import AbstractUser
 # ===================== 1. USER MANAGEMENT =====================
 
 class User(AbstractUser):
-    # ขยายจาก Django User เพื่อเก็บข้อมูลเพิ่ม
+    # ขยายจาก Django User หลัก เก็บข้อมูลพื้นฐานที่ใช้บ่อย
     status = models.CharField(max_length=20, default='Active', help_text="User status (e.g., Active, Banned)")
     age = models.PositiveIntegerField(null=True, blank=True)
     gender = models.CharField(max_length=10, choices=[('M', 'Male'), ('F', 'Female'), ('O', 'Other'), ('LG', 'LGBTQ+')], null=True, blank=True)
 
 class UserProfile(models.Model):
+    # เก็บข้อมูลส่วนตัวเพิ่มเติมที่ไม่เกี่ยวกับการ Login
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    age = models.IntegerField(null=True, blank=True)
-    gender = models.CharField(max_length=20, null=True, blank=True)
     province = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
+    # ตัด age, gender ออก เพราะมีใน User แล้ว
 
     def __str__(self):
         return self.user.username
@@ -38,19 +38,15 @@ class UserSuspension(models.Model):
     end_date = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
-# ===================== 2. CATEGORY & METADATA (NEW) =====================
+# ===================== 2. CATEGORY & METADATA =====================
 
 class Category(models.Model):
-    # ตารางหมวดหมู่หลัก (ใช้ในหน้า Category Management)
     CATEGORY_TYPES = [('MOOD', 'Mood'), ('GENRE', 'Genre')]
     
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=10, choices=CATEGORY_TYPES, default='GENRE')
-    
-    # Field สำหรับ UI (สีและไอคอน)
-    icon_class = models.CharField(max_length=50, default='fas fa-music', help_text="FontAwesome class")
+    icon_class = models.CharField(max_length=50, default='fas fa-music')
     color_code = models.CharField(max_length=100, default='linear-gradient(135deg, #667eea, #764ba2)')
-    
     description = models.TextField(null=True, blank=True)
     song_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -61,7 +57,6 @@ class Category(models.Model):
 class Genre(models.Model):
     genre_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    # ผูกกับ Category หลัก (Option)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='sub_genres')
     
     def __str__(self):
@@ -105,8 +100,6 @@ class Song(models.Model):
     title = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
-    
-    # เชื่อมกับ Category (ถ้าต้องการจัดหมวดหมู่โดยตรง)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     
     platform = models.CharField(max_length=50, default='spotify')
@@ -115,6 +108,10 @@ class Song(models.Model):
     is_active = models.BooleanField(default=True)
     lyrics = models.TextField(null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    
+    # URL สำหรับเล่นเพลง (เพิ่มให้เพื่อให้ Flow สมบูรณ์)
+    preview_url = models.URLField(blank=True, null=True)
+
     class Meta:
         db_table = 'songs'
 
@@ -140,6 +137,7 @@ class SongEmotion(models.Model):
 class UserScanLog(models.Model):
     scan_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    # ตรงนี้ต้องมี Pillow ถึงจะทำงานได้
     input_image = models.ImageField(upload_to='user_scans/', null=True, blank=True)
     detected_emotion = models.CharField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

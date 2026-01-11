@@ -90,6 +90,7 @@
 
     .face-grid {
         width: 100%; height: 100%;
+        /* ใช้ภาพ Grid หน้าคน ถ้าไม่มีให้ลบ url ออกได้ */
         background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Face_landmarks.svg/1024px-Face_landmarks.svg.png');
         background-size: 80%;
         background-repeat: no-repeat;
@@ -157,7 +158,6 @@
     .song-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
 
     /* --- Modified Song Card Logic --- */
-    /* เปลี่ยนจาก a เป็น div เพื่อแก้ปัญหา Link ซ้อน Link */
     .song-card {
         display: flex; align-items: center; padding: 10px;
         border-radius: 12px; margin-bottom: 8px;
@@ -182,7 +182,6 @@
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0;
     }
 
-    /* Link wrapper สำหรับส่วนข้อมูล (เพื่อให้คลิกแล้วไป Spotify) */
     .song-content-link {
         display: flex; flex: 1; align-items: center;
         text-decoration: none; color: inherit; overflow: hidden;
@@ -199,7 +198,6 @@
 
     .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; align-items: center; }
     
-    /* Action Buttons Style */
     .action-btn { 
         color: #cbd5e0; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; font-size: 1rem;
     }
@@ -212,7 +210,6 @@
     }
     .close-x:hover { color: #e74c3c; }
 
-    /* Footer & Back Button Styles (Same as yours) */
     .footer-menu { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 50px; z-index: 100; }
     .menu-item { display: flex; align-items: center; gap: 8px; text-decoration: none; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 0.9rem; transition: 0.3s; padding: 10px 20px; border-radius: 30px; background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
@@ -249,7 +246,7 @@
     <a href="{% url 'matcher:home' %}" class="close-x"><i class="fas fa-times"></i></a>
 
     <div class="left-panel">
-        <div class="face-container" style="background-image: url('{{ image_url }}');">
+        <div class="face-container" style="background-image: url('{{ user_image }}');">
             <div class="scan-frame">
                 <div class="scan-corner tl"></div>
                 <div class="scan-corner tr"></div>
@@ -260,14 +257,14 @@
         </div>
         
         <div class="mood-title">Mood Detected</div>
-        <div class="mood-result">{{ mood_name|title }}</div>
+        <div class="mood-result">{{ mood|title }}</div>
         
         <a href="{% url 'matcher:scan' %}" class="btn-retry">Scan Again</a>
     </div>
 
     <div class="right-panel">
         <div class="panel-header">
-            <h3>Recommended <span class="song-count">{{ recommended_songs|length }}</span></h3>
+            <h3>Recommended <span class="song-count">{{ songs|length }}</span></h3>
             
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
@@ -277,28 +274,28 @@
         </div>
 
         <div class="song-list" id="songList">
-            {% for item in recommended_songs %}
+            {% for song in songs %}
             
             <div class="song-card" 
-                 data-title="{{ item.obj.title|lower }}" 
-                 data-artist="{{ item.obj.artist.name|lower }}">
+                 data-title="{{ song.title|lower }}" 
+                 data-artist="{{ song.artist.name|lower }}">
                 
-                <a href="http://open.spotify.com/track/{{ item.obj.external_id }}" 
+                <a href="{{ song.preview_url|default:'#' }}" 
                    target="_blank" 
                    class="song-content-link">
                     
                     <div class="song-index">{{ forloop.counter }}</div>
-                    <div class="album-cover" style="background-image: url('{{ item.obj.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
+                    <div class="album-cover" style="background-image: url('{{ song.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
                     
                     <div class="song-info">
-                        <div class="song-title">{{ item.obj.title }}</div>
-                        <div class="song-artist">{{ item.obj.artist.name }}</div>
+                        <div class="song-title">{{ song.title }}</div>
+                        <div class="song-artist">{{ song.artist.name }}</div>
                         <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
                     </div>
                 </a>
 
                 <div class="actions">
-                    <a href="{% url 'matcher:add_to_playlist' item.obj.id %}" class="action-btn" title="Save to Favorites">
+                    <a href="{% url 'matcher:add_to_playlist' song.song_id %}" class="action-btn" title="Save to Favorites">
                         <i class="far fa-heart"></i>
                     </a>
                     

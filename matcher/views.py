@@ -13,17 +13,17 @@ from django.conf import settings
 from django.db.models import Q, Count
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
-from .models import (User, UserScanLog, Song, Category, Interaction, Playlist, PlaylistItem, 
-    ModelVersion, ModelMetric, Recommendation, RetrainJob)
 
-# --- IMPORT FORMS ---
-# หมายเหตุ: ต้องมั่นใจว่าใน forms.py มี UserUpdateForm แล้ว
+# --- IMPORT MODELS & FORMS ---
+from .models import (User, UserScanLog, Song, Category, Interaction, Playlist, PlaylistItem, 
+    ModelVersion, ModelMetric, Recommendation, RetrainJob, SongEmotion)
 from .forms import CustomUserCreationForm, UserUpdateForm 
 
 # ==========================================
 # 🧠 AI CONFIGURATION
 # ==========================================
-EMOTION_LABELS = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
+# ต้องเช็คว่า Model เรียงตามนี้จริงหรือไม่ (ถ้าไม่มั่นใจ ให้ลองทดสอบดู)
+EMOTION_LABELS = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral'] 
 MODEL_PATH = os.path.join(settings.BASE_DIR, 'emotion_model_best.keras')
 emotion_model = None
 
@@ -58,8 +58,6 @@ def login_view(request):
             login(request, user)
             if 'next' in request.GET:
                 return redirect(request.GET.get('next'))
-            
-            # เช็คถ้าเป็น Admin ให้ไปหน้า Admin Panel เลย
             if user.is_staff:
                 return redirect('matcher:admin_panel')
             return redirect('matcher:landing')
@@ -90,18 +88,23 @@ def logout_view(request):
     return redirect('matcher:landing')
 
 # ==========================================
-# 📸 AI SCANNING & MATCHING
+# 📸 AI SCANNING & MATCHING (จุดสำคัญ!)
 # ==========================================
 @login_required(login_url='matcher:login')
 def scan_view(request):
     if request.method == 'POST':
-        image_file = request.FILES.get('image_file')
+        image_file = request.FILES.get('image') # แก้ชื่อตัวแปรให้ตรงกับ HTML (name="image")
+        
+        if not image_file:
+            # ลองเช็คชื่อ image_file หรือ image เพื่อความชัวร์
+            image_file = request.FILES.get('image_file')
+
         if not image_file:
             messages.error(request, "กรุณาเลือกรูปภาพ")
             return redirect('matcher:scan')
             
         try:
-            # 1. บันทึกรูปลง DB
+            # 1. บันทึกรูปลง DB (UserScanLog) ทันที เพื่อให้มี path ไฟล์
             scan_log = UserScanLog.objects.create(
                 user=request.user,
                 input_image=image_file,
@@ -110,28 +113,35 @@ def scan_view(request):
             
             # 2. AI Processing
             if emotion_model:
+                # โหลดรูปจาก Path จริงที่ Django บันทึกไว้
                 img_path = scan_log.input_image.path
+                
+                # Preprocess ให้ตรงกับที่เทรนมา (Grayscale, 48x48)
                 img = load_img(img_path, target_size=(48, 48), color_mode='grayscale')
                 img_array = img_to_array(img)
                 img_array = img_array / 255.0
                 img_array = np.expand_dims(img_array, axis=0)
 
+                # Predict
                 prediction = emotion_model.predict(img_array)
                 max_index = np.argmax(prediction)
-                detected_mood = EMOTION_LABELS[max_index]
+                detected_mood = EMOTION_LABELS[max_index] # ได้ค่าเป็น 'happy', 'sad' ฯลฯ
                 
+                # อัปเดตผลลัพธ์ลง DB
                 scan_log.detected_emotion = detected_mood
                 scan_log.save()
             else:
                 # Fallback กรณีไม่มี Model
-                scan_log.detected_emotion = "Neutral"
+                detected_mood = "happy" # ค่า Default
+                scan_log.detected_emotion = detected_mood
                 scan_log.save()
                 messages.warning(request, "AI Model not loaded, using default mood.")
 
+            # ส่งไปหน้าผลลัพธ์
             return redirect('matcher:match_result', scan_id=scan_log.scan_id)
 
         except Exception as e:
-            print(f"Scan Error: {e}")
+            print(f"❌ Scan Error: {e}")
             messages.error(request, "เกิดข้อผิดพลาดในการประมวลผลภาพ")
             return redirect('matcher:scan')
 
@@ -139,34 +149,42 @@ def scan_view(request):
 
 @login_required(login_url='matcher:login')
 def match_result_view(request, scan_id):
+    # ดึงข้อมูลการสแกนล่าสุด
     scan_log = get_object_or_404(UserScanLog, scan_id=scan_id, user=request.user)
-    mood = scan_log.detected_emotion
+    mood = scan_log.detected_emotion.lower() # แปลงเป็นตัวเล็กให้ชัวร์
     
-    # --- Logic การค้นหาเพลงที่ถูกต้อง ---
+    # --- Logic การค้นหาเพลง ---
+    songs = Song.objects.none()
     try:
-        # 1. หาจาก Emotion (ผ่านตาราง SongEmotion)
-        emotion_songs = Song.objects.filter(songemotion__emotion__name__iexact=mood)
+        # 1. หาเพลงที่มี Emotion ตรงกัน (ผ่านตาราง SongEmotion)
+        # ใช้ iexact เพื่อไม่สนตัวพิมพ์เล็ก/ใหญ่
+        songs = Song.objects.filter(songemotion__emotion__name__iexact=mood)
         
-        # 2. หาจาก Category (ถ้ามีการผูก Category ไว้)
-        category_songs = Song.objects.filter(category__name__iexact=mood)
-        
-        # รวมผลลัพธ์
-        songs = (emotion_songs | category_songs).distinct()
+        # 2. ถ้าไม่เจอ ลองหาผ่าน Category (เผื่อไว้)
+        if not songs.exists():
+            songs = Song.objects.filter(category__name__iexact=mood)
+            
+        # สุ่มเพลงมาแสดง 5 เพลง
+        songs = songs.order_by('?')[:5]
 
     except Exception as e:
         print(f"Error finding songs: {e}")
-        songs = Song.objects.none()
 
-    # ถ้าไม่เจอเพลงเลย ให้สุ่มเพลง
+    # ถ้ายังไม่เจออีก ให้สุ่มเพลงอะไรก็ได้มาโชว์ (กันหน้าเว็บโล่ง)
     if not songs.exists():
         songs = Song.objects.order_by('?')[:5]
-        if mood != "Processing...":
+        if mood != "processing...":
             messages.info(request, f"ไม่พบเพลงสำหรับอารมณ์ '{mood}' นี่คือเพลงแนะนำทั่วไป")
     
+    # เลือกเพลงแรกมาเป็นเพลงหลัก (Recommended)
+    main_song = songs[0] if songs.exists() else None
+
     context = {
         'scan_log': scan_log,
         'mood': mood,
-        'songs': songs
+        'songs': songs,      # รายการเพลงทั้งหมดที่เจอ
+        'song': main_song,   # เพลงหลักที่จะโชว์ปกใหญ่
+        'user_image': scan_log.input_image.url # <--- 🔥 สำคัญ! ส่ง URL รูปไปให้ HTML ใช้
     }
     return render(request, 'matcher/match_result.html', context)
 
@@ -179,9 +197,16 @@ def dashboard_view(request):
 
 @login_required(login_url='matcher:login')
 def history_view(request):
+    # ดึงประวัติการสแกนของผู้ใช้
+    scan_history = UserScanLog.objects.filter(user=request.user).order_by('-created_at')[:10]
+    
     playlist, _ = Playlist.objects.get_or_create(user=request.user, name="My Favorite Songs")
     saved_songs = PlaylistItem.objects.filter(playlist=playlist).select_related('song').order_by('-id')
-    return render(request, 'matcher/history.html', {'saved_songs': saved_songs})
+    
+    return render(request, 'matcher/history.html', {
+        'saved_songs': saved_songs,
+        'scan_history': scan_history
+    })
 
 @login_required(login_url='matcher:login')
 def profile(request):
@@ -247,14 +272,11 @@ def admin_login_view(request):
 
 @user_passes_test(is_admin, login_url='matcher:admin_login')
 def admin_panel(request):
-    # Stats Calculation
     total_users = User.objects.count()
     active_users = User.objects.filter(is_active=True).count()
     banned_users = User.objects.filter(is_active=False).count()
-    
     last_week = timezone.now() - datetime.timedelta(days=7)
     new_users_count = User.objects.filter(date_joined__gte=last_week).count()
-    
     most_liked_songs = Song.objects.all()[:5] 
     recent_users = User.objects.order_by('-date_joined')[:5]
 
@@ -271,10 +293,8 @@ def admin_panel(request):
 @user_passes_test(is_admin, login_url='matcher:admin_login')
 def user_management(request):
     users = User.objects.all().order_by('-date_joined')
-    
     total_users = users.count()
     active_users = users.filter(is_active=True).count()
-    
     last_week = timezone.now() - datetime.timedelta(days=7)
     new_users = users.filter(date_joined__gte=last_week).count()
 
@@ -308,32 +328,18 @@ def song_database(request):
 
 @user_passes_test(is_admin, login_url='matcher:admin_login')
 def category_management(request):
-    # ดึงข้อมูล Category จริงจากฐานข้อมูล
     categories = Category.objects.all().order_by('created_at')
-    
-    # ถ้ามีการส่ง Form เข้ามา (เช่น เพิ่ม/ลบ) สามารถเขียน Logic เพิ่มตรงนี้ได้
-    
     return render(request, 'matcher/category_management.html', {'categories': categories})
 
-# --- NEW: Model Management View ---
 @user_passes_test(is_admin, login_url='matcher:admin_login')
 def model_management(request):
-    # ดึงข้อมูล Model Version
     model_list = ModelVersion.objects.all().order_by('-created_at')
-    
-    # หาโมเดลที่ Active อยู่
     active_model = ModelVersion.objects.filter(status='Active').first()
-    
-    # ดึง Metrics ของโมเดลล่าสุด (ตัวอย่าง)
-    active_metrics = {
-        'accuracy': 92.5,
-        'loss': 0.15
-    }
+    active_metrics = {'accuracy': 92.5, 'loss': 0.15}
     
     if request.method == "POST":
         action = request.POST.get('action')
         if action == 'retrain':
-            # Logic สำหรับเริ่ม Retrain (อาจจะสร้าง Job ลง DB)
             messages.success(request, "Retraining job started successfully!")
             return redirect('matcher:model_management')
 

@@ -1,142 +1,129 @@
-import json
-import psycopg2
-from psycopg2 import extras
 import os
+import json
+import django
+import sys
 
-# 1. ตั้งค่าการเชื่อมต่อฐานข้อมูล
-DB_CONFIG = {
-    "host": "localhost",
-    "database": "mmdb",
-    "user": "postgres",
-    "password": "123456",
-    "port": "5432"
-}
+# ==========================================
+# 1. SETUP DJANGO ENVIRONMENT
+# ==========================================
 
+# ใช้ชื่อ core ตามที่คุณตั้งไว้ล่าสุด
+PROJECT_NAME = 'core' 
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', f'{PROJECT_NAME}.settings')
+
+try:
+    django.setup()
+except ModuleNotFoundError:
+    import glob
+    settings_files = glob.glob("**/settings.py", recursive=True)
+    if settings_files:
+        folder_name = os.path.dirname(settings_files[0])
+        print(f"⚠️ ไม่พบ '{PROJECT_NAME}'... แต่เจอโฟลเดอร์ '{folder_name}' แทน")
+        print(f"👉 กรุณาแก้บรรทัดที่ 11 เป็น: PROJECT_NAME = '{folder_name}'")
+    else:
+        print("❌ หาไฟล์ settings.py ไม่เจอ กรุณาตรวจสอบว่าวางไฟล์ import_songs.py ไว้ถูกที่หรือไม่")
+    sys.exit(1)
+
+# Import Models
+from matcher.models import Song, Artist, Album, Emotion, SongEmotion
+
+# ==========================================
+# 2. IMPORT LOGIC (Updated for handling Nulls)
+# ==========================================
 def import_data():
-    conn = None
-    try:
-        base_path = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(base_path, 'music_data.json')
-        
-        if not os.path.exists(file_path):
-            print(f"❌ ไม่พบไฟล์: {file_path}")
-            return
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(base_path, 'music_data.json') 
+    
+    if not os.path.exists(file_path):
+        print(f"❌ ไม่พบไฟล์: {file_path}")
+        return
 
-        conn = psycopg2.connect(**DB_CONFIG)
-        cur = conn.cursor()
-        print("✅ เชื่อมต่อฐานข้อมูลสำเร็จ")
+    print("✅ เชื่อมต่อฐานข้อมูลสำเร็จ... เริ่มอ่านไฟล์ JSON")
 
-        with open(file_path, 'r', encoding='utf-8') as f:
-            songs_data = json.load(f)
-        
-        print(f"🔄 กำลังนำเข้าข้อมูลจำนวน {len(songs_data)} รายการ...")
+    with open(file_path, 'r', encoding='utf-8') as f:
+        songs_data = json.load(f)
 
-        for index, item in enumerate(songs_data):
-            # --- 1. เตรียมข้อมูลพื้นฐาน ---
+    count_new = 0
+    count_exist = 0
+
+    for index, item in enumerate(songs_data):
+        try:
+            # --- 1. เตรียมข้อมูล (แก้ใหม่ให้ดัก Null ได้ชัวร์ๆ) ---
+            # ใช้ or "..." เพื่อกันค่าที่เป็น None (null ใน JSON) หรือ Empty String
             title = item.get('title') or "Unknown Title"
             artist_name = item.get('artist') or "Unknown Artist"
+            album_title = item.get('album') or "Unknown Album"  # <--- ตัวแก้ปัญหาอยู่นี่
             
-            # แก้ Unknow -> Unknown และเช็ค string ว่าง
-            album_title = item.get('album')
-            if not album_title or not album_title.strip():
-                album_title = "Unknown Album"
-            
-            # แปลงปีให้ปลอดภัย (ถ้าไม่ใช่ตัวเลข ให้เป็น None)
+            # JSON ของคุณส่งมาเป็น "2024-05-09" เราเอาแค่ปี 2024
             year = item.get('year')
-            if year and str(year).isdigit():
-                year = int(year)
-            else:
-                year = None
-
-            lyrics = item.get('lyrics')
-            cover_url = item.get('image_url')
-            emotion_label = item.get('label') 
-
-            # จัดการ External ID
-            spotify_info = item.get('spotify')
-            external_id = None
-            if isinstance(spotify_info, dict):
-                external_id = spotify_info.get('id')
             
+            # ดึง preview_url จาก object spotify (กัน spotify เป็น null ด้วย)
+            spotify_data = item.get('spotify') or {} 
+            preview_url = spotify_data.get('preview_url')
+            external_id = spotify_data.get('id')
+
             if not external_id:
-                external_id = f"manual_{index}_{title[:5]}" # เพิ่ม title นิดหน่อยกันซ้ำ
+                # สร้าง ID ปลอมถ้าไม่มี เพื่อป้องกัน Error
+                clean_title = title.replace(" ", "")[:5]
+                external_id = f"manual_{index}_{clean_title}"
 
-            # --- 2. จัดการข้อมูลศิลปิน (Artists) ---
-            # ต้องมี UNIQUE(name) ในตาราง artists
-            cur.execute(
-                """
-                INSERT INTO artists (name) 
-                VALUES (%s) 
-                ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name 
-                RETURNING artist_id
-                """,
-                (artist_name,)
+            # --- 2. จัดการ Artist ---
+            artist, _ = Artist.objects.get_or_create(name=artist_name)
+
+            # --- 3. จัดการ Album ---
+            # ถ้า cover_url เป็น null ให้ปล่อยว่างไว้
+            cover_url = item.get('image_url')
+            
+            album, _ = Album.objects.get_or_create(
+                title=album_title,
+                artist=artist,
+                defaults={
+                    'release_year': year,
+                    'cover_url': cover_url
+                }
             )
-            artist_id = cur.fetchone()[0]
 
-            # --- 3. จัดการข้อมูลอัลบั้ม (Albums) ---
-            # ต้องมี UNIQUE(artist_id, title) ในตาราง albums
-            cur.execute(
-                """
-                INSERT INTO albums (artist_id, title, release_year, cover_url) 
-                VALUES (%s, %s, %s, %s) 
-                ON CONFLICT (artist_id, title) 
-                DO UPDATE SET release_year = EXCLUDED.release_year, cover_url = EXCLUDED.cover_url
-                RETURNING album_id
-                """,
-                (artist_id, album_title, year, cover_url)
-            )
-            album_id = cur.fetchone()[0]
-
-            # --- 4. เพิ่มข้อมูลเพลง (Songs) ---
-            # ต้องมี UNIQUE(external_id) ในตาราง songs
-            cur.execute(
-                """
-                INSERT INTO songs (album_id, artist_id, title, platform, external_id, lyrics)
-                VALUES (%s, %s, %s, %s, %s, %s)
-                ON CONFLICT (external_id) 
-                DO UPDATE SET lyrics = EXCLUDED.lyrics, title = EXCLUDED.title
-                RETURNING song_id
-                """,
-                (album_id, artist_id, title, 'spotify', external_id, lyrics)
-            )
-            song_id = cur.fetchone()[0]
-
-            # --- 5. จัดการข้อมูลอารมณ์ (Emotions) ---
+            # --- 4. จัดการ Emotion ---
+            emotion_obj = None
+            emotion_label = item.get('emotion')
             if emotion_label:
-                # ต้องมี UNIQUE(name) ในตาราง emotions
-                cur.execute(
-                    """
-                    INSERT INTO emotions (name) 
-                    VALUES (%s) 
-                    ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name 
-                    RETURNING emotion_id
-                    """,
-                    (emotion_label.lower(),)
+                emotion_obj, _ = Emotion.objects.get_or_create(name=emotion_label.lower())
+
+            # --- 5. สร้าง/อัปเดต Song ---
+            song, created = Song.objects.update_or_create(
+                external_id=external_id,
+                defaults={
+                    'title': title,
+                    'artist': artist,
+                    'album': album,
+                    'platform': 'spotify',
+                    'lyrics': item.get('lyrics') or '', # กัน lyrics เป็น null
+                    'preview_url': preview_url,
+                    'is_active': True
+                }
+            )
+
+            # --- 6. ผูก Emotion ---
+            if emotion_obj:
+                SongEmotion.objects.get_or_create(
+                    song=song,
+                    emotion=emotion_obj,
+                    defaults={'confidence': 1.0, 'source': 'json_import'}
                 )
-                emotion_id = cur.fetchone()[0]
 
-                # ต้องมี UNIQUE(song_id, emotion_id) ในตาราง song_emotions
-                cur.execute(
-                    """
-                    INSERT INTO song_emotions (song_id, emotion_id, confidence, source)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (song_id, emotion_id) DO NOTHING
-                    """,
-                    (song_id, emotion_id, 1.000, 'manual_import')
-                )
+            if created:
+                count_new += 1
+            else:
+                count_exist += 1
+                
+        except Exception as e:
+            # พิมพ์ Error แบบละเอียดขึ้น
+            print(f"❌ ข้ามเพลง '{item.get('title', 'Unknown')}': {e}")
+            continue
 
-        conn.commit()
-        print(f"✨ สำเร็จ! นำเข้าข้อมูล {len(songs_data)} เพลงเรียบร้อยแล้ว")
-
-    except Exception as e:
-        print(f"❌ เกิดข้อผิดพลาด: {e}")
-        if conn:
-            conn.rollback()
-    finally:
-        if conn:
-            cur.close()
-            conn.close()
+    print(f"\n✨ เสร็จสิ้น! เพิ่มใหม่: {count_new}, มีอยู่แล้ว: {count_exist}")
 
 if __name__ == "__main__":
     import_data()
