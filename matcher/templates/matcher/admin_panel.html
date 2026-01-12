@@ -3,31 +3,23 @@
 
 {% block content %}
 <style>
-    /* Reset & Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    
-    /* ซ่อน Navbar เดิม */
     nav.navbar { display: none !important; }
 
     body {
         font-family: 'Poppins', sans-serif;
-        background-color: #0f1219; /* สีพื้นหลังดำเข้ม */
+        background-color: #0f1219;
         margin: 0;
         padding: 0;
         color: white;
         overflow-x: hidden;
     }
 
-    /* --- LAYOUT GRID --- */
-    .admin-container {
-        display: flex;
-        min-height: 100vh;
-    }
+    .admin-container { display: flex; min-height: 100vh; }
 
-    /* --- SIDEBAR (ซ้าย) --- */
     .sidebar {
         width: 250px;
-        background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%); /* ไล่สีม่วง-ดำ */
+        background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
         padding: 30px 20px;
         position: fixed;
         height: 100vh;
@@ -36,18 +28,9 @@
         flex-direction: column;
     }
 
-    .brand {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-bottom: 50px;
-        color: white;
-    }
+    .brand { font-size: 1.5rem; font-weight: 700; margin-bottom: 50px; color: white; }
 
-    .menu-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
+    .menu-list { display: flex; flex-direction: column; gap: 15px; }
 
     .menu-item {
         display: flex;
@@ -65,8 +48,7 @@
         background: rgba(255, 255, 255, 0.1);
         color: white;
     }
-    
-    /* ไอคอนจุดสีฟ้าหน้า Active menu */
+
     .menu-item.active {
         position: relative;
         background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
@@ -93,7 +75,6 @@
     }
     .logout-btn:hover { color: #e74c3c; }
 
-    /* --- MAIN CONTENT (ขวา) --- */
     .main-content {
         flex: 1;
         margin-left: 250px;
@@ -101,21 +82,15 @@
         background-color: #121622;
     }
 
-    /* Top Bar */
     .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
     }
-    .page-title {
-        font-size: 1.8rem;
-        font-weight: 600;
-    }
-    
-    .search-box {
-        position: relative;
-    }
+    .page-title { font-size: 1.8rem; font-weight: 600; }
+
+    .search-box { position: relative; }
     .search-box input {
         background: #1e2333;
         border: 1px solid #2e3446;
@@ -133,15 +108,13 @@
         color: #777;
     }
 
-    /* --- DASHBOARD GRID SYSTEM --- */
     .dashboard-grid {
         display: grid;
-        grid-template-columns: 1.2fr 1.8fr; /* ซ้ายเล็กกว่าขวานิดหน่อย */
+        grid-template-columns: 1.2fr 1.8fr;
         gap: 25px;
         margin-bottom: 25px;
     }
 
-    /* Cards */
     .card {
         background: #1b202e;
         border-radius: 15px;
@@ -157,7 +130,6 @@
         justify-content: space-between;
     }
 
-    /* Most Liked Song Table (Left) */
     .song-table {
         width: 100%;
         border-collapse: collapse;
@@ -166,18 +138,13 @@
     .song-table th { color: #777; text-align: left; padding: 10px 5px; font-weight: 500; }
     .song-table td { padding: 12px 5px; border-bottom: 1px solid #2a3040; color: #ccc; }
     .song-table tr:last-child td { border-bottom: none; }
-    
-    .rank-badge { color: #aaa; font-weight: 600; }
-    .rank-1 { color: #f1c40f; } /* ทอง */
-    .rank-2 { color: #bdc3c7; } /* เงิน */
-    .rank-3 { color: #cd7f32; } /* ทองแดง */
 
-    /* Stats Grid (Right) */
-    .stats-group {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
+    .rank-badge { color: #aaa; font-weight: 600; }
+    .rank-1 { color: #f1c40f; }
+    .rank-2 { color: #bdc3c7; }
+    .rank-3 { color: #cd7f32; }
+
+    .stats-group { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .stat-card {
         background: #1b202e;
         border-radius: 15px;
@@ -188,9 +155,8 @@
     }
     .stat-title { font-size: 0.9rem; color: #888; margin-bottom: 5px; }
     .stat-value { font-size: 2rem; font-weight: 600; color: white; }
-    .stat-sub { font-size: 0.8rem; color: #2ecc71; margin-top: 5px; } /* สีเขียว */
+    .stat-sub { font-size: 0.8rem; color: #2ecc71; margin-top: 5px; }
 
-    /* Emotions Card */
     .emotion-card {
         background: #1b202e;
         border-radius: 15px;
@@ -204,7 +170,6 @@
     .emo-box .emo-val { font-size: 1.6rem; font-weight: bold; color: white; margin-top: 5px; }
     .emo-box .emo-small { font-size: 0.8rem; color: #777; font-weight: normal; }
 
-    /* User Table (Bottom) */
     .user-table-card {
         background: #1b202e;
         border-radius: 15px;
@@ -213,35 +178,45 @@
     .full-table { width: 100%; border-collapse: collapse; }
     .full-table th { text-align: left; padding: 15px; background: #23293a; color: #aaa; border-radius: 5px; font-size: 0.9rem;}
     .full-table td { padding: 15px; border-bottom: 1px solid #2a3040; color: #ddd; vertical-align: middle; }
-    
+
     .status-active { color: #2ecc71; font-weight: 500; }
     .status-banned { color: #e74c3c; font-weight: 500; }
-    .status-pending { color: #f1c40f; font-weight: 500; }
-
 </style>
 
+{% with current=request.resolver_match.url_name %}
 <div class="admin-container">
-    
+
     <div class="sidebar">
         <div class="brand">Admin</div>
-        
+
         <div class="menu-list">
-            <a href="#" class="menu-item active">
+            <a href="{% url 'matcher:admin_panel' %}"
+               class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:user_management' %}"
+               class="menu-item {% if current == 'user_management' %}active{% endif %}">
                 <i class="fas fa-user"></i> User Management
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:behavior_analysis' %}"
+               class="menu-item {% if current == 'behavior_analysis' %}active{% endif %}">
                 <i class="fas fa-chart-line"></i> Behavior Analysis
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:song_database' %}"
+               class="menu-item {% if current == 'song_database' %}active{% endif %}">
                 <i class="fas fa-database"></i> Song Database
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:category_management' %}"
+               class="menu-item {% if current == 'category_management' %}active{% endif %}">
                 <i class="fas fa-th-large"></i> Category Management
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:model_management' %}"
+               class="menu-item {% if current == 'model_management' %}active{% endif %}">
                 <i class="fas fa-cube"></i> Model
             </a>
         </div>
@@ -252,7 +227,7 @@
     </div>
 
     <div class="main-content">
-        
+
         <div class="top-bar">
             <div class="page-title">Admin Dashboard</div>
             <div style="display: flex; gap: 20px; align-items: center;">
@@ -267,7 +242,7 @@
         </div>
 
         <div class="dashboard-grid">
-            
+
             <div class="card">
                 <div class="card-header">Most likes song</div>
                 <table class="song-table">
@@ -285,7 +260,7 @@
                             <td class="rank-badge rank-{{ forloop.counter }}">{{ forloop.counter }}</td>
                             <td>{{ song.title }}</td>
                             <td>{{ song.artist }}</td>
-                            <td>{{ song.likes_count }}</td>
+                            <td>{{ song.like_count }}</td>
                         </tr>
                         {% empty %}
                         <tr><td colspan="4">No data available</td></tr>
@@ -359,4 +334,5 @@
 
     </div>
 </div>
+{% endwith %}
 {% endblock %}

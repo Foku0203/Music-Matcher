@@ -45,4 +45,5 @@ urlpatterns = [
     
     # เพิ่ม Model Management ที่เพิ่งทำไป
     path('admin-panel/models/', views.model_management, name='model_management'),
+    path('admin-panel/categories/<int:category_id>/songs/', views.category_songs, name='category_songs'),
 ]

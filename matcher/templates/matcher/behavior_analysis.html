@@ -37,14 +37,24 @@
         transition: 0.3s; border-radius: 12px;
     }
     .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.1); color: white; }
-    
-    /* Active State (ย้ายมาที่ Behavior) */
+
     .menu-item.active { position: relative; background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent); }
     .menu-item.active::before {
         content: ''; position: absolute; left: 0; height: 100%; width: 4px;
         background: #3498db; border-radius: 0 5px 5px 0;
     }
-    .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 10px; color: #7f8c8d; }
+
+    .logout-btn {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .logout-btn:hover { color: #e74c3c; }
 
     /* --- Main Content --- */
     .main-content {
@@ -67,12 +77,12 @@
     .kpi-title { font-size: 0.85rem; color: #888; margin-bottom: 8px; }
     .kpi-value { font-size: 1.8rem; font-weight: 700; color: white; }
     .kpi-sub { font-size: 0.8rem; margin-top: 5px; }
-    
+
     /* Chart Grid Layout */
     .charts-grid {
         display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 25px;
     }
-    
+
     .chart-container {
         background: #1b202e; border-radius: 15px; padding: 25px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -84,39 +94,53 @@
     .bottom-grid {
         display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
     }
-
 </style>
 
+{% with current=request.resolver_match.url_name %}
 <div class="admin-container">
-    
+
     <div class="sidebar">
         <div class="brand">Admin</div>
+
         <div class="menu-list">
-            <a href="{% url 'matcher:admin_panel' %}" class="menu-item">
+            <a href="{% url 'matcher:admin_panel' %}"
+               class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="{% url 'matcher:user_management' %}" class="menu-item">
+
+            <a href="{% url 'matcher:user_management' %}"
+               class="menu-item {% if current == 'user_management' %}active{% endif %}">
                 <i class="fas fa-user"></i> User Management
             </a>
-            <a href="#" class="menu-item active"> <i class="fas fa-chart-line"></i> Behavior Analysis
+
+            <a href="{% url 'matcher:behavior_analysis' %}"
+               class="menu-item {% if current == 'behavior_analysis' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Behavior Analysis
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:song_database' %}"
+               class="menu-item {% if current == 'song_database' %}active{% endif %}">
                 <i class="fas fa-database"></i> Song Database
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:category_management' %}"
+               class="menu-item {% if current == 'category_management' %}active{% endif %}">
                 <i class="fas fa-th-large"></i> Category Management
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:model_management' %}"
+               class="menu-item {% if current == 'model_management' %}active{% endif %}">
                 <i class="fas fa-cube"></i> Model
             </a>
         </div>
+
         <a href="{% url 'matcher:logout' %}" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
 
     <div class="main-content">
-        
+
         <div class="top-header">
             <div class="page-title">Behavior Analysis</div>
             <div style="color: #888;">Last updated: Just now</div>
@@ -179,13 +203,12 @@
 
     </div>
 </div>
+{% endwith %}
 
 <script>
-    // ตั้งค่าสีตัวหนังสือให้เข้ากับ Dark Mode
     Chart.defaults.color = '#888';
     Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
 
-    // 1. Trend Chart (Line)
     const ctxTrend = document.getElementById('trendChart').getContext('2d');
     new Chart(ctxTrend, {
         type: 'line',
@@ -203,13 +226,9 @@
                 tension: 0.4
             }]
         },
-        options: {
-            responsive: true,
-            plugins: { legend: { position: 'top' } }
-        }
+        options: { responsive: true, plugins: { legend: { position: 'top' } } }
     });
 
-    // 2. Genre Chart (Doughnut)
     const ctxGenre = document.getElementById('genreChart').getContext('2d');
     new Chart(ctxGenre, {
         type: 'doughnut',
@@ -224,7 +243,6 @@
         options: { responsive: true, maintainAspectRatio: false }
     });
 
-    // 3. Age Chart (Bar)
     const ctxAge = document.getElementById('ageChart').getContext('2d');
     new Chart(ctxAge, {
         type: 'bar',
@@ -240,7 +258,6 @@
         options: { responsive: true }
     });
 
-    // 4. Radar Chart
     const ctxRadar = document.getElementById('radarChart').getContext('2d');
     new Chart(ctxRadar, {
         type: 'radar',

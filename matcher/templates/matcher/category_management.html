@@ -3,7 +3,6 @@
 
 {% block content %}
 <style>
-    /* --- Core Theme --- */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     nav.navbar { display: none !important; }
 
@@ -17,7 +16,6 @@
 
     .admin-container { display: flex; min-height: 100vh; }
 
-    /* --- Sidebar --- */
     .sidebar {
         width: 250px;
         background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
@@ -35,16 +33,24 @@
         transition: 0.3s; border-radius: 12px;
     }
     .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.1); color: white; }
-    
-    /* Active State */
     .menu-item.active { position: relative; background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent); }
     .menu-item.active::before {
         content: ''; position: absolute; left: 0; height: 100%; width: 4px;
         background: #3498db; border-radius: 0 5px 5px 0;
     }
-    .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 10px; color: #7f8c8d; }
 
-    /* --- Main Content --- */
+    .logout-btn {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .logout-btn:hover { color: #e74c3c; }
+
     .main-content {
         flex: 1; margin-left: 250px; padding: 30px 40px; background-color: #121622;
     }
@@ -59,21 +65,18 @@
     }
     .btn-create:hover { transform: translateY(-3px); }
 
-    /* --- Section Styling --- */
     .section-label {
         font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; padding-left: 10px;
         border-left: 4px solid #3498db; color: #eee; display: flex; align-items: center; justify-content: space-between;
     }
     .section-divider { margin: 40px 0; border-top: 1px solid rgba(255,255,255,0.1); }
 
-    /* --- Grid Layout --- */
     .category-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 25px;
     }
 
-    /* --- Category Card --- */
     .cat-card {
         background: #1b202e; border-radius: 16px; padding: 25px;
         text-align: center; position: relative; overflow: hidden;
@@ -87,69 +90,80 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
-    /* Icon Box with Gradient */
     .icon-box {
         width: 70px; height: 70px; border-radius: 20px; margin: 0 auto 15px;
         display: flex; align-items: center; justify-content: center;
         font-size: 2rem; color: white;
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
-    
+
     .cat-name { font-size: 1.1rem; font-weight: 600; color: white; margin-bottom: 5px; }
     .cat-count { font-size: 0.85rem; color: #888; }
-    
-    /* Hover Actions */
+
     .card-actions {
         position: absolute; top: 15px; right: 15px;
         display: flex; gap: 8px; opacity: 0; transition: 0.2s;
     }
     .cat-card:hover .card-actions { opacity: 1; }
-    
+
     .mini-btn {
         width: 30px; height: 30px; border-radius: 50%; background: rgba(0,0,0,0.5);
         color: white; display: flex; align-items: center; justify-content: center;
         border: none; cursor: pointer; font-size: 0.8rem;
     }
     .mini-btn:hover { background: white; color: #333; }
-
 </style>
 
+{% with current=request.resolver_match.url_name %}
 <div class="admin-container">
-    
+
     <div class="sidebar">
         <div class="brand">Admin</div>
         <div class="menu-list">
-            <a href="{% url 'matcher:admin_panel' %}" class="menu-item">
+            <a href="{% url 'matcher:admin_panel' %}"
+               class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="{% url 'matcher:user_management' %}" class="menu-item">
+
+            <a href="{% url 'matcher:user_management' %}"
+               class="menu-item {% if current == 'user_management' %}active{% endif %}">
                 <i class="fas fa-user"></i> User Management
             </a>
-            <a href="{% url 'matcher:behavior_analysis' %}" class="menu-item">
+
+            <a href="{% url 'matcher:behavior_analysis' %}"
+               class="menu-item {% if current == 'behavior_analysis' %}active{% endif %}">
                 <i class="fas fa-chart-line"></i> Behavior Analysis
             </a>
-            <a href="{% url 'matcher:song_database' %}" class="menu-item">
+
+            <a href="{% url 'matcher:song_database' %}"
+               class="menu-item {% if current == 'song_database' %}active{% endif %}">
                 <i class="fas fa-database"></i> Song Database
             </a>
-            <a href="#" class="menu-item active"> <i class="fas fa-th-large"></i> Category Management
+
+            <a href="{% url 'matcher:category_management' %}"
+               class="menu-item {% if current == 'category_management' %}active{% endif %}">
+                <i class="fas fa-th-large"></i> Category Management
             </a>
-            <a href="#" class="menu-item">
+
+            <a href="{% url 'matcher:model_management' %}"
+               class="menu-item {% if current == 'model_management' %}active{% endif %}">
                 <i class="fas fa-cube"></i> Model
             </a>
         </div>
+
         <a href="{% url 'matcher:logout' %}" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
 
     <div class="main-content">
-        
+
         <div class="top-header">
             <div>
                 <div class="page-title">Category Management</div>
                 <div style="color: #aaa; font-size: 0.9rem; margin-top: 5px;">Manage Moods & Music Genres for matching system</div>
             </div>
-            <button class="btn-create">
+            <button class="btn-create" type="button">
                 <i class="fas fa-plus"></i> New Category
             </button>
         </div>
@@ -158,55 +172,23 @@
             Mood Categories
             <span style="font-size: 0.8rem; color: #666; font-weight: normal;">Detects emotional state</span>
         </div>
-        
+
         <div class="category-grid">
-            <div class="cat-card">
+            {% for cat in mood_categories %}
+            <a href="{% url 'matcher:category_songs' cat.id %}" class="cat-card" style="text-decoration:none;">
                 <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                    <button class="mini-btn" style="background:rgba(231, 76, 60, 0.8);"><i class="fas fa-trash"></i></button>
+                    <button class="mini-btn" type="button"><i class="fas fa-pen"></i></button>
+                    <button class="mini-btn" type="button" style="background:rgba(231, 76, 60, 0.8);"><i class="fas fa-trash"></i></button>
                 </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #f1c40f, #e67e22);">
-                    <i class="fas fa-smile-beam"></i>
+                <div class="icon-box" style="background: {{ cat.color_code|default:'linear-gradient(135deg, #667eea, #764ba2)' }};">
+                    <i class="{{ cat.icon_class|default:'fas fa-music' }}"></i>
                 </div>
-                <div class="cat-name">Happy</div>
-                <div class="cat-count">450 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                    <button class="mini-btn" style="background:rgba(231, 76, 60, 0.8);"><i class="fas fa-trash"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #3498db, #2c3e50);">
-                    <i class="fas fa-sad-tear"></i>
-                </div>
-                <div class="cat-name">Sad / Melancholy</div>
-                <div class="cat-count">320 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                    <button class="mini-btn" style="background:rgba(231, 76, 60, 0.8);"><i class="fas fa-trash"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
-                    <i class="fas fa-bolt"></i>
-                </div>
-                <div class="cat-name">Energetic</div>
-                <div class="cat-count">210 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                    <button class="mini-btn" style="background:rgba(231, 76, 60, 0.8);"><i class="fas fa-trash"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #1abc9c, #16a085);">
-                    <i class="fas fa-coffee"></i>
-                </div>
-                <div class="cat-name">Chill / Relax</div>
-                <div class="cat-count">580 Songs</div>
-            </div>
+                <div class="cat-name">{{ cat.name }}</div>
+                <div class="cat-count">{{ cat.display_count }} Songs</div>
+            </a>
+            {% empty %}
+            <div style="color:#777;">No mood categories</div>
+            {% endfor %}
         </div>
 
         <div class="section-divider"></div>
@@ -217,68 +199,28 @@
         </div>
 
         <div class="category-grid">
-            <div class="cat-card">
+            {% for cat in genre_categories %}
+            <a href="{% url 'matcher:category_songs' cat.id %}" class="cat-card" style="text-decoration:none;">
                 <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
+                    <button class="mini-btn" type="button"><i class="fas fa-pen"></i></button>
                 </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #ff9ff3, #f368e0);">
-                    <i class="fas fa-microphone-alt"></i>
+                <div class="icon-box" style="background: {{ cat.color_code|default:'linear-gradient(135deg, #667eea, #764ba2)' }};">
+                    <i class="{{ cat.icon_class|default:'fas fa-music' }}"></i>
                 </div>
-                <div class="cat-name">Pop</div>
-                <div class="cat-count">840 Songs</div>
-            </div>
+                <div class="cat-name">{{ cat.name }}</div>
+                <div class="cat-count">{{ cat.display_count }} Songs</div>
+            </a>
+            {% empty %}
+            <div style="color:#777;">No genre categories</div>
+            {% endfor %}
 
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #5f27cd, #341f97);">
-                    <i class="fas fa-guitar"></i>
-                </div>
-                <div class="cat-name">Rock</div>
-                <div class="cat-count">420 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #feca57, #ff9f43);">
-                    <i class="fas fa-saxophone"></i>
-                </div>
-                <div class="cat-name">Jazz</div>
-                <div class="cat-count">150 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #48dbfb, #0abde3);">
-                    <i class="fas fa-record-vinyl"></i>
-                </div>
-                <div class="cat-name">Hip-Hop</div>
-                <div class="cat-count">290 Songs</div>
-            </div>
-
-            <div class="cat-card">
-                <div class="card-actions">
-                    <button class="mini-btn"><i class="fas fa-pen"></i></button>
-                </div>
-                <div class="icon-box" style="background: linear-gradient(135deg, #c8d6e5, #8395a7); color: #2d3436;">
-                    <i class="fas fa-music"></i>
-                </div>
-                <div class="cat-name">Classical</div>
-                <div class="cat-count">90 Songs</div>
-            </div>
-            
-            <div class="cat-card" style="border: 2px dashed #444; background: transparent; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #666;">
+            <div class="cat-card" style="border: 2px dashed #444; background: transparent; display:flex; flex-direction:column; justify-content:center; align-items:center; color:#666;">
                 <i class="fas fa-plus" style="font-size: 2rem; margin-bottom: 10px;"></i>
                 <div style="font-weight: 500;">Add Genre</div>
             </div>
-
         </div>
 
     </div>
 </div>
+{% endwith %}
 {% endblock %}

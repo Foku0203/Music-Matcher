@@ -3,7 +3,6 @@
 
 {% block content %}
 <style>
-    /* --- Core Theme (Dark Mode) --- */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     nav.navbar { display: none !important; }
 
@@ -17,7 +16,6 @@
 
     .admin-container { display: flex; min-height: 100vh; }
 
-    /* --- Sidebar --- */
     .sidebar {
         width: 250px;
         background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
@@ -35,21 +33,28 @@
         transition: 0.3s; border-radius: 12px;
     }
     .menu-item:hover, .menu-item.active { background: rgba(255, 255, 255, 0.1); color: white; }
-    
-    /* Active State (Song Database) */
+
     .menu-item.active { position: relative; background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent); }
     .menu-item.active::before {
         content: ''; position: absolute; left: 0; height: 100%; width: 4px;
         background: #3498db; border-radius: 0 5px 5px 0;
     }
-    .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 10px; color: #7f8c8d; }
+    .logout-btn {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #7f8c8d;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: 0.3s;
+    }
+    .logout-btn:hover { color: #e74c3c; }
 
-    /* --- Main Content --- */
     .main-content {
         flex: 1; margin-left: 250px; padding: 30px 40px; background-color: #121622;
     }
 
-    /* Top Action Bar */
     .action-bar {
         display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;
     }
@@ -65,7 +70,6 @@
     }
     .btn-add-song:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.6); }
 
-    /* Filter Section */
     .filter-container {
         display: flex; gap: 15px; margin-bottom: 25px; background: #1b202e;
         padding: 15px; border-radius: 12px; align-items: center;
@@ -83,7 +87,6 @@
         border-radius: 8px; cursor: pointer; font-weight: 500;
     }
 
-    /* Table Design */
     .database-card {
         background: #1b202e; border-radius: 15px; padding: 25px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.2);
@@ -93,7 +96,6 @@
     td { padding: 15px; border-bottom: 1px solid #232936; vertical-align: middle; color: #ddd; font-size: 0.95rem; }
     tr:hover td { background: rgba(255,255,255,0.02); }
 
-    /* Song Info Column */
     .song-info { display: flex; align-items: center; gap: 15px; }
     .cover-wrapper {
         width: 50px; height: 50px; border-radius: 8px; overflow: hidden; position: relative;
@@ -106,18 +108,13 @@
         opacity: 0; transition: 0.2s; cursor: pointer;
     }
     .cover-wrapper:hover .cover-overlay { opacity: 1; }
-    
+
     .song-text h4 { margin: 0; font-size: 1rem; color: white; }
     .song-text p { margin: 3px 0 0 0; font-size: 0.85rem; color: #aaa; }
 
-    /* Genre Badge */
     .badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
-    .bg-pop { background: rgba(155, 93, 229, 0.2); color: #9b5de5; }
-    .bg-rock { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
-    .bg-jazz { background: rgba(241, 196, 15, 0.2); color: #f1c40f; }
     .bg-default { background: rgba(255, 255, 255, 0.1); color: #ccc; }
 
-    /* Actions */
     .action-btn {
         width: 35px; height: 35px; border-radius: 8px; border: none; cursor: pointer;
         display: inline-flex; justify-content: center; align-items: center; transition: 0.2s; margin-right: 5px;
@@ -126,57 +123,61 @@
     .btn-edit:hover { background: #3498db; color: white; }
     .btn-del { background: rgba(231, 76, 60, 0.15); color: #e74c3c; }
     .btn-del:hover { background: #e74c3c; color: white; }
-
 </style>
 
+{% with current=request.resolver_match.url_name %}
 <div class="admin-container">
-    
+
     <div class="sidebar">
         <div class="brand">Admin</div>
         <div class="menu-list">
-            <a href="{% url 'matcher:admin_panel' %}" class="menu-item">
+            <a href="{% url 'matcher:admin_panel' %}" class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
                 <i class="fas fa-home"></i> Dashboard
             </a>
-            <a href="{% url 'matcher:user_management' %}" class="menu-item">
+            <a href="{% url 'matcher:user_management' %}" class="menu-item {% if current == 'user_management' %}active{% endif %}">
                 <i class="fas fa-user"></i> User Management
             </a>
-            <a href="{% url 'matcher:behavior_analysis' %}" class="menu-item">
+            <a href="{% url 'matcher:behavior_analysis' %}" class="menu-item {% if current == 'behavior_analysis' %}active{% endif %}">
                 <i class="fas fa-chart-line"></i> Behavior Analysis
             </a>
-            <a href="#" class="menu-item active"> <i class="fas fa-database"></i> Song Database
+            <a href="{% url 'matcher:song_database' %}" class="menu-item {% if current == 'song_database' %}active{% endif %}">
+                <i class="fas fa-database"></i> Song Database
             </a>
-            <a href="#" class="menu-item">
+            <a href="{% url 'matcher:category_management' %}" class="menu-item {% if current == 'category_management' %}active{% endif %}">
                 <i class="fas fa-th-large"></i> Category Management
             </a>
-            <a href="#" class="menu-item">
+            <a href="{% url 'matcher:model_management' %}" class="menu-item {% if current == 'model_management' %}active{% endif %}">
                 <i class="fas fa-cube"></i> Model
             </a>
         </div>
+
         <a href="{% url 'matcher:logout' %}" class="logout-btn">
             <i class="fas fa-sign-out-alt"></i> Logout
         </a>
     </div>
 
     <div class="main-content">
-        
+
         <div class="action-bar">
             <div>
                 <div class="page-title">Song Database</div>
                 <div class="page-subtitle">Manage all music tracks in the system</div>
             </div>
+
             <a href="#" class="btn-add-song">
                 <i class="fas fa-plus"></i> Add New Song
             </a>
         </div>
 
         <form method="get" class="filter-container">
-            <input type="text" name="q" class="search-input" placeholder="Search by title, artist..." value="{{ query }}">
-            
-            <select class="filter-select">
-                <option value="">All Genres</option>
-                <option value="Pop">Pop</option>
-                <option value="Rock">Rock</option>
-                <option value="Jazz">Jazz</option>
+            <input type="text" name="q" class="search-input"
+                   placeholder="Search by title, artist..." value="{{ query|default:'' }}">
+
+            <select class="filter-select" name="genre">
+                <option value="" {% if not genre %}selected{% endif %}>All Genres</option>
+                {% for g in genres %}
+                    <option value="{{ g.name }}" {% if genre == g.name %}selected{% endif %}>{{ g.name }}</option>
+                {% endfor %}
             </select>
 
             <button type="submit" class="btn-search">Search</button>
@@ -186,10 +187,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th width="50">#</th>
+                        <th width="70">ID</th>
                         <th>Track Info</th>
                         <th>Genre</th>
-                        <th>BPM</th>
                         <th>Uploaded</th>
                         <th>Actions</th>
                     </tr>
@@ -197,14 +197,15 @@
                 <tbody>
                     {% for song in songs %}
                     <tr>
-                        <td style="color: #666;">{{ song.id }}</td>
+                        <td style="color: #666;">{{ song.song_id }}</td>
+
                         <td>
                             <div class="song-info">
                                 <div class="cover-wrapper">
-                                    {% if song.cover_url %}
-                                        <img src="{{ song.cover_url }}" class="cover-img">
+                                    {% if song.album and song.album.cover_url %}
+                                        <img src="{{ song.album.cover_url }}" class="cover-img" alt="cover">
                                     {% else %}
-                                        <div class="cover-img" style="background: #444; display:flex; justify-content:center; align-items:center;">
+                                        <div class="cover-img" style="background:#444; display:flex; justify-content:center; align-items:center;">
                                             <i class="fas fa-music" style="color:#777;"></i>
                                         </div>
                                     {% endif %}
@@ -212,49 +213,46 @@
                                         <i class="fas fa-play" style="color: white;"></i>
                                     </div>
                                 </div>
+
                                 <div class="song-text">
                                     <h4>{{ song.title }}</h4>
-                                    <p>{{ song.artist }}</p>
+                                    <p>{{ song.artist.name }}</p>
                                 </div>
                             </div>
                         </td>
+
                         <td>
-                            {% if "Pop" in song.genre %}
-                                <span class="badge bg-pop">Pop</span>
-                            {% elif "Rock" in song.genre %}
-                                <span class="badge bg-rock">Rock</span>
-                            {% elif "Jazz" in song.genre %}
-                                <span class="badge bg-jazz">Jazz</span>
+                            {% if song.category and song.category.type == 'GENRE' %}
+                                <span class="badge bg-default">{{ song.category.name }}</span>
                             {% else %}
-                                <span class="badge bg-default">{{ song.genre|default:"Unknown" }}</span>
+                                <span class="badge bg-default">Unknown</span>
                             {% endif %}
                         </td>
-                        <td>{{ song.bpm|default:"-" }}</td>
-                        <td style="color: #aaa;">{{ song.uploaded_at|date:"d M, Y" }}</td>
+
+                        <td style="color:#aaa;">{{ song.created_at|date:"d M, Y" }}</td>
+
                         <td>
-                            <button class="action-btn btn-edit" title="Edit"><i class="fas fa-pen"></i></button>
-                            <button class="action-btn btn-del" title="Delete"><i class="fas fa-trash"></i></button>
+                            <button type="button" class="action-btn btn-edit" title="Edit">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button type="button" class="action-btn btn-del" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="6" style="text-align: center; padding: 40px; color: #777;">
-                            <i class="fas fa-music" style="font-size: 2rem; margin-bottom: 10px; display:block;"></i>
+                        <td colspan="5" style="text-align:center; padding:40px; color:#777;">
+                            <i class="fas fa-music" style="font-size:2rem; margin-bottom:10px; display:block;"></i>
                             No songs found in the database.
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            
-            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-                <button style="background: #121622; border: 1px solid #2e3446; color: white; padding: 5px 12px; border-radius: 5px; cursor: pointer;">&lt;</button>
-                <button style="background: #3498db; border: none; color: white; padding: 5px 12px; border-radius: 5px;">1</button>
-                <button style="background: #121622; border: 1px solid #2e3446; color: white; padding: 5px 12px; border-radius: 5px; cursor: pointer;">2</button>
-                <button style="background: #121622; border: 1px solid #2e3446; color: white; padding: 5px 12px; border-radius: 5px; cursor: pointer;">&gt;</button>
-            </div>
         </div>
 
     </div>
 </div>
+{% endwith %}
 {% endblock %}
