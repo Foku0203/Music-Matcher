@@ -25,9 +25,9 @@
     .note-5 { bottom: 25%; right: 6%; font-size: 70px; animation-delay: 3s; }
     .note-6 { top: 40%; left: 45%; font-size: 40px; animation-delay: 4.5s; }
 
-    @keyframes float { 
-        0%, 100% { transform: translateY(0) rotate(0deg); } 
-        50% { transform: translateY(-20px) rotate(10deg); } 
+    @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(10deg); }
     }
 
     .wave { position: absolute; width: 100%; line-height: 0; z-index: 1; opacity: 0.8; }
@@ -46,10 +46,10 @@
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         overflow: hidden;
         z-index: 10;
-        position: absolute;      
+        position: absolute;
         top: 48%;
-        left: 50%;              
-        transform: translate(-50%, -50%); 
+        left: 50%;
+        transform: translate(-50%, -50%);
         max-width: 95vw;
         max-height: 80vh;
     }
@@ -57,7 +57,7 @@
     /* --- Left Panel --- */
     .left-panel {
         width: 40%;
-        background: linear-gradient(135deg, #2c3e50, #4ca1af); 
+        background: linear-gradient(135deg, #2c3e50, #4ca1af);
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -71,7 +71,7 @@
     .face-container {
         width: 180px;
         height: 180px;
-        background-color: #ddd; 
+        background-color: #ddd;
         background-size: cover;
         background-position: center;
         position: relative;
@@ -80,7 +80,7 @@
         box-shadow: 0 10px 20px rgba(0,0,0,0.3);
         border: 4px solid rgba(255,255,255,0.2);
     }
-    
+
     .scan-frame { position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px; }
     .scan-corner { position: absolute; width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.8); }
     .tl { top: 0; left: 0; border-right: none; border-bottom: none; border-radius: 10px 0 0 0; }
@@ -90,7 +90,6 @@
 
     .face-grid {
         width: 100%; height: 100%;
-        /* ใช้ภาพ Grid หน้าคน ถ้าไม่มีให้ลบ url ออกได้ */
         background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Face_landmarks.svg/1024px-Face_landmarks.svg.png');
         background-size: 80%;
         background-repeat: no-repeat;
@@ -134,9 +133,9 @@
         background: white;
         z-index: 5;
     }
-    
-    .panel-header h3 { 
-        margin: 0; color: #2c3e50; font-size: 1.2rem; font-weight: 700; 
+
+    .panel-header h3 {
+        margin: 0; color: #2c3e50; font-size: 1.2rem; font-weight: 700;
         white-space: nowrap; display: flex; align-items: center; gap: 8px;
     }
 
@@ -153,11 +152,70 @@
     .panel-header .refresh-btn { color: #8e44ad; transition: 0.3s; cursor: pointer; font-size: 1.1rem; padding: 5px; border-radius: 50%; }
     .panel-header .refresh-btn:hover { background: #f3e5f5; transform: rotate(180deg); }
 
+    /* --- Mood Filter Bar --- */
+    .mood-filter-bar{
+        padding: 10px 25px;
+        border-bottom: 1px solid #eee;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .mood-chip{
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid #e2e8f0;
+        background: #f8f9fa;
+        color: #2c3e50;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: 0.2s;
+        user-select: none;
+    }
+    .mood-chip:hover{
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+        background: #fff;
+    }
+    .mood-chip.active{
+        border-color: #8e44ad;
+        background: rgba(142, 68, 173, 0.10);
+        color: #8e44ad;
+    }
+    .mood-chip .dot{
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    /* FER2013 7 emotions */
+    .dot-angry    { background: #e74c3c; }
+    .dot-disgust  { background: #2ecc71; }
+    .dot-fear     { background: #9b59b6; }
+    .dot-happy    { background: #f1c40f; }
+    .dot-sad      { background: #3498db; }
+    .dot-surprise { background: #e67e22; }
+    .dot-neutral  { background: #95a5a6; }
+
+    .mood-hint{
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #7f8fa6;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
     .song-list { flex: 1; overflow-y: auto; padding: 10px 15px; scroll-behavior: smooth; }
     .song-list::-webkit-scrollbar { width: 6px; }
     .song-list::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 3px; }
 
-    /* --- Modified Song Card Logic --- */
+    /* --- Song Card --- */
     .song-card {
         display: flex; align-items: center; padding: 10px;
         border-radius: 12px; margin-bottom: 8px;
@@ -165,11 +223,10 @@
         color: inherit;
     }
     .song-card.hidden { display: none !important; }
-    
-    /* Hover Effect */
-    .song-card:hover { 
-        background-color: #fff; border-color: #e2e8f0; 
-        transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
+
+    .song-card:hover {
+        background-color: #fff; border-color: #e2e8f0;
+        transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
     .song-index { font-size: 0.9rem; font-weight: 700; color: #e2e8f0; margin-right: 12px; min-width: 25px; text-align: center; }
@@ -190,15 +247,15 @@
     .song-info { flex: 1; overflow: hidden; white-space: nowrap; }
     .song-title { font-size: 0.95rem; font-weight: 600; color: #2d3748; margin-bottom: 2px; text-overflow: ellipsis; overflow: hidden; }
     .song-artist { font-size: 0.8rem; color: #718096; text-overflow: ellipsis; overflow: hidden; }
-    
+
     .spotify-badge {
         font-size: 0.65rem; color: #1db954; background: rgba(29, 185, 84, 0.1);
         padding: 2px 8px; border-radius: 10px; margin-top: 4px; display: inline-block; font-weight: 600;
     }
 
     .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; align-items: center; }
-    
-    .action-btn { 
+
+    .action-btn {
         color: #cbd5e0; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; font-size: 1rem;
     }
     .action-btn:hover { color: #e74c3c; transform: scale(1.2); }
@@ -216,7 +273,6 @@
     .menu-item.active { color: #2980b9; background: white; box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); }
     .btn-back { position: absolute; top: 30px; left: 30px; z-index: 100; color: white; text-decoration: none; font-weight: 600; font-size: 1rem; background: rgba(255, 255, 255, 0.2); padding: 10px 25px; border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .btn-back:hover { background: white; color: #2980b9; transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-
 </style>
 
 <a href="{% url 'matcher:scan' %}" class="btn-back">
@@ -242,6 +298,7 @@
     </svg>
 </div>
 
+{% with selected_mood=request.GET.mood|default:mood|lower %}
 <div class="result-card">
     <a href="{% url 'matcher:home' %}" class="close-x"><i class="fas fa-times"></i></a>
 
@@ -255,17 +312,17 @@
             </div>
             <div class="face-grid"></div>
         </div>
-        
+
         <div class="mood-title">Mood Detected</div>
-        <div class="mood-result">{{ mood|title }}</div>
-        
+        <div class="mood-result">{{ selected_mood|title }}</div>
+
         <a href="{% url 'matcher:scan' %}" class="btn-retry">Scan Again</a>
     </div>
 
     <div class="right-panel">
         <div class="panel-header">
             <h3>Recommended <span class="song-count">{{ songs|length }}</span></h3>
-            
+
             <div class="search-wrapper">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" id="searchInput" class="search-input" placeholder="Find song or artist...">
@@ -273,45 +330,75 @@
             <i class="fas fa-sync-alt refresh-btn" onclick="location.reload()" title="Refresh"></i>
         </div>
 
+        <!-- Mood filter tags (FER2013) -->
+        <div class="mood-filter-bar">
+            <a class="mood-chip {% if selected_mood == 'angry' %}active{% endif %}" href="?mood=angry">
+                <span class="dot dot-angry"></span> Angry
+            </a>
+            <a class="mood-chip {% if selected_mood == 'disgust' %}active{% endif %}" href="?mood=disgust">
+                <span class="dot dot-disgust"></span> Disgust
+            </a>
+            <a class="mood-chip {% if selected_mood == 'fear' %}active{% endif %}" href="?mood=fear">
+                <span class="dot dot-fear"></span> Fear
+            </a>
+            <a class="mood-chip {% if selected_mood == 'happy' %}active{% endif %}" href="?mood=happy">
+                <span class="dot dot-happy"></span> Happy
+            </a>
+            <a class="mood-chip {% if selected_mood == 'sad' %}active{% endif %}" href="?mood=sad">
+                <span class="dot dot-sad"></span> Sad
+            </a>
+            <a class="mood-chip {% if selected_mood == 'surprise' %}active{% endif %}" href="?mood=surprise">
+                <span class="dot dot-surprise"></span> Surprise
+            </a>
+            <a class="mood-chip {% if selected_mood == 'neutral' %}active{% endif %}" href="?mood=neutral">
+                <span class="dot dot-neutral"></span> Neutral
+            </a>
+
+            <div class="mood-hint">Choose mood if scan isn’t accurate</div>
+        </div>
+
         <div class="song-list" id="songList">
             {% for song in songs %}
-            
-            <div class="song-card" 
-                 data-title="{{ song.title|lower }}" 
+            <div class="song-card"
+                 data-title="{{ song.title|lower }}"
                  data-artist="{{ song.artist.name|lower }}">
-                
-                <a href="{{ song.preview_url|default:'#' }}" 
-                   target="_blank" 
-                   class="song-content-link">
-                    
+
+                {% with url=song.spotify_url|default:song.preview_url %}
+                <a href="{{ url|default:'' }}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="song-content-link"
+                   {% if not url %}onclick="return false;"{% endif %}>
+
                     <div class="song-index">{{ forloop.counter }}</div>
                     <div class="album-cover" style="background-image: url('{{ song.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
-                    
+
                     <div class="song-info">
                         <div class="song-title">{{ song.title }}</div>
                         <div class="song-artist">{{ song.artist.name }}</div>
                         <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
                     </div>
                 </a>
+                {% endwith %}
 
                 <div class="actions">
                     <a href="{% url 'matcher:add_to_playlist' song.song_id %}" class="action-btn" title="Save to Favorites">
                         <i class="far fa-heart"></i>
                     </a>
-                    
-                    <button class="action-btn share" title="Share">
+
+                    <button class="action-btn share" title="Share" type="button">
                         <i class="fas fa-share-alt"></i>
                     </button>
                 </div>
             </div>
-            
+
             {% empty %}
                 <div style="padding:40px; text-align:center; color:#999; margin-top: 50px;">
                     <i class="fas fa-music" style="font-size:3rem; margin-bottom:15px; display:block; color:#ddd;"></i>
                     <p>No songs found for this mood.</p>
                 </div>
             {% endfor %}
-            
+
             <div id="noResultMsg" style="display:none; padding:40px; text-align:center; color:#999; margin-top: 50px;">
                 <i class="fas fa-search" style="font-size:2rem; margin-bottom:10px; display:block; color:#ddd;"></i>
                 No match found.
@@ -319,6 +406,7 @@
         </div>
     </div>
 </div>
+{% endwith %}
 
 <div class="footer-menu">
     <a href="{% url 'matcher:scan' %}" class="menu-item active">
@@ -333,34 +421,131 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const songCards = document.querySelectorAll('.song-card');
-        const noResultMsg = document.getElementById('noResultMsg');
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+    const songList = document.getElementById('songList');
+    const countEl = document.querySelector('.song-count');
 
-        searchInput.addEventListener('keyup', function(e) {
-            const term = e.target.value.toLowerCase().trim();
-            let hasVisibleItems = false;
+    if (!searchInput || !songList) return;
 
-            songCards.forEach(card => {
-                const title = card.getAttribute('data-title');
-                const artist = card.getAttribute('data-artist');
+    // เก็บลิสต์แนะนำเดิมไว้ (รวม noResultMsg ที่ซ่อนไว้ด้วย)
+    const recommendedHTML = songList.innerHTML;
 
-                if (title.includes(term) || artist.includes(term)) {
-                    card.classList.remove('hidden');
-                    hasVisibleItems = true;
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
+    // เก็บ template ของ noResult ไว้ใช้ตอน render search
+    let noResultEl = document.getElementById('noResultMsg');
+    const noResultHTML = noResultEl ? noResultEl.outerHTML : '';
 
-            if (hasVisibleItems) {
-                noResultMsg.style.display = 'none';
+    const initialCount = countEl ? (countEl.textContent || '').trim() : '';
+
+    const params = new URLSearchParams(window.location.search);
+    const currentMood = (params.get('mood') || '').toLowerCase();
+
+    const escapeHtml = (unsafe) => {
+        return (unsafe || "").replace(/[&<"'>]/g, function (m) {
+            return ({ '&': '&amp;', '<': '&lt;', '"': '&quot;', "'": '&#039;', '>': '&gt;' }[m]);
+        });
+    };
+
+    // fallback filter แบบเดิม (กรองเฉพาะที่มีในหน้า) ถ้า API ใช้ไม่ได้
+    const fallbackFilter = (term) => {
+        const cards = songList.querySelectorAll('.song-card');
+        const msg = document.getElementById('noResultMsg');
+        let hasVisible = false;
+
+        cards.forEach(card => {
+            const title = (card.getAttribute('data-title') || '');
+            const artist = (card.getAttribute('data-artist') || '');
+            if (title.includes(term) || artist.includes(term)) {
+                card.classList.remove('hidden');
+                hasVisible = true;
             } else {
-                noResultMsg.style.display = 'block';
+                card.classList.add('hidden');
             }
         });
+
+        if (msg) msg.style.display = hasVisible ? 'none' : 'block';
+        if (countEl) countEl.textContent = hasVisible ? String([...cards].filter(c => !c.classList.contains('hidden')).length) : "0";
+    };
+
+    const renderSearchResults = (items) => {
+        if (!items || items.length === 0) {
+            songList.innerHTML = noResultHTML;
+            noResultEl = document.getElementById('noResultMsg');
+            if (noResultEl) noResultEl.style.display = 'block';
+            if (countEl) countEl.textContent = "0";
+            return;
+        }
+
+        const cardsHTML = items.map((s, idx) => {
+            const title = escapeHtml(s.title);
+            const artist = escapeHtml(s.artist);
+            const cover = escapeHtml(s.cover_url || 'https://via.placeholder.com/50');
+            const url = escapeHtml(s.spotify_url || '');
+
+            const aAttrs = url
+                ? `href="${url}" target="_blank" rel="noopener noreferrer"`
+                : `href="#" onclick="return false;"`;
+
+            // ทำให้ build url favorites ได้แบบไม่ต้องเดา pattern
+            const favTemplate = "{% url 'matcher:add_to_playlist' 0 %}";
+            const favUrl = favTemplate.replace(/0\/?$/, `${s.song_id}/`);
+
+            return `
+                <div class="song-card" data-title="${(title || '').toLowerCase()}" data-artist="${(artist || '').toLowerCase()}">
+                    <a ${aAttrs} class="song-content-link">
+                        <div class="song-index">${idx + 1}</div>
+                        <div class="album-cover" style="background-image: url('${cover}');"></div>
+                        <div class="song-info">
+                            <div class="song-title">${title}</div>
+                            <div class="song-artist">${artist}</div>
+                            <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
+                        </div>
+                    </a>
+                    <div class="actions">
+                        <a href="${favUrl}" class="action-btn" title="Save to Favorites">
+                            <i class="far fa-heart"></i>
+                        </a>
+                        <button class="action-btn share" title="Share" type="button">
+                            <i class="fas fa-share-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        songList.innerHTML = cardsHTML + noResultHTML;
+        noResultEl = document.getElementById('noResultMsg');
+        if (noResultEl) noResultEl.style.display = 'none';
+        if (countEl) countEl.textContent = String(items.length);
+    };
+
+    let timer = null;
+
+    searchInput.addEventListener('keyup', function (e) {
+        const term = (e.target.value || '').toLowerCase().trim();
+
+        // ล้างค้นหา -> กลับไปแนะนำเดิม
+        if (!term) {
+            songList.innerHTML = recommendedHTML;
+            if (countEl && initialCount) countEl.textContent = initialCount;
+            return;
+        }
+
+        clearTimeout(timer);
+        timer = setTimeout(async () => {
+            try {
+                const apiUrl = `{% url 'matcher:song_search_api' %}?q=${encodeURIComponent(term)}&mood=${encodeURIComponent(currentMood)}`;
+                const res = await fetch(apiUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                if (!res.ok) throw new Error('API not ok');
+                const data = await res.json();
+                renderSearchResults(data.results || []);
+            } catch (err) {
+                // ถ้า API ยังไม่พร้อม/ล่ม ให้ใช้ filter เดิมกันหน้าเงียบ
+                fallbackFilter(term);
+            }
+        }, 250);
     });
+});
 </script>
 
 {% endblock %}

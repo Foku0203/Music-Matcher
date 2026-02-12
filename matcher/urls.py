@@ -27,6 +27,7 @@ urlpatterns = [
 
     # Playlist & Interaction
     path('playlist/add/<int:song_id>/', views.add_to_playlist, name='add_to_playlist'),
+    path('api/song-search/', views.song_search_api, name='song_search_api'),
     path('api/feedback/', views.submit_feedback, name='submit_feedback'),
 
     # ==============================

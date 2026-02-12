@@ -106,7 +106,7 @@ reduce_lr = ReduceLROnPlateau(
     verbose=1
 )
 
-print("เริ่มเทรนโมเดล... (ไปหาอะไรกินก่อนได้เลย นานหน่อยนะ)")
+print("เริ่มเทรนโมเดล...")
 history = model.fit(
     train_generator,
     steps_per_epoch=train_generator.n // BATCH_SIZE,
@@ -117,7 +117,7 @@ history = model.fit(
     class_weight=train_class_weights 
 )
 
-print("เทรนเสร็จแล้ว! โมเดลถูกเซฟไว้ที่ 'efficientnet_fer_best.keras'")
+print("เทรนเสร็จแล้ว! 'efficientnet_fer_best.keras'")
 
 plt.figure(figsize=(12, 4))
 plt.subplot(1, 2, 1)

@@ -76,9 +76,7 @@ class Emotion(models.Model):
 class Artist(models.Model):
     artist_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
-    spotify_id = models.CharField(max_length=255, null=True, blank=True)
-    class Meta:
-        db_table = 'artists'
+    image_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -87,50 +85,54 @@ class Album(models.Model):
     album_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    release_year = models.IntegerField(null=True, blank=True)
-    cover_url = models.CharField(max_length=500, null=True, blank=True)
-    class Meta:
-        db_table = 'albums'
+    release_date = models.DateField(null=True, blank=True)
+    image_url = models.URLField(null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+class Category(models.Model):
+    # ใช้สำหรับเก็บ Mood หรือ Genre
+    category_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50) # เช่น Happy, Sad, Pop, Rock
+    type = models.CharField(max_length=20, choices=[('MOOD', 'Mood'), ('GENRE', 'Genre')])
+
+    def __str__(self):
+        return f"{self.name} ({self.type})"
 
 class Song(models.Model):
     song_id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=255)
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     
-    platform = models.CharField(max_length=50, default='spotify')
-    external_id = models.CharField(max_length=255, null=True, blank=True, unique=True)
-    duration_sec = models.IntegerField(null=True, blank=True, default=0)
-    is_active = models.BooleanField(default=True)
-    lyrics = models.TextField(null=True, blank=True)
-    created_at = models.DateTimeField(null=True, blank=True, auto_now_add=True)
+    # --- ข้อมูลทั่วไป ---
+    release_date = models.DateField(null=True, blank=True)
+    lyrics = models.TextField(null=True, blank=True)  # เก็บเนื้อเพลง
+    image_url = models.URLField(null=True, blank=True) # รูปปกเพลง
+    genius_url = models.URLField(null=True, blank=True) # Link ไป Genius
     
-    # URL สำหรับเล่นเพลง (เพิ่มให้เพื่อให้ Flow สมบูรณ์)
-    preview_url = models.URLField(blank=True, null=True)
+    # --- Mood & Genre จาก JSON ---
+    # เราเก็บเป็น Text ไว้ก่อนเผื่อค้นหาง่าย หรือจะ Link กับ Category ก็ได้
+    json_mood = models.CharField(max_length=50, null=True, blank=True) 
+    json_genre = models.CharField(max_length=100, null=True, blank=True)
 
-    class Meta:
-        db_table = 'songs'
+    # --- Spotify Data ---
+    spotify_id = models.CharField(max_length=100, unique=True, null=True, blank=True)
+    spotify_link = models.URLField(null=True, blank=True)
+    spotify_preview_url = models.URLField(null=True, blank=True) # เพลงตัวอย่าง 30วิ
+    spotify_embed_url = models.URLField(null=True, blank=True)   # Link สำหรับ Embed Player
+
+    # --- Audio Features (ค่าทางดนตรี) ---
+    valence = models.FloatField(default=0.5) # ค่าความสุข (0.0 - 1.0)
+    energy = models.FloatField(default=0.5)  # ค่าพลังงาน (0.0 - 1.0)
+    tempo = models.FloatField(default=120.0) # จังหวะ BPM
+    danceability = models.FloatField(default=0.5) # ความน่าเต้น
+
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.title
-
-class SongGenre(models.Model):
-    song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
-
-class SongEmotion(models.Model):
-    song = models.ForeignKey(Song, on_delete=models.CASCADE)
-    emotion = models.ForeignKey(Emotion, on_delete=models.CASCADE)
-    confidence = models.FloatField(default=1.0)
-    source = models.CharField(max_length=50, default='manual_import')
-    updated_at = models.DateTimeField(auto_now=True)
-    class Meta:
-        db_table = 'song_emotions'
-        unique_together = (('song', 'emotion'),)
+        return f"{self.title} - {self.artist.name}"
 
 # ===================== 4. USER ACTIVITY & AI LOGS =====================
 
