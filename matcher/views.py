@@ -27,7 +27,7 @@ except ImportError:
 
 from .models import (
     User, UserScanLog, Song, Category, Interaction, Playlist, PlaylistItem,
-    ModelVersion, ModelMetric, Recommendation, RetrainJob, SongEmotion,
+    ModelVersion, ModelMetric, Recommendation, RetrainJob,
     Artist, Album  # ✅ เพิ่ม Artist และ Album เข้ามา
 )
 from .forms import CustomUserCreationForm, UserUpdateForm
