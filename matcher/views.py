@@ -3,7 +3,7 @@ import json
 import numpy as np
 import datetime
 import cv2  # pip install opencv-python
-
+from django.core.paginator import Paginator
 from django.utils import timezone
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, logout
@@ -12,11 +12,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt  # ✅ เพิ่มสำหรับการ Import
+from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from django.db.models import Q, Count
-from django.db import transaction  # ✅ เพิ่มสำหรับการ Import
-
+from django.db.models import Q, Count, Avg
+from django.db import transaction
+from .models import *
+from .forms import CustomUserCreationForm, UserUpdateForm
 # --- TENSORFLOW ---
 try:
     from tensorflow.keras.models import load_model
@@ -25,12 +26,7 @@ except ImportError:
     TF_AVAILABLE = False
     print("⚠️ TensorFlow not installed.")
 
-from .models import (
-    User, UserScanLog, Song, Category, Interaction, Playlist, PlaylistItem,
-    ModelVersion, ModelMetric, Recommendation, RetrainJob,
-    Artist, Album  # ✅ เพิ่ม Artist และ Album เข้ามา
-)
-from .forms import CustomUserCreationForm, UserUpdateForm
+
 
 
 # ==========================================
@@ -72,7 +68,6 @@ def _imread_unicode(path: str):
     return img
 
 def preprocess_emotion_input(img_path, model, target_size=(48, 48)):
-    # ... (Code ส่วนนี้เหมือนเดิมจากที่คุณมี แต่ผมย่อให้สั้นลงเพื่อความกระชับในคำตอบ) ...
     frame = _imread_unicode(img_path)
     if frame is None: raise ValueError("Image load failed")
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -97,21 +92,16 @@ def preprocess_emotion_input(img_path, model, target_size=(48, 48)):
 
 
 # ==========================================
-# 🆕 DATA IMPORT FUNCTION (เพิ่มส่วนนี้)
+# 🆕 DATA IMPORT FUNCTION
 # ==========================================
 @csrf_exempt
 def import_songs_from_json(request):
-    """
-    ฟังก์ชันสำหรับ Import เพลงจากไฟล์ songdata.json เข้าสู่ Database
-    รองรับโครงสร้าง Models ใหม่ (Artist, Album, Song)
-    """
     if request.method == 'POST':
         try:
-            # พยายามอ่านไฟล์จากที่วางไว้ในโปรเจกต์
             json_path = os.path.join(settings.BASE_DIR, 'songdata.json')
             
             if not os.path.exists(json_path):
-                return JsonResponse({'status': 'error', 'message': 'File songdata.json not found in project root.'}, status=404)
+                return JsonResponse({'status': 'error', 'message': 'File songdata.json not found.'}, status=404)
 
             with open(json_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -121,11 +111,9 @@ def import_songs_from_json(request):
 
             with transaction.atomic():
                 for item in data:
-                    # 1. จัดการ Artist
                     artist_name = item.get('artist', 'Unknown Artist')
                     artist, _ = Artist.objects.get_or_create(name=artist_name)
 
-                    # 2. จัดการ Album
                     album_title = item.get('album')
                     album = None
                     if album_title:
@@ -134,7 +122,6 @@ def import_songs_from_json(request):
                             artist=artist
                         )
 
-                    # 3. เตรียมข้อมูล
                     spotify_data = item.get('spotify', {}) or {}
                     audio_features = item.get('audio_features', {}) or {}
                     
@@ -146,7 +133,6 @@ def import_songs_from_json(request):
                         except ValueError:
                             pass
 
-                    # 4. สร้าง/อัปเดต Song
                     song, created = Song.objects.update_or_create(
                         title=item.get('title'),
                         artist=artist,
@@ -157,17 +143,12 @@ def import_songs_from_json(request):
                             'image_url': item.get('image_url', ''),
                             'genius_url': item.get('url', ''),
                             
-                            # เก็บ Mood/Genre จาก JSON
                             'json_mood': item.get('mood', ''),
                             'json_genre': item.get('genre', ''),
 
-                            # Spotify Info
                             'spotify_id': spotify_data.get('id'),
                             'spotify_link': spotify_data.get('link'),
-                            'spotify_preview_url': spotify_data.get('preview_url'),
-                            'spotify_embed_url': spotify_data.get('embed'),
 
-                            # Audio Features
                             'valence': audio_features.get('valence', 0.5),
                             'energy': audio_features.get('energy', 0.5),
                             'tempo': audio_features.get('tempo', 120.0),
@@ -264,10 +245,8 @@ def scan_view(request):
 
             if emotion_model:
                 img_path = scan_log.input_image.path
-                # Preprocess
                 x, meta = preprocess_emotion_input(img_path, emotion_model)
                 
-                # Predict
                 prediction = emotion_model.predict(x, verbose=0)
                 scores = prediction[0]
                 max_index = int(np.argmax(scores))
@@ -291,77 +270,118 @@ def scan_view(request):
 
 
 # ==========================================
-# 🎵 MATCH RESULT (UPDATE)
+# 🎵 MATCH RESULT
 # ==========================================
+# views.py
+
 @login_required(login_url='matcher:login')
 def match_result_view(request, scan_id):
     scan_log = get_object_or_404(UserScanLog, scan_id=scan_id, user=request.user)
-    mood = (scan_log.detected_emotion or "neutral").lower()
+    
+    face_emotion = (scan_log.detected_emotion or "neutral").lower()
+    current_emotion = request.GET.get('mood', face_emotion).lower()
 
+    # =========================================================
+    # 🎯 LOGIC: จับคู่ 7 อารมณ์หน้าคน -> Mood เพลงที่เหมาะสม
+    # =========================================================
+    emotion_to_music_mood = {
+        'angry':    'Angry',    
+        'disgust':  'Angry',  
+        'fear':     'Relax',
+        'happy':    'Happy',
+        'sad':      'Sad', 
+        'surprise': 'Happy',
+        'neutral':  'Relax'
+    }
+
+    target_music_mood = emotion_to_music_mood.get(current_emotion, 'Happy')
+
+    # =========================================================
+    # 🎵 QUERY: ค้นหาเพลงจาก json_mood
+    # =========================================================
     songs = Song.objects.none()
     try:
-        # 1. Match แบบใหม่จากไฟล์ JSON (json_mood)
-        songs = Song.objects.filter(json_mood__iexact=mood)
-
-        # 2. ถ้าไม่เจอ ให้ Match แบบเก่า (SongEmotion Relationship)
+        songs = Song.objects.filter(json_mood__icontains=target_music_mood)
         if not songs.exists():
-            songs = Song.objects.filter(songemotion__emotion__name__iexact=mood)
-
-        # 3. ถ้าไม่เจออีก ให้ดู Category แบบเก่า
-        if not songs.exists():
-            songs = Song.objects.filter(category__name__iexact=mood)
-
-        # สุ่มผลลัพธ์
-        songs = songs.order_by('?')[:5]
+            songs = Song.objects.filter(category__name__icontains=target_music_mood)
+            
+        # สุ่มลำดับเพลง และตัดมาแค่ 10 เพลง
+        songs = songs.order_by('?')[:10]
+        
     except Exception as e:
         print(f"Error finding songs: {e}")
 
-    # Fallback: ถ้าไม่เจอจริงๆ สุ่มเพลงอะไรก็ได้มาโชว์
+    # Fallback: ถ้าหาไม่เจอเลยจริงๆ ให้เอาเพลงทั้งหมดมาสุ่ม
     if not songs.exists():
-        songs = Song.objects.order_by('?')[:10]
+        songs = Song.objects.all().order_by('?')[:10]
 
     main_song = songs[0] if songs.exists() else None
 
+    # ==================================================
+    # ✅ Interaction Data (ดึงข้อมูล Like/Favorite)
+    # ==================================================
+    interaction_likes = set(Interaction.objects.filter(user=request.user, type='like').values_list('song_id', flat=True))
+    favorite_likes = set(FavoriteSong.objects.filter(user=request.user).values_list('song_id', flat=True))
+    liked_song_ids = list(interaction_likes.union(favorite_likes))
+
     context = {
         'scan_log': scan_log,
-        'mood': mood,
+        'face_emotion': face_emotion,      # ส่งอารมณ์ดิบ 7 อย่างไปโชว์หน้าเว็บ (AI Result)
+        'mood': target_music_mood,         # ส่ง Mood เพลงที่เลือกมาไปโชว์ (Music Mood)
         'songs': songs,
         'song': main_song,
-        'user_image': scan_log.input_image.url
+        'user_image': scan_log.input_image.url if scan_log.input_image else None,
+        'liked_song_ids': liked_song_ids
     }
     return render(request, 'matcher/match_result.html', context)
 
+# ==========================================
+# 🔎 BROWSE & SEARCH API
+# ==========================================
+@login_required(login_url='matcher:login')
+def browse_view(request):
+    songs = Song.objects.all().order_by('-song_id')[:100]
+    
+    # ✅ ดึง ID เพลงที่ชอบจาก Interaction และ FavoriteSong
+    interaction_likes = set(Interaction.objects.filter(user=request.user, type='like').values_list('song_id', flat=True))
+    favorite_likes = set(FavoriteSong.objects.filter(user=request.user).values_list('song_id', flat=True))
+    liked_song_ids = list(interaction_likes.union(favorite_likes))
 
-# ==========================================
-# 🔎 SONG SEARCH API (UPDATE)
-# ==========================================
+    return render(request, 'matcher/browsesong.html', {
+        'songs': songs,
+        'liked_song_ids': liked_song_ids
+    })
+
 @login_required(login_url='matcher:login')
 def song_search_api(request):
     q = (request.GET.get('q') or '').strip()
-    if not q:
-        return JsonResponse({"results": []})
-
+    mood_filter = (request.GET.get('mood') or '').strip().lower()
+    
     try:
-        limit = int(request.GET.get('limit', 25))
+        limit = int(request.GET.get('limit', 50))
     except ValueError:
-        limit = 25
-    limit = max(1, min(limit, 50))
+        limit = 50
 
-    # ค้นหาทั้งชื่อเพลงและชื่อศิลปิน (รองรับ Model ใหม่ที่มี Artist)
-    qs = (
-        Song.objects
-        .select_related('artist', 'album')
-        .filter(Q(title__icontains=q) | Q(artist__name__icontains=q))
-        .order_by('-song_id')
-    )[:limit]
+    qs = Song.objects.select_related('artist', 'album')
+
+    if mood_filter:
+        qs = qs.filter(json_mood__iexact=mood_filter)
+
+    if q:
+        qs = qs.filter(Q(title__icontains=q) | Q(artist__name__icontains=q))
+
+    qs = qs.order_by('-song_id')[:limit]
+
+    # ✅ ดึง ID เพลงที่ชอบ
+    interaction_likes = set(Interaction.objects.filter(user=request.user, type='like').values_list('song_id', flat=True))
+    favorite_likes = set(FavoriteSong.objects.filter(user=request.user).values_list('song_id', flat=True))
+    liked_ids_set = interaction_likes.union(favorite_likes)
 
     results = []
     for s in qs:
-        # ดึงข้อมูลแบบปลอดภัย
         artist_name = s.artist.name if s.artist else "Unknown"
         cover_url = s.image_url if s.image_url else (s.album.image_url if s.album else "")
-        # ใช้ Preview URL จาก Spotify หรือ Genius URL
-        link_url = s.spotify_preview_url or s.genius_url or ""
+        link_url = s.spotify_link or s.genius_url or ""
 
         results.append({
             "song_id": s.song_id,
@@ -369,6 +389,8 @@ def song_search_api(request):
             "artist": artist_name,
             "cover_url": cover_url or "https://via.placeholder.com/50",
             "spotify_url": link_url,
+            "json_mood": s.json_mood or "",
+            "is_liked": s.song_id in liked_ids_set,
         })
 
     return JsonResponse({"results": results})
@@ -384,8 +406,15 @@ def dashboard_view(request):
 @login_required(login_url='matcher:login')
 def history_view(request):
     scan_history = UserScanLog.objects.filter(user=request.user).order_by('-created_at')[:10]
-    playlist, _ = Playlist.objects.get_or_create(user=request.user, name="My Favorite Songs")
-    saved_songs = PlaylistItem.objects.filter(playlist=playlist).select_related('song').order_by('-id')
+    
+    # ดึงเพลงจาก FavoriteSong เพื่อแสดงในหน้า Liked Songs
+    saved_songs_qs = FavoriteSong.objects.filter(user=request.user).select_related('song').order_by('-added_at')
+    
+    # แปลงโครงสร้างให้เหมือน PlaylistItem เดิม
+    saved_songs = []
+    for fav in saved_songs_qs:
+        saved_songs.append({'song': fav.song, 'added_at': fav.added_at})
+
     return render(request, 'matcher/history.html', {'saved_songs': saved_songs, 'scan_history': scan_history})
 
 @login_required(login_url='matcher:login')
@@ -416,6 +445,7 @@ def submit_feedback(request):
 
     if song_id and feedback_type:
         song = get_object_or_404(Song, song_id=song_id)
+        # ✅ บันทึกลง Interaction
         Interaction.objects.update_or_create(
             user=request.user,
             song=song,
@@ -428,13 +458,38 @@ def submit_feedback(request):
 @login_required(login_url='matcher:login')
 def add_to_playlist(request, song_id):
     song = get_object_or_404(Song, song_id=song_id)
+    
+    # ✅ 1. บันทึกลง FavoriteSong
+    fav_item, created = FavoriteSong.objects.get_or_create(user=request.user, song=song)
+    
+    # ✅ 2. บันทึกลง Interaction
+    Interaction.objects.update_or_create(
+        user=request.user, 
+        song=song, 
+        defaults={'type': 'like', 'rating': 1}
+    )
+
+    # ✅ 3. เก็บลง Playlist เดิม
     playlist, _ = Playlist.objects.get_or_create(user=request.user, name="My Favorite Songs")
-    item, created = PlaylistItem.objects.get_or_create(playlist=playlist, song=song)
+    PlaylistItem.objects.get_or_create(playlist=playlist, song=song)
+
     if created:
         messages.success(request, f"Added '{song.title}' to favorites! ❤️")
     else:
         messages.info(request, f"'{song.title}' is already in your favorites.")
+        
     return redirect(request.META.get('HTTP_REFERER', 'matcher:home'))
+
+@login_required
+def toggle_favorite(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+    # ค้นหาว่า user นี้ชอบเพลงนี้ไหม
+    favorite = FavoriteSong.objects.filter(user=request.user, song=song)
+    
+    if favorite.exists():
+        favorite.delete() # ถ้าเจอ ให้ลบทิ้ง (Unlike)
+        
+    return redirect('matcher:history')
 
 
 # ==========================================
@@ -466,7 +521,7 @@ def admin_panel(request):
     
     try:
         most_liked_songs = Song.objects.annotate(
-            like_count=Count('interaction', filter=Q(interaction__type='like'))
+            like_count=Count('favoritesong') 
         ).order_by('-like_count')[:5]
     except Exception:
         most_liked_songs = Song.objects.all()[:5]
@@ -487,102 +542,466 @@ def user_management(request):
     users = User.objects.all().order_by('-date_joined')
     total_users = users.count()
     active_users = users.filter(is_active=True).count()
-    last_week = timezone.now() - datetime.timedelta(days=7)
-    new_users = users.filter(date_joined__gte=last_week).count()
+    
+    # คำนวณ New User (ใน 30 วันที่ผ่านมา)
+    last_month_date = timezone.now() - datetime.timedelta(days=30)
+    new_users = users.filter(date_joined__gte=last_month_date).count()
+
+    # เปรียบเทียบกับเดือนที่แล้ว
+    prev_month_date = timezone.now() - datetime.timedelta(days=60)
+    total_last_month = User.objects.filter(date_joined__lt=last_month_date).count()
+    
+    growth_total = 0
+    if total_last_month > 0:
+        growth_total = ((total_users - total_last_month) / total_last_month) * 100
+
     context = {
         'users': users,
         'total_users': total_users,
         'active_users': active_users,
-        'new_users': new_users
+        'new_users': new_users,
+        'growth_total': round(growth_total, 1),
     }
     return render(request, 'matcher/user_management.html', context)
 
+# ==========================================
+# 📊 BEHAVIOR ANALYSIS (Fixed & Added)
+# ==========================================
 @user_passes_test(is_admin, login_url='matcher:admin_login')
 def behavior_analysis(request):
-    return render(request, 'matcher/behavior_analysis.html')
+    users = User.objects.all()
+    total_users = users.count()
 
-@user_passes_test(is_admin, login_url='matcher:admin_login')
-def song_database(request):
-    query = request.GET.get('q', '')
-    if query:
-        songs = Song.objects.filter(
-            Q(title__icontains=query) | Q(artist__name__icontains=query)
-        ).order_by('-song_id')
+    # 1. Age Analytics
+    avg_age_data = users.aggregate(Avg('age'))
+    avg_age = round(avg_age_data['age__avg']) if avg_age_data['age__avg'] else 0
+
+    # 2. Gender Ratio (Model uses M, F, O)
+    male_count = users.filter(gender='M').count()
+    female_count = users.filter(gender='F').count()
+    other_count = total_users - (male_count + female_count)
+
+    if total_users > 0:
+        male_percent = round((male_count / total_users) * 100, 1)
+        female_percent = round((female_count / total_users) * 100, 1)
+        other_percent = round((other_count / total_users) * 100, 1)
     else:
-        songs = Song.objects.all().order_by('-song_id')
-    context = {'songs': songs, 'query': query}
-    return render(request, 'matcher/song_database.html', context)
+        male_percent = female_percent = other_percent = 0
 
-@user_passes_test(is_admin, login_url='matcher:admin_login')
-def category_management(request):
-    mood_categories = Category.objects.filter(type='MOOD').order_by('name')
-    genre_categories = Category.objects.filter(type='GENRE').order_by('name')
+    # 3. Top Genre Overall (Based on Likes)
+    top_genre_qs = Interaction.objects.filter(type='like') \
+        .values('song__json_genre') \
+        .annotate(total_likes=Count('id')) \
+        .order_by('-total_likes')
+    
+    global_top_genre = top_genre_qs[0]['song__json_genre'] if top_genre_qs.exists() else "No Data"
 
-    # นับจำนวนเพลง (รองรับทั้งแบบเก่าและใหม่)
-    for c in mood_categories:
-        count_old = Song.objects.filter(songemotion__emotion__name__iexact=c.name).distinct().count()
-        count_new = Song.objects.filter(json_mood__iexact=c.name).count()
-        c.display_count = max(count_old, count_new) # เลือกค่าที่มากกว่า
+    # 4. Total Interactions
+    total_interactions = Interaction.objects.count()
 
-    for c in genre_categories:
-        c.display_count = Song.objects.filter(category=c).count()
+    # 5. User Specific Data
+    user_data_list = []
+    for u in users:
+        # Find favorite genre per user
+        user_fav_genre = Interaction.objects.filter(user=u, type='like') \
+            .values('song__json_genre') \
+            .annotate(c=Count('id')) \
+            .order_by('-c').first()
+        
+        user_top_genre = user_fav_genre['song__json_genre'] if user_fav_genre else None
+
+        user_data_list.append({
+            'user': u,
+            'top_genre': user_top_genre
+        })
 
     context = {
-        'mood_categories': mood_categories,
-        'genre_categories': genre_categories,
+        'avg_age': avg_age,
+        'male_percent': male_percent,
+        'female_percent': female_percent,
+        'other_percent': other_percent,
+        'top_genre': global_top_genre,
+        'total_interactions': total_interactions,
+        'user_data': user_data_list,
+    }
+    # หมายเหตุ: ชื่อ Template ต้องตรงกับไฟล์ HTML ที่คุณมี
+    return render(request, 'matcher/behavior_analysis.html', context)
+
+
+# ฟังก์ชันเปลี่ยนสถานะ (ระงับ/อนุมัติ)
+@user_passes_test(is_admin)
+def toggle_user_status(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if user == request.user:
+        messages.error(request, "ไม่สามารถระงับตัวเองได้")
+    else:
+        user.is_active = not user.is_active
+        user.save()
+        status_msg = "อนุมัติ" if user.is_active else "ระงับ"
+        messages.success(request, f"จัดการผู้ใช้ {user.username} ({status_msg}) เรียบร้อย")
+    return redirect('matcher:user_management')
+
+# ฟังก์ชันลบผู้ใช้
+@user_passes_test(is_admin)
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if user.is_staff:
+        messages.error(request, "ไม่สามารถลบ Admin ได้")
+    else:
+        user.delete()
+        messages.success(request, "ลบผู้ใช้เรียบร้อยแล้ว")
+    return redirect('matcher:user_management')
+
+# matcher/views.py
+
+from django.core.paginator import Paginator # 1. อย่าลืม import นี้ด้านบนสุดไฟล์
+
+@user_passes_test(is_admin, login_url='matcher:login')
+def song_database(request):
+    query = request.GET.get('q', '')
+    genre = request.GET.get('genre')
+    mood = request.GET.get('mood')
+
+    # ดึงเพลงทั้งหมด
+    songs_list = Song.objects.all().select_related('artist', 'album').order_by('-song_id')
+
+    # กรองข้อมูล (ถ้ามี)
+    if query:
+        songs_list = songs_list.filter(
+            Q(title__icontains=query) | 
+            Q(artist__name__icontains=query) | 
+            Q(album__title__icontains=query)
+        )
+    if genre:
+        songs_list = songs_list.filter(json_genre__icontains=genre)
+    if mood:
+        songs_list = songs_list.filter(json_mood__icontains=mood)
+
+    # 2. 🔥 จุดสำคัญ: ต้องทำ Pagination ก่อนส่งไปหน้าเว็บ
+    paginator = Paginator(songs_list, 50)  # แบ่งทีละ 50 เพลง
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number) # ได้เป็น Page Object (มี start_index)
+
+    # ข้อมูลสำหรับ Dropdown ตัวกรอง (ถ้าหน้า Admin คุณมี)
+    all_genres = Song.objects.values_list('json_genre', flat=True).distinct()
+    all_moods = Song.objects.values_list('json_mood', flat=True).distinct()
+
+    context = {
+        'songs': page_obj,  # ✅ ต้องส่ง page_obj (ไม่ใช่ songs_list)
+        'query': query,
+        'selected_genre': genre,
+        'selected_mood': mood,
+        'all_genres': sorted(filter(None, set(all_genres))),
+        'all_moods': sorted(filter(None, set(all_moods))),
+    }
+    
+    return render(request, 'matcher/song_database.html', context)
+
+@require_POST
+@user_passes_test(is_admin)
+def save_song(request):
+    # 1. รับค่าจาก Form
+    song_id = request.POST.get('song_id')
+    title = request.POST.get('title')
+    artist_name = request.POST.get('artist')
+    album_title = request.POST.get('album')
+    json_genre = request.POST.get('json_genre')
+    json_mood = request.POST.get('json_mood')
+    image_url = request.POST.get('image_url') # ✅ รับค่า URL รูปภาพ
+    
+    # 2. จัดการ Artist (หาที่มีอยู่ หรือสร้างใหม่)
+    artist, _ = Artist.objects.get_or_create(name=artist_name.strip())
+    
+    # 3. จัดการ Album (ถ้ามี)
+    album = None
+    if album_title:
+        album, created = Album.objects.get_or_create(title=album_title.strip(), artist=artist)
+        
+        # ถ้ามีการอัปโหลดรูปปกอัลบั้ม (แบบไฟล์) ก็บันทึกด้วย
+        if 'cover_image' in request.FILES:
+            album.cover_url = request.FILES['cover_image'] 
+            album.save()
+
+    # 4. บันทึกข้อมูล Song
+    if song_id: 
+        # === EDIT (แก้ไข) ===
+        song = get_object_or_404(Song, song_id=song_id)
+        song.title = title
+        song.artist = artist
+        song.album = album
+        song.json_genre = json_genre
+        song.json_mood = json_mood
+        song.image_url = image_url # ✅ บันทึก image_url
+        song.save()
+        messages.success(request, f"Updated song: {title}")
+    else: 
+        # === ADD (เพิ่มใหม่) ===
+        Song.objects.create(
+            title=title,
+            artist=artist,
+            album=album,
+            json_genre=json_genre,
+            json_mood=json_mood,
+            image_url=image_url # ✅ บันทึก image_url
+        )
+        messages.success(request, f"Added new song: {title}")
+
+    return redirect('matcher:song_database')
+
+@user_passes_test(is_admin)
+def delete_song(request, song_id):
+    song = get_object_or_404(Song, song_id=song_id)
+    title = song.title
+    song.delete()
+    messages.success(request, f"Deleted song: {title}")
+    return redirect('matcher:song_database')
+
+def category_management(request):
+    # แยกประเภทหมวดหมู่
+    moods = Category.objects.filter(type='MOOD')
+    genres = Category.objects.filter(type='GENRE')
+
+    # ฟังก์ชันช่วยนับจำนวนเพลง (Count Songs)
+    # เนื่องจาก Song เก็บเป็น json_mood/json_genre เราจะค้นหาจาก text
+    for m in moods:
+        m.display_count = Song.objects.filter(json_mood__icontains=m.name).count()
+    
+    for g in genres:
+        g.display_count = Song.objects.filter(json_genre__icontains=g.name).count()
+
+    context = {
+        'mood_categories': moods,
+        'genre_categories': genres,
+        'total_moods': moods.count(),
+        'total_genres': genres.count()
     }
     return render(request, 'matcher/category_management.html', context)
 
-@user_passes_test(is_admin, login_url='matcher:admin_login')
-def category_songs(request, category_id):
-    category = get_object_or_404(Category, id=category_id)
-    query = (request.GET.get('q') or '').strip()
+def save_category(request):
+    if request.method == "POST":
+        cat_id = request.POST.get('category_id')
+        name = request.POST.get('name')
+        cat_type = request.POST.get('type')
 
-    songs = Song.objects.select_related('artist', 'album')
+        if cat_id: # Edit
+            category = get_object_or_404(Category, pk=cat_id)
+            category.name = name
+            category.type = cat_type
+            category.save()
+        else: # Create
+            Category.objects.create(name=name, type=cat_type)
+            
+    return redirect('matcher:category_management')
 
-    if category.type == 'GENRE':
-        songs = songs.filter(category=category)
+def delete_category(request, cat_id):
+    category = get_object_or_404(Category, pk=cat_id)
+    category.delete()
+    return redirect('matcher:category_management')
 
-    elif category.type == 'MOOD':
-        # ค้นหาทั้งแบบเก่า (SongEmotion) และแบบใหม่ (json_mood)
-        songs = songs.filter(
-            Q(songemotion__emotion__name__iexact=category.name) |
-            Q(json_mood__iexact=category.name)
-        ).distinct()
-
+# (Optional) หน้าดูเพลงในหมวดนั้นๆ
+def category_songs(request, cat_id):
+    category = get_object_or_404(Category, pk=cat_id)
+    if category.type == 'MOOD':
+        songs = Song.objects.filter(json_mood__icontains=category.name)
     else:
-        songs = Song.objects.none()
+        songs = Song.objects.filter(json_genre__icontains=category.name)
+        
+    return render(request, 'matcher/song_database.html', {'songs': songs, 'query': category.name})
 
-    if query:
-        songs = songs.filter(
-            Q(title__icontains=query) |
-            Q(artist__name__icontains=query)
+def category_management(request):
+    # ดึงข้อมูลแยกประเภท
+    moods = Category.objects.filter(type='MOOD').order_by('name')
+    genres = Category.objects.filter(type='GENRE').order_by('name')
+
+    # --- ส่วนนับจำนวนเพลง (Count Songs) ---
+    # ระบบจะค้นหาว่ามีเพลงไหนที่มีคำว่าชื่อ Category อยู่ใน json_mood หรือ json_genre บ้าง
+    for m in moods:
+        m.display_count = Song.objects.filter(json_mood__icontains=m.name).count()
+    
+    for g in genres:
+        g.display_count = Song.objects.filter(json_genre__icontains=g.name).count()
+
+    context = {
+        'mood_categories': moods,
+        'genre_categories': genres,
+    }
+    return render(request, 'matcher/category_management.html', context)
+
+# ==========================================
+# 2. ฟังก์ชันบันทึก (Add / Edit)
+# ==========================================
+def save_category(request):
+    if request.method == "POST":
+        cat_id = request.POST.get('category_id') # รับ ID จาก Hidden Input ใน Modal
+        name = request.POST.get('name')
+        cat_type = request.POST.get('type')
+
+        if cat_id: 
+            # กรณีแก้ไข (Edit)
+            category = get_object_or_404(Category, pk=cat_id)
+            category.name = name
+            category.type = cat_type
+            category.save()
+            messages.success(request, f"Updated category: {name}")
+        else: 
+            # กรณีสร้างใหม่ (Add New)
+            Category.objects.create(name=name, type=cat_type)
+            messages.success(request, f"Created new category: {name}")
+            
+    return redirect('matcher:category_management')
+
+# ==========================================
+# 3. ฟังก์ชันลบ (Delete)
+# ==========================================
+def delete_song(request, song_id):
+    song = get_object_or_404(Song, pk=song_id)
+    title = song.title
+    song.delete()
+    messages.success(request, f"Deleted song: {title}")
+    return redirect('matcher:song_database')
+
+# ==========================================
+# 4. ฟังก์ชันกดดูเพลงในหมวดนั้น (View Songs)
+# ==========================================
+def category_songs(request, cat_id):
+    category = get_object_or_404(Category, pk=cat_id)
+    
+    # กรองเพลงตามประเภทของ Category
+    if category.type == 'MOOD':
+        # หาเพลงที่มีชื่อ Mood นี้อยู่ใน field json_mood
+        songs_list = Song.objects.filter(json_mood__icontains=category.name)
+    else:
+        # หาเพลงที่มีชื่อ Genre นี้อยู่ใน field json_genre
+        songs_list = Song.objects.filter(json_genre__icontains=category.name)
+
+    # ใช้ Pagination เหมือนหน้า Song Database ปกติ (50 เพลงต่อหน้า)
+    paginator = Paginator(songs_list, 50)
+    page_number = request.GET.get('page')
+    songs = paginator.get_page(page_number)
+
+    # ส่งไปที่หน้า song_database.html โดยระบุ Query เพื่อให้หน้าแสดงผลว่ากำลังดูหมวดไหน
+    context = {
+        'songs': songs,
+        'query': f"Category: {category.name}", # แสดงหัวข้อการค้นหา
+        'selected_genre': category.name if category.type == 'GENRE' else '',
+        'selected_mood': category.name if category.type == 'MOOD' else '',
+    }
+    return render(request, 'matcher/song_database.html', context)
+
+
+@login_required
+def record_interaction(request, song_id, action_type):
+    # action_type จะเป็น 'like' หรือ 'dislike'
+    song = get_object_or_404(Song, pk=song_id)
+    
+    # เช็คว่ามี interaction เดิมอยู่ไหม
+    interaction = Interaction.objects.filter(user=request.user, song=song).first()
+
+    if interaction:
+        if interaction.type == action_type:
+            # ถ้ากดซ้ำ (เช่น ชอบอยู่แล้ว กดชอบอีกที) -> ให้ลบออก (Un-like/Un-dislike)
+            interaction.delete()
+            current_action = 'none'
+        else:
+            # ถ้าเปลี่ยนใจ (เช่น จาก Dislike -> Like) -> ให้อัปเดต
+            interaction.type = action_type
+            interaction.save()
+            current_action = action_type
+    else:
+        # ถ้าไม่เคยกดมาก่อน -> สร้างใหม่
+        Interaction.objects.create(user=request.user, song=song, type=action_type)
+        current_action = action_type
+
+    # ส่งค่ากลับไปบอกหน้าเว็บว่าสถานะตอนนี้คืออะไร
+    return JsonResponse({'status': 'ok', 'action': current_action})
+
+
+# ========================================== #
+def model_management(request):
+    # ดึงข้อมูลโมเดลทั้งหมด เรียงจากล่าสุด
+    versions = ModelVersion.objects.all().order_by('-created_at')
+    
+    # ดึงงาน Retrain ล่าสุด
+    jobs = RetrainJob.objects.all().order_by('-started_at')[:10]
+
+    # หา Model ที่ Status = 'Active'
+    active_model = versions.filter(status='Active').first()
+
+    # นับจำนวน Recommendation ที่เคยทำทั้งหมด (Stats)
+    total_recs = Recommendation.objects.count()
+
+    context = {
+        'versions': versions,
+        'jobs': jobs,
+        'active_model': active_model,
+        'total_recs': total_recs
+    }
+    return render(request, 'matcher/model_management.html', context)
+
+# ========================================== #
+
+def start_training(request):
+    if request.method == 'POST':
+        # 1. รับค่าจากฟอร์ม
+        version_name = request.POST.get('version')
+        algorithm = request.POST.get('algorithm')
+        data_split = request.POST.get('data_split')
+        epoch = request.POST.get('epoch')
+        batch_size = request.POST.get('batch_size')
+        learning_rate = request.POST.get('learning_rate')
+        regularization_type = request.POST.get('regularization_type')
+        regularization_rate = request.POST.get('regularization_rate')
+
+        # 2. สร้าง ModelVersion ใหม่ (Status = Training)
+        new_model = ModelVersion.objects.create(
+            version=version_name,
+            algorithm=algorithm,
+            status='Training',  # กำลังเทรน
+            data_split=data_split,
+            epoch=int(epoch),
+            batch_size=int(batch_size),
+            learning_rate=float(learning_rate),
+            regularization_type=regularization_type,
+            regularization_rate=float(regularization_rate),
+            accuracy=0.0, # เริ่มต้นยังไม่มีความแม่นยำ
+            loss=1.0      # Loss เริ่มต้นสูงๆ ไว้ก่อน
         )
 
-    songs = songs.order_by('-song_id')
+        # 3. สร้าง Job ในคิว (เพื่อให้ระบบหลังบ้านรู้ว่าต้องเทรนตัวนี้)
+        RetrainJob.objects.create(
+            model_version=new_model,
+            status='Running'
+        )
 
-    context = {
-        'category': category,
-        'songs': songs,
-        'query': query,
-    }
-    return render(request, 'matcher/category_songs.html', context)
+        messages.success(request, f"Started training process for {version_name}!")
+        return redirect('matcher:model_management')
 
-@user_passes_test(is_admin, login_url='matcher:admin_login')
+    return redirect('matcher:model_management')
+
 def model_management(request):
-    model_list = ModelVersion.objects.all().order_by('-created_at')
-    active_model = ModelVersion.objects.filter(status='Active').first()
-    active_metrics = {'accuracy': 92.5, 'loss': 0.15}
+    versions = ModelVersion.objects.all().order_by('-created_at')
+    
+    # หาโมเดลที่กำลังเทรนอยู่ (ถ้ามี)
+    running_job = RetrainJob.objects.filter(status='Running').first()
+    
+    # หาโมเดลที่ใช้งานอยู่ (Active)
+    active_model = versions.filter(status='Active').first()
 
-    if request.method == "POST":
-        action = request.POST.get('action')
-        if action == 'retrain':
-            messages.success(request, "Retraining job started successfully!")
-            return redirect('matcher:model_management')
+    # คำนวณชื่อเวอร์ชันถัดไป (Auto-increment)
+    last_ver = versions.first()
+    if last_ver:
+        # สมมติชื่อเดิม "Model v5" -> ตัดคำแล้วบวก 1 -> "6"
+        try:
+            next_num = int(last_ver.version.split('v')[-1]) + 1
+        except:
+            next_num = versions.count() + 1
+    else:
+        next_num = 1
 
     context = {
-        'model_list': model_list,
+        'versions': versions,
+        'running_job': running_job,
         'active_model': active_model,
-        'active_metrics': active_metrics
+        'next_version': next_num, # ส่งค่าเลขเวอร์ชันถัดไป
     }
     return render(request, 'matcher/model_management.html', context)

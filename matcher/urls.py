@@ -5,7 +5,7 @@ app_name = 'matcher'
 
 urlpatterns = [
     # ==============================
-    # 🏠 Auth & Public Pages
+    # 🏠 General & Auth
     # ==============================
     path('', views.landing_view, name='landing'),
     path('home/', views.home_view, name='home'),
@@ -14,37 +14,57 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
 
     # ==============================
-    # 👤 User Features
+    # 👤 User Profile & Dashboard
+    # ==============================
+    path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('history/', views.history_view, name='history'),
+    path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+
+    # ==============================
+    # 📸 Scan & Result
     # ==============================
     path('scan/', views.scan_view, name='scan'),
     path('match-result/<int:scan_id>/', views.match_result_view, name='match_result'),
-    path('dashboard/', views.dashboard_view, name='dashboard'),
-    path('history/', views.history_view, name='history'),
-    
-    # Profile (ชื่อ function ใน views ไม่มี _view ต่อท้าย)
-    path('profile/', views.profile, name='profile'),             
-    path('edit-profile/', views.edit_profile, name='edit_profile'),
+    path('browse/', views.browse_view, name='browse'),
 
-    # Playlist & Interaction
+    # ==============================
+    # 🎵 Playlist & Interaction
+    # ==============================
     path('playlist/add/<int:song_id>/', views.add_to_playlist, name='add_to_playlist'),
-    path('api/song-search/', views.song_search_api, name='song_search_api'),
     path('api/feedback/', views.submit_feedback, name='submit_feedback'),
+    path('api/search/', views.song_search_api, name='song_search_api'),
+    path('favorite/toggle/<int:song_id>/', views.toggle_favorite, name='toggle_favorite'),
+    path('interaction/<int:song_id>/<str:action_type>/', views.record_interaction, name='record_interaction'),
 
     # ==============================
-    # 🛠 Admin Panel
+    # 🛠 Admin Panel (Custom)
     # ==============================
-    path('admin-login/', views.admin_login_view, name='admin_login'),
-    
-    # จุดที่แก้: เปลี่ยนจาก admin_panel_view เป็น admin_panel เฉยๆ
-    path('admin-panel/', views.admin_panel, name='admin_panel'), 
-    
-    # Function อื่นๆ ใน Admin (ชื่อตาม views.py ล่าสุด)
-    path('admin-panel/users/', views.user_management, name='user_management'),
-    path('admin-panel/behavior/', views.behavior_analysis, name='behavior_analysis'),
-    path('admin-panel/songs/', views.song_database, name='song_database'),
-    path('admin-panel/categories/', views.category_management, name='category_management'),
-    
-    # เพิ่ม Model Management ที่เพิ่งทำไป
-    path('admin-panel/models/', views.model_management, name='model_management'),
-    path('admin-panel/categories/<int:category_id>/songs/', views.category_songs, name='category_songs'),
+    path('admin-custom/login/', views.admin_login_view, name='admin_login'),
+    path('admin-custom/', views.admin_panel, name='admin_panel'),
+    path('admin-custom/users/', views.user_management, name='user_management'),
+    path('admin-custom/behavior/', views.behavior_analysis, name='behavior_analysis'),
+    path('admin-custom/users/toggle/<int:user_id>/', views.toggle_user_status, name='toggle_user_status'),
+    path('admin-custom/users/delete/<int:user_id>/', views.delete_user, name='delete_user'),
+
+    # --- Song Management ---
+    path('admin-custom/songs/', views.song_database, name='song_database'),
+    path('admin-custom/songs/save/', views.save_song, name='save_song'),
+    # เพิ่ม Path นี้เพื่อให้ปุ่มลบเพลงทำงานได้
+    path('admin-custom/songs/delete/<int:song_id>/', views.delete_song, name='delete_song'),
+
+    # --- Category Management (จัดระเบียบใหม่) ---
+    path('admin-custom/categories/', views.category_management, name='category_management'),
+    path('admin-custom/categories/save/', views.save_category, name='save_category'),
+    path('admin-custom/categories/delete/<int:cat_id>/', views.delete_category, name='delete_category'),
+    path('admin-custom/categories/view/<int:cat_id>/', views.category_songs, name='category_songs'),
+
+    # --- AI Model ---
+    path('admin-custom/models/', views.model_management, name='model_management'),
+    path('admin-custom/models/train/', views.start_training, name='start_training'),
+
+    # ==============================
+    # 📥 System / Import Data
+    # ==============================
+    path('system/import-songs/', views.import_songs_from_json, name='import_songs'),
 ]

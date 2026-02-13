@@ -1,6 +1,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import * # ===================== INLINES =====================
+from .models import (
+    User, UserProfile, Role, UserRole, UserSuspension,
+    Artist, Album, Category, Song,
+    Interaction, FavoriteSong, UserScanLog, PlayHistory,
+    Playlist, PlaylistItem,
+    ModelVersion, Recommendation, RetrainJob, TrainingLog
+)
+
+# ===================== INLINES =====================
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
@@ -14,9 +22,6 @@ class UserRoleInline(admin.TabularInline):
 class PlaylistItemInline(admin.TabularInline):
     model = PlaylistItem
     extra = 1
-
-# ❌ ลบ SongEmotionInline และ SongGenreInline ออก 
-# เพราะเราเปลี่ยนโครงสร้างไปเก็บใน Song โดยตรงแล้ว
 
 # ===================== 1. USER MANAGEMENT ADMIN =====================
 
@@ -36,6 +41,11 @@ class CustomUserAdmin(UserAdmin):
 class RoleAdmin(admin.ModelAdmin):
     list_display = ('role_id', 'name')
     search_fields = ('name',)
+
+@admin.register(UserSuspension)
+class UserSuspensionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'start_date', 'end_date', 'is_active')
+    list_filter = ('is_active',)
 
 # ===================== 2. CATALOG ADMIN =====================
 
@@ -57,13 +67,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
-    # โชว์ข้อมูลใหม่: json_mood, valence, energy
-    list_display = ('song_id', 'title', 'artist', 'json_mood', 'valence', 'energy', 'spotify_id')
-    list_filter = ('json_mood', 'created_at')
-    search_fields = ('title', 'artist__name', 'album__title', 'spotify_id')
-    
-    # ❌ เอา inlines ออก เพราะไม่มี SongEmotion แล้ว
-    inlines = []
+    # โชว์ข้อมูลตาม Model ใหม่
+    list_display = ('song_id', 'title', 'artist', 'category', 'json_mood', 'valence', 'energy')
+    list_filter = ('json_mood', 'category', 'created_at')
+    search_fields = ('title', 'artist__name', 'album__title', 'json_mood')
+    raw_id_fields = ('artist', 'album') 
 
 # ===================== 3. USER ACTIVITY & OTHERS ADMIN =====================
 
@@ -72,15 +80,33 @@ class InteractionAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'song', 'type', 'rating', 'created_at')
     list_filter = ('type', 'created_at')
 
+@admin.register(FavoriteSong)
+class FavoriteSongAdmin(admin.ModelAdmin):
+    list_display = ('user', 'song', 'added_at')
+
+@admin.register(PlayHistory)
+class PlayHistoryAdmin(admin.ModelAdmin):
+    list_display = ('user', 'song', 'detected_emotion', 'source', 'started_at')
+    list_filter = ('source', 'detected_emotion')
+
 @admin.register(Playlist)
 class PlaylistAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'user', 'created_at')
+    list_display = ('id', 'name', 'user', 'is_public', 'created_at')
     inlines = [PlaylistItemInline]
+
+@admin.register(UserScanLog)
+class UserScanLogAdmin(admin.ModelAdmin):
+    list_display = ('scan_id', 'user', 'detected_emotion', 'created_at')
+    readonly_fields = ('created_at',)
+
+# ===================== 4. AI MODEL SYSTEM ADMIN =====================
 
 @admin.register(ModelVersion)
 class ModelVersionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'version', 'algorithm', 'status', 'created_at')
-    list_filter = ('status',)
+    # ✅ แก้ไข: ลบ 'name' ออก ใส่ data_split, ndcg_score แทน
+    list_display = ('id', 'version', 'algorithm', 'status', 'accuracy', 'ndcg_score', 'created_at')
+    list_filter = ('status', 'algorithm')
+    search_fields = ('version',)
 
 @admin.register(Recommendation)
 class RecommendationAdmin(admin.ModelAdmin):
@@ -89,9 +115,10 @@ class RecommendationAdmin(admin.ModelAdmin):
 
 @admin.register(RetrainJob)
 class RetrainJobAdmin(admin.ModelAdmin):
-    list_display = ('job_id', 'model_version', 'status', 'started_at')
+    list_display = ('job_id', 'model_version', 'status', 'started_at', 'completed_at')
+    list_filter = ('status',)
 
-@admin.register(UserScanLog)
-class UserScanLogAdmin(admin.ModelAdmin):
-    list_display = ('scan_id', 'user', 'detected_emotion', 'created_at')
-    readonly_fields = ('created_at',)
+@admin.register(TrainingLog)
+class TrainingLogAdmin(admin.ModelAdmin):
+    list_display = ('model_version', 'epoch_number', 'training_loss', 'validation_loss')
+    list_filter = ('model_version',)

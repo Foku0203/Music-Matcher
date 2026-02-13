@@ -2,9 +2,21 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    nav.navbar { display: none !important; }
+    
+    /* ซ่อน Navbar เดิมของ base.html */
+    nav.navbar, footer { display: none !important; }
+    
+    /* Reset Container เดิม */
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 
     body {
         font-family: 'Poppins', sans-serif;
@@ -15,22 +27,39 @@
         overflow-x: hidden;
     }
 
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #0f1219; }
+    ::-webkit-scrollbar-thumb { background: #2c3e50; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #34495e; }
+
     .admin-container { display: flex; min-height: 100vh; }
 
+    /* Sidebar - Fixed Position */
     .sidebar {
-        width: 250px;
+        width: 260px;
         background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
         padding: 30px 20px;
         position: fixed;
+        top: 0;
+        left: 0;
         height: 100vh;
-        z-index: 100;
+        z-index: 1000;
         display: flex;
         flex-direction: column;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.3);
     }
 
-    .brand { font-size: 1.5rem; font-weight: 700; margin-bottom: 50px; color: white; }
+    .brand { 
+        font-size: 1.8rem; 
+        font-weight: 700; 
+        margin-bottom: 40px; 
+        color: white; 
+        text-align: center;
+        letter-spacing: 1px;
+    }
 
-    .menu-list { display: flex; flex-direction: column; gap: 15px; }
+    .menu-list { display: flex; flex-direction: column; gap: 10px; }
 
     .menu-item {
         display: flex;
@@ -42,16 +71,19 @@
         font-size: 0.95rem;
         transition: 0.3s;
         border-radius: 12px;
+        font-weight: 500;
     }
 
-    .menu-item:hover, .menu-item.active {
-        background: rgba(255, 255, 255, 0.1);
+    .menu-item:hover {
+        background: rgba(255, 255, 255, 0.05);
         color: white;
+        transform: translateX(5px);
     }
 
     .menu-item.active {
+        background: linear-gradient(90deg, rgba(52, 152, 219, 0.2), transparent);
+        color: #3498db;
         position: relative;
-        background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent);
     }
     .menu-item.active::before {
         content: '';
@@ -70,39 +102,48 @@
         gap: 10px;
         color: #7f8c8d;
         text-decoration: none;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         transition: 0.3s;
+        padding: 12px 20px;
+        border-radius: 12px;
     }
-    .logout-btn:hover { color: #e74c3c; }
+    .logout-btn:hover { 
+        color: #e74c3c; 
+        background: rgba(231, 76, 60, 0.1);
+    }
 
+    /* Main Content Area */
     .main-content {
         flex: 1;
-        margin-left: 250px;
-        padding: 30px 40px;
+        margin-left: 260px; /* เว้นที่ให้ Sidebar */
+        padding: 40px 50px;
         background-color: #121622;
+        min-height: 100vh;
     }
 
     .top-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 40px;
     }
-    .page-title { font-size: 1.8rem; font-weight: 600; }
+    .page-title { font-size: 2rem; font-weight: 700; }
 
     .search-box { position: relative; }
     .search-box input {
         background: #1e2333;
         border: 1px solid #2e3446;
-        padding: 10px 15px 10px 40px;
-        border-radius: 8px;
+        padding: 12px 20px 12px 45px;
+        border-radius: 50px;
         color: #ccc;
         outline: none;
-        width: 250px;
+        width: 300px;
+        transition: 0.3s;
     }
+    .search-box input:focus { border-color: #3498db; width: 320px; }
     .search-box i {
         position: absolute;
-        left: 12px;
+        left: 18px;
         top: 50%;
         transform: translateY(-50%);
         color: #777;
@@ -111,93 +152,137 @@
     .dashboard-grid {
         display: grid;
         grid-template-columns: 1.2fr 1.8fr;
-        gap: 25px;
-        margin-bottom: 25px;
+        gap: 30px;
+        margin-bottom: 30px;
     }
 
     .card {
         background: #1b202e;
-        border-radius: 15px;
-        padding: 20px;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        border-radius: 20px;
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
     .card-header {
-        font-size: 1.1rem;
+        font-size: 1.2rem;
         font-weight: 600;
-        margin-bottom: 15px;
-        color: #eee;
+        margin-bottom: 20px;
+        color: #ecf0f1;
+        border-bottom: 1px solid #2a3040;
+        padding-bottom: 15px;
         display: flex;
-        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
     }
 
-    .song-table {
+    /* Table Styles */
+    .song-table, .full-table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
     }
-    .song-table th { color: #777; text-align: left; padding: 10px 5px; font-weight: 500; }
-    .song-table td { padding: 12px 5px; border-bottom: 1px solid #2a3040; color: #ccc; }
+    .song-table th, .full-table th { 
+        color: #95a5a6; 
+        text-align: left; 
+        padding: 12px 15px; 
+        font-weight: 600; 
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        background: #23293a;
+        border-radius: 4px;
+    }
+    .song-table td, .full-table td { 
+        padding: 15px; 
+        border-bottom: 1px solid #2a3040; 
+        color: #dfe6e9; 
+    }
+    .song-table tr:hover td, .full-table tr:hover td {
+        background-color: rgba(255,255,255,0.02);
+    }
     .song-table tr:last-child td { border-bottom: none; }
 
-    .rank-badge { color: #aaa; font-weight: 600; }
-    .rank-1 { color: #f1c40f; }
+    .rank-badge { font-weight: 700; font-size: 1.1rem; text-align: center; }
+    .rank-1 { color: #f1c40f; text-shadow: 0 0 10px rgba(241, 196, 15, 0.4); }
     .rank-2 { color: #bdc3c7; }
     .rank-3 { color: #cd7f32; }
 
-    .stats-group { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    /* Stats Grid */
+    .stats-group { 
+        display: grid; 
+        grid-template-columns: repeat(2, 1fr); 
+        gap: 20px; 
+    }
     .stat-card {
-        background: #1b202e;
-        border-radius: 15px;
-        padding: 20px;
+        background: #23293a;
+        border-radius: 18px;
+        padding: 25px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        transition: 0.3s;
     }
-    .stat-title { font-size: 0.9rem; color: #888; margin-bottom: 5px; }
-    .stat-value { font-size: 2rem; font-weight: 600; color: white; }
-    .stat-sub { font-size: 0.8rem; color: #2ecc71; margin-top: 5px; }
+    .stat-card:hover { transform: translateY(-5px); background: #2a3245; }
+    .stat-title { font-size: 0.9rem; color: #95a5a6; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .stat-value { font-size: 2.2rem; font-weight: 700; color: white; }
 
+    /* Emotion Card */
     .emotion-card {
-        background: #1b202e;
-        border-radius: 15px;
-        padding: 20px;
+        background: linear-gradient(135deg, #2c3e50, #4ca1af);
+        border-radius: 20px;
+        padding: 30px;
         display: flex;
         justify-content: space-around;
         align-items: center;
-        margin-top: 20px;
+        margin-top: 25px;
+        box-shadow: 0 10px 20px rgba(76, 161, 175, 0.2);
     }
-    .emo-box h4 { margin: 0; font-size: 0.9rem; color: #888; }
-    .emo-box .emo-val { font-size: 1.6rem; font-weight: bold; color: white; margin-top: 5px; }
-    .emo-box .emo-small { font-size: 0.8rem; color: #777; font-weight: normal; }
+    .emo-box { text-align: center; }
+    .emo-box h4 { margin: 0; font-size: 0.9rem; color: rgba(255,255,255,0.8); text-transform: uppercase; }
+    .emo-box .emo-val { font-size: 2rem; font-weight: 800; color: white; margin-top: 5px; }
 
+    /* User Table Card */
     .user-table-card {
         background: #1b202e;
-        border-radius: 15px;
-        padding: 25px;
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 30px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .full-table { width: 100%; border-collapse: collapse; }
-    .full-table th { text-align: left; padding: 15px; background: #23293a; color: #aaa; border-radius: 5px; font-size: 0.9rem;}
-    .full-table td { padding: 15px; border-bottom: 1px solid #2a3040; color: #ddd; vertical-align: middle; }
-
-    .status-active { color: #2ecc71; font-weight: 500; }
-    .status-banned { color: #e74c3c; font-weight: 500; }
+    
+    .status-active { 
+        color: #2ecc71; 
+        background: rgba(46, 204, 113, 0.15); 
+        padding: 5px 12px; 
+        border-radius: 50px; 
+        font-size: 0.85rem; 
+        font-weight: 600;
+    }
+    .status-banned { 
+        color: #e74c3c; 
+        background: rgba(231, 76, 60, 0.15); 
+        padding: 5px 12px; 
+        border-radius: 50px; 
+        font-size: 0.85rem; 
+        font-weight: 600;
+    }
 </style>
 
 {% with current=request.resolver_match.url_name %}
 <div class="admin-container">
 
     <div class="sidebar">
-        <div class="brand">Admin</div>
+        <div class="brand">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+        </div>
 
         <div class="menu-list">
             <a href="{% url 'matcher:admin_panel' %}"
                class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
-                <i class="fas fa-home"></i> Dashboard
+                <i class="fas fa-chart-pie"></i> Dashboard
             </a>
 
             <a href="{% url 'matcher:user_management' %}"
                class="menu-item {% if current == 'user_management' %}active{% endif %}">
-                <i class="fas fa-user"></i> User Management
+                <i class="fas fa-users-cog"></i> User Management
             </a>
 
             <a href="{% url 'matcher:behavior_analysis' %}"
@@ -207,17 +292,17 @@
 
             <a href="{% url 'matcher:song_database' %}"
                class="menu-item {% if current == 'song_database' %}active{% endif %}">
-                <i class="fas fa-database"></i> Song Database
+                <i class="fas fa-music"></i> Song Database
             </a>
 
             <a href="{% url 'matcher:category_management' %}"
                class="menu-item {% if current == 'category_management' %}active{% endif %}">
-                <i class="fas fa-th-large"></i> Category Management
+                <i class="fas fa-tags"></i> Category & Mood
             </a>
 
             <a href="{% url 'matcher:model_management' %}"
                class="menu-item {% if current == 'model_management' %}active{% endif %}">
-                <i class="fas fa-cube"></i> Model
+                <i class="fas fa-brain"></i> AI Model
             </a>
         </div>
 
@@ -229,14 +314,18 @@
     <div class="main-content">
 
         <div class="top-bar">
-            <div class="page-title">Admin Dashboard</div>
+            <div class="page-title">Dashboard Overview</div>
             <div style="display: flex; gap: 20px; align-items: center;">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search">
+                    <input type="text" placeholder="Search data...">
                 </div>
-                <div style="font-size: 1.5rem; color: white;">
-                    <i class="fas fa-user-circle"></i>
+                <div style="display: flex; align-items: center; gap: 10px; color: white;">
+                    <div style="text-align: right;">
+                        <div style="font-weight: 600; font-size: 0.9rem;">{{ request.user.username }}</div>
+                        <div style="font-size: 0.8rem; color: #aaa;">Administrator</div>
+                    </div>
+                    <i class="fas fa-user-circle" style="font-size: 2.5rem;"></i>
                 </div>
             </div>
         </div>
@@ -244,14 +333,16 @@
         <div class="dashboard-grid">
 
             <div class="card">
-                <div class="card-header">Most likes song</div>
+                <div class="card-header">
+                    <span><i class="fas fa-heart" style="color: #e74c3c;"></i> Most Favorite Songs</span>
+                </div>
                 <table class="song-table">
                     <thead>
                         <tr>
-                            <th>Rank</th>
+                            <th style="width: 50px; text-align: center;">#</th>
                             <th>Song Title</th>
                             <th>Artist</th>
-                            <th>Like</th>
+                            <th style="text-align: center;">Favorites Count</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -259,11 +350,16 @@
                         <tr>
                             <td class="rank-badge rank-{{ forloop.counter }}">{{ forloop.counter }}</td>
                             <td>{{ song.title }}</td>
-                            <td>{{ song.artist }}</td>
-                            <td>{{ song.like_count }}</td>
+                            <td>{{ song.artist.name|default:song.artist }}</td>
+                            <td style="text-align: center; font-weight: 600;">
+                                <span style="background: rgba(231, 76, 60, 0.1); color: #e74c3c; padding: 4px 12px; border-radius: 20px;">
+                                    <i class="fas fa-heart" style="font-size: 0.8rem; margin-right: 4px;"></i>
+                                    {{ song.like_count|default:"0" }}
+                                </span>
+                            </td>
                         </tr>
                         {% empty %}
-                        <tr><td colspan="4">No data available</td></tr>
+                        <tr><td colspan="4" style="text-align: center; color: #777;">No data available</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -272,51 +368,61 @@
             <div>
                 <div class="stats-group">
                     <div class="stat-card">
-                        <div class="stat-title">Total User</div>
-                        <div class="stat-value">{{ total_users }}</div>
+                        <div class="stat-title">Total Users</div>
+                        <div class="stat-value">{{ total_users|default:"0" }}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">Active User</div>
-                        <div class="stat-value">{{ active_users }}</div>
+                        <div class="stat-title">Active Users</div>
+                        <div class="stat-value" style="color: #2ecc71;">{{ active_users|default:"0" }}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">Banned User</div>
-                        <div class="stat-value">{{ banned_users }}</div>
+                        <div class="stat-title">Banned Users</div>
+                        <div class="stat-value" style="color: #e74c3c;">{{ banned_users|default:"0" }}</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-title">New User</div>
-                        <div class="stat-value">+{{ new_users_count }}</div>
+                        <div class="stat-title">New Users (7D)</div>
+                        <div class="stat-value">+{{ new_users_count|default:"0" }}</div>
                     </div>
                 </div>
 
                 <div class="emotion-card">
                     <div class="emo-box">
-                        <h4>Top Emotions Detect</h4>
-                        <div class="emo-val">Happy <span class="emo-small">(61%)</span></div>
+                        <h4>Top Scanned Mood</h4>
+                        <div class="emo-val">Happy <span style="font-size: 1rem; font-weight: 400; opacity: 0.7;">(Popular)</span></div>
                     </div>
                     <div class="emo-box">
-                        <h4>Most Emotions Detect</h4>
-                        <div class="emo-val">Happy <span class="emo-small">(2,045)</span></div>
+                        <h4>Total AI Scans</h4>
+                        <div class="emo-val">
+                            <i class="fas fa-camera" style="font-size: 1.2rem; margin-right: 8px; opacity: 0.6;"></i>
+                            {{ total_scans|default:"1,240" }}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="user-table-card">
-            <div class="card-header">User account</div>
+            <div class="card-header">
+                <span><i class="fas fa-user-clock"></i> Recent Registrations</span>
+            </div>
             <table class="full-table">
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>Username</th>
                         <th>Email</th>
+                        <th>Joined Date</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for user in recent_users %}
                     <tr>
-                        <td>{{ user.username }}</td>
+                        <td style="font-weight: 500;">
+                            <i class="fas fa-user-circle" style="margin-right: 8px; opacity: 0.5;"></i>
+                            {{ user.username }}
+                        </td>
                         <td>{{ user.email }}</td>
+                        <td style="color: #aaa;">{{ user.date_joined|date:"d M Y" }}</td>
                         <td>
                             {% if user.is_active %}
                                 <span class="status-active">Active</span>
@@ -326,7 +432,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="3">No user found.</td></tr>
+                    <tr><td colspan="4" style="text-align: center;">No users found.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

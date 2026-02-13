@@ -1,17 +1,26 @@
 {% extends 'matcher/base.html' %}
 {% load static %}
 
+{% block title %}Admin Login - Music Matcher{% endblock %}
+
 {% block content %}
 <style>
-    /* ซ่อน Navbar เดิมเพื่อให้หน้า Admin Login สวยเต็มจอ */
-    nav.navbar { display: none; }
+    /* ซ่อน Navbar และ Footer เดิมของ base.html เพื่อให้หน้า Login เต็มจอ */
+    nav.navbar, footer { display: none !important; }
+    
+    /* ปรับ Container หลักของ base.html ให้เต็มจอ */
+    .container { 
+        width: 100% !important; 
+        max-width: 100% !important; 
+        padding: 0 !important; 
+        margin: 0 !important; 
+    }
 
     /* 1. พื้นหลัง & ธีม (Gradient ให้ดูเข้มขลังกว่า User ทั่วไป) */
     body {
         margin: 0;
         height: 100vh;
         font-family: 'Poppins', sans-serif;
-        /* ปรับสีให้มีความเป็น Admin (สีเข้มขึ้น หรือผสมส้ม/แดง) */
         background: linear-gradient(120deg, #2c3e50, #8e44ad, #e67e22);
         display: flex;
         align-items: center;
@@ -56,18 +65,20 @@
     /* 4. การ์ด Admin Login */
     .login-card {
         background: white;
-        width: 500px;
+        width: 100%;
+        max-width: 450px; /* ปรับขนาดให้พอดี */
         padding: 50px 40px;
         border-radius: 20px;
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         text-align: center;
         position: relative;
         z-index: 10;
-        border-top: 6px solid #e67e22; /* ขีดส้มด้านบนบ่งบอก Admin */
+        border-top: 6px solid #e67e22;
+        margin: auto; /* จัดกึ่งกลาง */
     }
 
     .login-title {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         font-weight: 700;
         margin-bottom: 5px;
         color: #2d3436;
@@ -91,6 +102,7 @@
     .input-group {
         margin-bottom: 20px;
         position: relative;
+        text-align: left;
     }
     .input-icon {
         position: absolute;
@@ -111,14 +123,12 @@
         transition: 0.3s;
         background-color: #f9f9f9;
         color: #333;
+        box-sizing: border-box; /* สำคัญ: ป้องกัน input ล้นการ์ด */
     }
     .form-control-custom:focus {
-        border-color: #e67e22; /* สีส้มเมื่อคลิก */
+        border-color: #e67e22;
         background-color: #fff;
         box-shadow: 0 0 10px rgba(230, 126, 34, 0.2);
-    }
-    .form-control-custom:focus + .input-icon {
-        color: #e67e22;
     }
 
     /* ปุ่ม Login */
@@ -130,7 +140,7 @@
         padding: 15px;
         border-radius: 50px;
         border: none;
-        font-size: 1.3rem;
+        font-size: 1.2rem;
         cursor: pointer;
         margin-top: 10px;
         transition: 0.3s;
@@ -139,6 +149,17 @@
     .btn-login:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 20px rgba(211, 84, 0, 0.5);
+    }
+
+    /* Error Message Style */
+    .error-box {
+        background-color: #fee;
+        color: #e74c3c;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        border: 1px solid #fcc;
     }
 
     /* ปุ่มกลับหน้าแรก */
@@ -155,7 +176,6 @@
     }
     .back-link:hover { color: white; transform: translateX(-5px); }
 
-    /* ลิงก์ด้านล่าง */
     .bottom-links {
         margin-top: 25px;
         font-size: 0.9rem;
@@ -182,28 +202,34 @@
     </svg>
 </div>
 
-<div class="login-card" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+<div class="login-card">
     
     <div style="font-size: 3rem; color: #e67e22; margin-bottom: 10px;">
         <i class="fas fa-user-shield"></i>
     </div>
-    <h1 class="login-title">Admin Login</h1>
-    <div class="admin-badge">Staff Access Only</div>
+    <h1 class="login-title">Admin Panel</h1>
+    <div class="admin-badge">Authorized Personnel Only</div>
 
-    <form method="post">
-        {% csrf_token %}
-        
-        {% if messages %}
-        <div style="color: #e74c3c; margin-bottom: 15px; font-size: 0.9rem;">
+    {% if messages %}
+        <div class="error-box">
             {% for message in messages %}
-                {{ message }}
+                <i class="fas fa-exclamation-circle"></i> {{ message }}<br>
             {% endfor %}
         </div>
-        {% endif %}
+    {% endif %}
+
+    {% if form.errors %}
+        <div class="error-box">
+            <i class="fas fa-exclamation-triangle"></i> ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง
+        </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'matcher:admin_login' %}">
+        {% csrf_token %}
         
         <div class="input-group">
             <i class="far fa-user input-icon"></i>
-            <input type="text" name="username" class="form-control-custom" placeholder="Admin Username" required>
+            <input type="text" name="username" class="form-control-custom" placeholder="Admin Username" required autofocus>
         </div>
 
         <div class="input-group">
@@ -212,12 +238,12 @@
         </div>
 
         <button type="submit" class="btn-login">
-            LOGIN TO DASHBOARD
+            ACCESS DASHBOARD <i class="fas fa-sign-in-alt"></i>
         </button>
     </form>
 
     <div class="bottom-links">
-        Not an Admin? <a href="{% url 'matcher:login' %}">User Login</a>
+        Not an Admin? <a href="{% url 'matcher:login' %}">Member Login</a>
     </div>
 </div>
 

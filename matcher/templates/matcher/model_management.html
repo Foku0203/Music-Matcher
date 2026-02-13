@@ -1,201 +1,383 @@
-{% extends 'base.html' %}
+{% extends 'matcher/base.html' %}
 {% load static %}
 
 {% block content %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-    .glass-panel {
-        background: rgba(20, 20, 35, 0.6);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 15px;
-        padding: 20px;
-        color: white;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    /* --- CSS เฉพาะหน้า Model Management --- */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 25px;
+        margin-top: 20px;
     }
 
-    .stat-card {
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    .control-card {
+        background: #1b202e;
+        border-radius: 16px;
+        padding: 25px;
+        border: 1px solid rgba(255,255,255,0.05);
+        height: fit-content;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    .stat-number {
-        font-size: 2rem;
-        font-weight: bold;
-        background: linear-gradient(90deg, #00d2ff 0%, #3a7bd5 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-
-    .btn-train {
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        color: white;
-        border: none;
-        padding: 10px 25px;
-        border-radius: 25px;
-        font-weight: bold;
-        transition: transform 0.2s;
-        text-decoration: none; /* แก้เส้นใต้ */
-        display: inline-block;
-    }
-
-    .btn-train:hover {
-        transform: scale(1.05);
-        color: white;
-        box-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
-    }
-
-    .status-badge {
-        padding: 5px 12px;
-        border-radius: 15px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-    .status-active { background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid #2ecc71; }
-    .status-training { background: rgba(241, 196, 15, 0.2); color: #f1c40f; border: 1px solid #f1c40f; }
-    .status-archived { background: rgba(149, 165, 166, 0.2); color: #95a5a6; border: 1px solid #95a5a6; }
-
-    /* Table Styles */
-    .custom-table {
+    /* Form Styles */
+    .setting-group { margin-bottom: 15px; }
+    .setting-label { display: block; color: #a0a0a0; font-size: 0.85rem; margin-bottom: 5px; font-weight: 500; }
+    
+    .dark-input, .dark-select {
         width: 100%;
-        color: #e0e0e0;
-        border-collapse: separate;
-        border-spacing: 0 10px;
+        background: #121622;
+        border: 1px solid #2e3446;
+        color: white;
+        padding: 10px 12px;
+        border-radius: 8px;
+        outline: none;
+        transition: 0.3s;
+        font-family: 'Poppins', sans-serif;
+        box-sizing: border-box;
     }
-    .custom-table th {
-        text-align: left;
-        padding: 15px;
+    .dark-input:focus, .dark-select:focus { border-color: #3498db; background: #161b2a; }
+
+    /* Button Groups */
+    .control-btn-group {
+        display: flex;
+        background: #121622;
+        border-radius: 8px;
+        padding: 4px;
+        margin-bottom: 20px;
+        border: 1px solid #2e3446;
+        gap: 5px;
+    }
+    .control-btn {
+        flex: 1;
+        background: transparent;
+        border: none;
         color: #a0a0a0;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 6px;
         font-weight: 600;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+        transition: 0.3s;
+        display: flex; align-items: center; justify-content: center; gap: 5px;
     }
-    .custom-table td {
-        background: rgba(255, 255, 255, 0.05);
+    .btn-run:hover, .btn-run.active { background: #27ae60; color: white; }
+    .btn-pause:hover { background: #f39c12; color: white; }
+    .btn-stop:hover { background: #c0392b; color: white; }
+
+    .btn-upload-large {
+        width: 100%;
+        background: rgba(52, 152, 219, 0.05);
+        border: 1px dashed #3498db;
+        color: #3498db;
+        padding: 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: 0.3s;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+    .btn-upload-large:hover { background: rgba(52, 152, 219, 0.15); transform: translateY(-2px); }
+
+    /* Right Panel Styles */
+    .graph-container {
+        height: 300px;
+        background: #121622;
+        border-radius: 12px;
         padding: 15px;
+        margin-bottom: 25px;
+        border: 1px solid #2e3446;
+        position: relative;
     }
-    .custom-table tr td:first-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
-    .custom-table tr td:last-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+
+    .model-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
+    .model-table th { text-align: left; color: #888; padding: 12px 10px; border-bottom: 1px solid #2e3446; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    .model-table td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+    .model-table tr:hover td { background: rgba(255,255,255,0.02); }
+    
+    .acc-high { color: #2ecc71; font-weight: bold; }
+    .acc-mid { color: #f1c40f; }
+    .acc-low { color: #e74c3c; }
+
+    /* Status Badges */
+    .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .status-Active { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+    .status-Training { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); animation: pulse 2s infinite; }
+    .status-Draft { background: rgba(149, 165, 166, 0.15); color: #95a5a6; border: 1px solid rgba(149, 165, 166, 0.3); }
+    .status-Archived { background: #121622; color: #7f8c8d; border: 1px solid #2e3446; }
+
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+    .action-btn-group { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
+    .btn-action { padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; color: white; font-weight: 500; transition: 0.2s; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
+    .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
 </style>
 
-<div class="container-fluid p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="text-white fw-bold">AI Model Management</h2>
-        
-        <div class="input-group" style="width: 300px;">
-            <input type="text" class="form-control" placeholder="Search version..." style="background: rgba(255,255,255,0.1); border: none; color: white;">
-            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+{% with current=request.resolver_match.url_name %}
+<div class="admin-container">
+
+    <div class="sidebar">
+        <div class="brand"><i class="fas fa-shield-alt"></i> Admin Panel</div>
+        <div class="menu-list">
+            <a href="{% url 'matcher:admin_panel' %}" class="menu-item {% if current == 'admin_panel' %}active{% endif %}">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </a>
+            <a href="{% url 'matcher:user_management' %}" class="menu-item {% if current == 'user_management' %}active{% endif %}">
+                <i class="fas fa-users-cog"></i> User Management
+            </a>
+            <a href="{% url 'matcher:behavior_analysis' %}" class="menu-item {% if current == 'behavior_analysis' %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Behavior Analysis
+            </a>
+            <a href="{% url 'matcher:song_database' %}" class="menu-item {% if current == 'song_database' %}active{% endif %}">
+                <i class="fas fa-music"></i> Song Database
+            </a>
+            <a href="{% url 'matcher:category_management' %}" class="menu-item {% if current == 'category_management' %}active{% endif %}">
+                <i class="fas fa-tags"></i> Category & Mood
+            </a>
+            <a href="{% url 'matcher:model_management' %}" class="menu-item {% if current == 'model_management' %}active{% endif %}">
+                <i class="fas fa-brain"></i> AI Model
+            </a>
         </div>
+        <a href="{% url 'matcher:logout' %}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
     </div>
 
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="stat-card">
-                <h6 class="text-muted text-uppercase mb-2">Current Version</h6>
-                <div class="stat-number">{{ active_model.version|default:"v1.0.0" }}</div>
-                <small class="text-success"><i class="fas fa-check-circle"></i> Active</small>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <h6 class="text-muted text-uppercase mb-2">Accuracy</h6>
-                <div class="stat-number">{{ active_metrics.accuracy|default:"92.5" }}%</div>
-                <small class="text-white">+1.2% from last ver.</small>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <h6 class="text-muted text-uppercase mb-2">Loss</h6>
-                <div class="stat-number">{{ active_metrics.loss|default:"0.15" }}</div>
-                <small class="text-white">Validation Loss</small>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="stat-card">
-                <h6 class="text-muted text-uppercase mb-2">Total Scans</h6>
-                <div class="stat-number">18,166</div>
-                <small class="text-white">Training Data</small>
-            </div>
-        </div>
-    </div>
+    <div class="main-content">
 
-    <div class="glass-panel">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="m-0">Model Version History</h4>
-            <form method="post" action="#"> 
-                {% csrf_token %}
-                <button type="submit" name="action" value="retrain" class="btn-train">
-                    <i class="fas fa-robot me-2"></i> Retrain New Model
-                </button>
-            </form>
+        <div class="top-bar">
+            <div>
+                <div class="page-title">AI Model Management</div>
+                <div class="page-subtitle">Configure, train, and monitor your recommendation algorithms</div>
+            </div>
+            <div style="text-align: right;">
+                <span style="color:#aaa; font-size:0.9rem;">Server Status:</span>
+                <span style="color:#2ecc71; font-weight:600;"><i class="fas fa-circle" style="font-size:0.6rem; margin-bottom:2px;"></i> Online</span>
+            </div>
         </div>
 
-        <div class="table-responsive">
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>Version</th>
-                        <th>Algorithm</th>
-                        <th>Created Date</th>
-                        <th>Status</th>
-                        <th>Metrics (Acc / Loss)</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for model in model_list %}
-                    <tr>
-                        <td class="fw-bold text-white">{{ model.version }}</td>
-                        <td>{{ model.algorithm }}</td>
-                        <td>{{ model.created_at|date:"d M Y, H:i" }}</td>
-                        <td>
-                            {% if model.status == 'Active' %}
-                                <span class="status-badge status-active">Active</span>
-                            {% elif model.status == 'Training' %}
-                                <span class="status-badge status-training">Training...</span>
-                            {% else %}
-                                <span class="status-badge status-archived">Archived</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="text-info">{{ model.accuracy }}%</span> / 
-                            <span class="text-muted">{{ model.loss }}</span>
-                        </td>
-                        <td>
-                            {% if model.status != 'Active' and model.status != 'Training' %}
-                                <a href="#" class="btn btn-sm btn-outline-light rounded-pill px-3">Switch to this</a>
-                            {% endif %}
-                            <button class="btn btn-sm btn-outline-danger rounded-circle ms-2" title="Delete">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td class="fw-bold text-white">v1.2.0 (Latest)</td>
-                        <td>CNN + MobileNetV2</td>
-                        <td>24 Dec 2024, 10:30</td>
-                        <td><span class="status-badge status-active">Active</span></td>
-                        <td><span class="text-info">94.5%</span> / 0.12</td>
-                        <td><span class="text-muted">-</span></td>
-                    </tr>
-                    <tr>
-                        <td class="fw-bold text-white">v1.1.5</td>
-                        <td>CNN Basic</td>
-                        <td>20 Dec 2024, 14:15</td>
-                        <td><span class="status-badge status-archived">Archived</span></td>
-                        <td><span class="text-info">89.2%</span> / 0.21</td>
-                        <td>
-                            <a href="#" class="btn btn-sm btn-outline-light rounded-pill px-3">Deploy</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <div class="dashboard-grid">
+            
+            <div class="control-card">
+                <h3 style="margin-top:0; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-sliders-h" style="color:#3498db;"></i> Configuration
+                </h3>
+
+                <form method="post" action="#"> 
+                    {% csrf_token %}
+                    
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                        <div class="setting-group" style="flex:1;">
+                            <label class="setting-label">Algorithm</label>
+                            <select name="algorithm" class="dark-select">
+                                <option value="Classification">CNN (Audio Feature)</option>
+                                <option value="Collaborative">Collaborative Filtering</option>
+                                <option value="Hybrid">Hybrid System</option>
+                            </select>
+                        </div>
+                        <div class="setting-group" style="flex:1;">
+                            <label class="setting-label">Version Name</label>
+                            <input type="text" name="version" class="dark-input" value="Model v{{ next_version|default:'1.0' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="control-btn-group">
+                        <button type="submit" class="control-btn btn-run" title="Start Training">
+                            <i class="fas fa-play"></i> Run Training
+                        </button>
+                        <button type="button" class="control-btn btn-pause">
+                            <i class="fas fa-pause"></i>
+                        </button>
+                        <button type="button" class="control-btn btn-stop">
+                            <i class="fas fa-stop"></i>
+                        </button>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Data Split (Train / Val / Test)</label>
+                        <select name="data_split" class="dark-select">
+                            <option value="80/10/10">80% / 10% / 10% (Standard)</option>
+                            <option value="70/20/10">70% / 20% / 10% (Robust Val)</option>
+                            <option value="60/20/20">60% / 20% / 20% (Research)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Epochs</label>
+                        <select name="epoch" class="dark-select">
+                            <option value="16">16 Epochs</option>
+                            <option value="32" selected>32 Epochs</option>
+                            <option value="64">64 Epochs</option>
+                            <option value="100">100 Epochs</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <div class="setting-group" style="flex:1;">
+                            <label class="setting-label">Batch Size</label>
+                            <select name="batch_size" class="dark-select">
+                                <option value="16">16</option>
+                                <option value="32" selected>32</option>
+                                <option value="64">64</option>
+                            </select>
+                        </div>
+                        <div class="setting-group" style="flex:1;">
+                            <label class="setting-label">Learning Rate</label>
+                            <select name="learning_rate" class="dark-select">
+                                <option value="0.001">0.001</option>
+                                <option value="0.01" selected>0.01</option>
+                                <option value="0.1">0.1</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="setting-group">
+                        <label class="setting-label">Regularization (Prevent Overfitting)</label>
+                        <div style="display:flex; gap:10px;">
+                            <select name="regularization_type" class="dark-select" style="flex:1;">
+                                <option value="L1">L1 (Lasso)</option>
+                                <option value="L2" selected>L2 (Ridge)</option>
+                                <option value="None">None</option>
+                            </select>
+                            <input type="number" name="regularization_rate" class="dark-input" value="0.01" step="0.01" style="width:80px;">
+                        </div>
+                    </div>
+
+                    <div class="btn-upload-large" onclick="document.getElementById('file-upload').click()">
+                        <i class="fas fa-cloud-upload-alt" style="font-size: 1.8rem; margin-bottom: 10px; display:block;"></i>
+                        Upload Pre-trained Model (.h5 / .pkl)
+                        <input type="file" id="file-upload" name="model_file" style="display: none;">
+                    </div>
+                </form>
+            </div>
+
+            <div class="control-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                    <h3 style="margin:0;"><i class="fas fa-chart-line" style="color:#2ecc71;"></i> Monitoring</h3>
+                    
+                    {% if running_job %}
+                    <div style="text-align:right;">
+                         <span class="status-badge status-Training">
+                            <i class="fas fa-sync fa-spin"></i> Training: {{ running_job.model_version.version }}
+                         </span>
+                    </div>
+                    {% else %}
+                    <div style="text-align:right; color:#888;">
+                        <i class="fas fa-check-circle"></i> System Idle
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="graph-container">
+                    <canvas id="trainingChart"></canvas>
+                </div>
+
+                <h4 style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; color:#ddd;">
+                    Model History
+                    <span style="font-size:0.8rem; color:#888;">Latest 5 versions</span>
+                </h4>
+                
+                <table class="model-table">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Status</th>
+                            <th>Split</th>
+                            <th>Accuracy</th>
+                            <th>NDCG</th>
+                            <th>Loss</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in versions %}
+                        <tr>
+                            <td style="font-weight:600; color:white;">{{ v.version }}</td>
+                            <td><span class="status-badge status-{{ v.status }}">{{ v.status }}</span></td>
+                            <td style="color:#888; font-size:0.8rem;">{{ v.data_split }}</td>
+                            
+                            <td class="{% if v.accuracy > 0.8 %}acc-high{% elif v.accuracy > 0.5 %}acc-mid{% else %}acc-low{% endif %}">
+                                {{ v.accuracy|floatformat:2 }}
+                            </td>
+                            
+                            <td style="color:#3498db; font-weight:600;">{{ v.ndcg_score|floatformat:2 }}</td>
+                            <td style="color:#e74c3c;">{{ v.loss|floatformat:3 }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align:center; padding:30px; color:#666;">No models found. Start training first.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="action-btn-group">
+                    <button class="btn-action" style="background:#e74c3c;">
+                        <i class="fas fa-undo"></i> Rollback
+                    </button>
+                    <button class="btn-action" style="background:#34495e;">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                    {% if active_model %}
+                    <button class="btn-action" style="background:#2ecc71; color:#fff; cursor:default;" disabled>
+                        <i class="fas fa-check"></i> {{ active_model.version }} Active
+                    </button>
+                    {% else %}
+                    <button class="btn-action" style="background:#2980b9;">
+                        <i class="fas fa-star"></i> Promote Active
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+
     </div>
 </div>
+{% endwith %}
+
+<script>
+    const ctx = document.getElementById('trainingChart').getContext('2d');
+    const trainingChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // Epochs
+            datasets: [{
+                label: 'Training Loss',
+                data: [0.9, 0.7, 0.6, 0.5, 0.45, 0.4, 0.38, 0.35, 0.33, 0.3],
+                borderColor: '#3498db',
+                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
+            }, {
+                label: 'Validation Loss',
+                data: [0.95, 0.75, 0.65, 0.55, 0.5, 0.48, 0.45, 0.44, 0.43, 0.42],
+                borderColor: '#2ecc71',
+                borderWidth: 2,
+                borderDash: [5, 5],
+                tension: 0.4,
+                pointRadius: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { labels: { color: '#aaa' } }
+            },
+            scales: {
+                x: { 
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#888' }
+                },
+                y: { 
+                    grid: { color: 'rgba(255,255,255,0.05)' },
+                    ticks: { color: '#888' }
+                }
+            }
+        }
+    });
+</script>
 
 {% endblock %}

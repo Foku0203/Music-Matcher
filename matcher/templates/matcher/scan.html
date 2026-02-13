@@ -3,39 +3,45 @@
 
 {% block content %}
 <style>
-    /* Theme Style (คงเดิม ไม่แตะต้อง) */
-    body { margin: 0; height: 100vh; font-family: 'Poppins', sans-serif; background: linear-gradient(120deg, #2980b9, #8e44ad, #ff7e5f); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    /* =========================================
+       1. Page Layout & Background
+       ========================================= */
+    .scan-page-root {
+        min-height: 100vh;
+        width: 100%;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(120deg, #2980b9, #8e44ad, #ff7e5f);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow-x: hidden; /* ป้องกันการเลื่อนซ้ายขวาเกินจอ */
+    }
+
+    /* =========================================
+       2. Floating Musical Notes Animation
+       ========================================= */
     .music-note { position: absolute; color: rgba(255, 255, 255, 0.2); animation: float 6s ease-in-out infinite; z-index: 1; pointer-events: none; }
     .note-1 { top: 15%; left: 10%; font-size: 100px; animation-delay: 0s; }
     .note-2 { top: 60%; right: 10%; font-size: 80px; animation-delay: 2s; }
     .note-3 { top: 10%; right: 30%; font-size: 50px; animation-delay: 4s; }
-    @keyframes float { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(10deg); } }
-    .wave { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; z-index: 1; }
-    .wave svg { position: relative; display: block; width: calc(138% + 1.3px); height: 150px; }
-    .wave .shape-fill { fill: #FFFFFF; }
-    .wave-top .shape-fill {fill: #FFFFFF;}
-    .scan-card { background: rgba(255, 255, 255, 0.95); width: 90%; max-width: 550px; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.2); text-align: center; position: relative; z-index: 10; border: 1px solid rgba(255,255,255,0.5); }
-    .scan-title { font-size: 2.2rem; font-weight: 700; color: #2d3436; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-    .scan-desc { color: #636e72; margin-bottom: 30px; font-size: 1rem; }
-    .upload-area { border: 2px dashed #3498db; border-radius: 15px; background-color: #f0f8ff; padding: 40px 20px; cursor: pointer; transition: 0.3s; position: relative; }
-    .upload-area:hover { background-color: #e1f0ff; transform: translateY(-2px); border-color: #2980b9; }
-    .upload-icon { font-size: 4rem; color: #3498db; margin-bottom: 15px; transition: 0.3s; }
-    .upload-area:hover .upload-icon { transform: scale(1.1); }
-    .btn-analyze { background: linear-gradient(to right, #2980b9, #8e44ad); color: white; border: none; padding: 15px 40px; font-size: 1.2rem; font-weight: 600; border-radius: 50px; margin-top: 30px; cursor: pointer; width: 100%; box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4); transition: 0.3s; }
-    .btn-analyze:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(142, 68, 173, 0.6); }
-    
-    /* Footer Menu Style */
-    .footer-menu { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 50px; z-index: 20; }
-    .menu-item { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #555; font-weight: 600; font-size: 0.9rem; transition: 0.3s; padding: 10px 20px; border-radius: 30px; background: rgba(255,255,255,0.8); }
-    .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-    .menu-item.active { color: #2980b9; background: white; box-shadow: 0 5px 15px rgba(255, 255, 255, 0.1); }
-
-    /* ================= เพิ่มตัวโน้ตเด้ง ๆ เพิ่มเติม ================ */
     .note-4 { bottom: 20%; left: 5%; font-size: 60px; animation-delay: 1s; }
     .note-5 { bottom: 25%; right: 6%; font-size: 70px; animation-delay: 3s; }
     .note-6 { top: 40%; left: 45%; font-size: 40px; animation-delay: 4.5s; }
 
-    /* ================= เพิ่มคลื่นน้ำด้านบน ================ */
+    @keyframes float { 
+        0%, 100% { transform: translateY(0) rotate(0deg); } 
+        50% { transform: translateY(-20px) rotate(10deg); } 
+    }
+
+    /* =========================================
+       3. Decorative Waves
+       ========================================= */
+    .wave { position: absolute; bottom: 0; left: 0; width: 100%; line-height: 0; z-index: 1; pointer-events: none; }
+    .wave svg { position: relative; display: block; width: calc(138% + 1.3px); height: 150px; }
+    .wave .shape-fill { fill: #FFFFFF; }
+    
     .wave-top {
         position: absolute;
         top: 0;
@@ -45,31 +51,75 @@
         z-index: 1;
         transform: rotate(180deg);
         opacity: 0.9;
+        pointer-events: none;
     }
+    .wave-top .shape-fill { fill: #FFFFFF; }
 
-    /* ================= Center ใหม่ + ขยายการ์ด (override เดิม) ================ */
+    /* =========================================
+       4. Main Content Card
+       ========================================= */
     .scan-wrapper {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        position: relative;
         width: 100%;
         max-width: 900px;
         display: flex;
         justify-content: center;
-        padding: 20px;
+        padding: 100px 20px 120px 20px; /* เว้นที่บนล่างให้ปุ่ม Back และ Menu */
         box-sizing: border-box;
         z-index: 10;
     }
 
-    /* override ขนาดการ์ดเดิมให้ใหญ่ขึ้น */
     .scan-card {
-        max-width: 650px;
+        background: rgba(255, 255, 255, 0.95);
         width: 100%;
-        padding: 50px 50px;
+        max-width: 600px;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        text-align: center;
+        position: relative;
+        border: 1px solid rgba(255,255,255,0.5);
     }
 
-    /* ==================== ปุ่มย้อนกลับ ==================== */
+    .scan-title { font-size: 2.2rem; font-weight: 700; color: #2d3436; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+    .scan-desc { color: #636e72; margin-bottom: 30px; font-size: 1rem; }
+
+    /* =========================================
+       5. Upload Area & Button
+       ========================================= */
+    .upload-area {
+        border: 2px dashed #3498db;
+        border-radius: 15px;
+        background-color: #f0f8ff;
+        padding: 40px 20px;
+        cursor: pointer;
+        transition: 0.3s;
+        position: relative;
+    }
+    .upload-area:hover { background-color: #e1f0ff; transform: translateY(-2px); border-color: #2980b9; }
+    
+    .upload-icon { font-size: 4rem; color: #3498db; margin-bottom: 15px; transition: 0.3s; }
+    .upload-area:hover .upload-icon { transform: scale(1.1); }
+
+    .btn-analyze {
+        background: linear-gradient(to right, #2980b9, #8e44ad);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 50px;
+        margin-top: 30px;
+        cursor: pointer;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(142, 68, 173, 0.4);
+        transition: 0.3s;
+    }
+    .btn-analyze:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(142, 68, 173, 0.6); }
+
+    /* =========================================
+       6. Navigation Buttons (Back & Footer)
+       ========================================= */
     .btn-back {
         position: absolute;
         top: 30px;
@@ -90,75 +140,98 @@
         gap: 10px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
+    .btn-back:hover { background: white; color: #2980b9; transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 
-    .btn-back:hover {
-        background: white;
-        color: #2980b9;
-        transform: translateX(-5px);
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    .footer-menu {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        z-index: 100;
+        flex-wrap: wrap;
     }
+    .menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: 0.3s;
+        padding: 10px 20px;
+        border-radius: 30px;
+        background: rgba(255,255,255,0.9);
+        white-space: nowrap;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); }
+    .menu-item.active { color: #2980b9; background: white; border: 1px solid #3498db; }
+
 </style>
 
-<a href="{% url 'matcher:landing' %}" class="btn-back">
-    <i class="fas fa-arrow-left"></i> Back
-</a>
+<div class="scan-page-root">
+    <a href="{% url 'matcher:landing' %}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Back
+    </a>
 
-<i class="fas fa-music music-note note-1"></i>
-<i class="fas fa-music music-note note-2"></i>
-<i class="fas fa-compact-disc music-note note-3"></i>
-<i class="fas fa-music music-note note-4"></i>
-<i class="fas fa-music music-note note-5"></i>
-<i class="fas fa-music music-note note-6"></i>
+    <i class="fas fa-music music-note note-1"></i>
+    <i class="fas fa-music music-note note-2"></i>
+    <i class="fas fa-compact-disc music-note note-3"></i>
+    <i class="fas fa-music music-note note-4"></i>
+    <i class="fas fa-music music-note note-5"></i>
+    <i class="fas fa-music music-note note-6"></i>
 
-<div class="wave-top">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
-         viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,
-        82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,
-        985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35
-        A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-    </svg>
-</div>
-
-<div class="scan-wrapper">
-    <div class="scan-card">
-        <h1 class="scan-title">Face Scan</h1>
-        <p class="scan-desc">Upload your photo to get AI song recommendations.</p>
-
-        <form method="post" action="{% url 'matcher:scan' %}" enctype="multipart/form-data" id="scanForm">
-            {% csrf_token %}
-            
-            <div class="upload-area" onclick="document.getElementById('face_input').click()">
-                <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                <h3 style="margin: 0; color: #333;">Tap to Upload Image</h3>
-                <p id="file-name" style="color: #666; font-size: 0.9rem; margin-top: 10px;">Supports JPG, PNG</p>
-            </div>
-
-            <input type="file" name="image_file" id="face_input" style="display: none;" onchange="previewFile()" accept="image/*" required>
-
-            <button type="submit" class="btn-analyze">
-                Analyze Mood & Get Songs
-            </button>
-        </form>
+    <div class="wave-top">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
     </div>
-</div>
 
-<div class="wave">
-    <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
-    </svg>
-</div>
+    <div class="scan-wrapper">
+        <div class="scan-card">
+            <h1 class="scan-title">Face Scan</h1>
+            <p class="scan-desc">Upload your photo to get AI song recommendations.</p>
 
-<div class="footer-menu">
-    <a href="{% url 'matcher:scan' %}" class="menu-item active">
-        <i class="fas fa-camera"></i> <span>Snap Photo</span>
-    </a>
-    <a href="{% url 'matcher:history' %}" class="menu-item">
-        <i class="fas fa-heart" style="color: #e74c3c;"></i> <span>Like/History</span>
-    </a>
-    <a href="{% url 'matcher:home' %}" class="menu-item">
-        <i class="fab fa-spotify" style="color: #1db954;"></i> <span>Browse Songs</span>
-    </a>
+            <form method="post" action="{% url 'matcher:scan' %}" enctype="multipart/form-data" id="scanForm" onsubmit="return validateForm()">
+                {% csrf_token %}
+                
+                <div class="upload-area" onclick="document.getElementById('face_input').click()">
+                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    <h3 style="margin: 0; color: #333;">Tap to Upload Image</h3>
+                    <p id="file-name" style="color: #666; font-size: 0.9rem; margin-top: 10px;">Supports JPG, PNG</p>
+                </div>
+
+                <input type="file" name="image_file" id="face_input" style="display: none;" onchange="previewFile()" accept="image/*">
+
+                <button type="submit" class="btn-analyze">
+                    Analyze Mood & Get Songs
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="wave">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+        </svg>
+    </div>
+
+    <div class="footer-menu">
+        <a href="{% url 'matcher:scan' %}" class="menu-item active">
+            <i class="fas fa-camera"></i> <span>Snap Photo</span>
+        </a>
+        <a href="{% url 'matcher:history' %}" class="menu-item">
+            <i class="fas fa-heart" style="color: #e74c3c;"></i> <span>Playlists</span>
+        </a>
+        <a href="{% url 'matcher:browse' %}" class="menu-item">
+            <i class="fab fa-spotify" style="color: #1db954;"></i> <span>Browse Songs</span>
+        </a>
+    </div>
 </div>
 
 <script>
@@ -166,13 +239,34 @@
         const input = document.getElementById('face_input');
         const fileNameDisplay = document.getElementById('file-name');
         const icon = document.querySelector('.upload-icon');
-        if (input.files.length > 0) {
+        
+        if (input.files && input.files[0]) {
             fileNameDisplay.innerText = "Selected: " + input.files[0].name;
             fileNameDisplay.style.color = "#2980b9";
             fileNameDisplay.style.fontWeight = "bold";
+            
             icon.className = "fas fa-check-circle upload-icon";
             icon.style.color = "#2ecc71";
         }
     }
+
+    function validateForm() {
+        const input = document.getElementById('face_input');
+        if (input.files.length === 0) {
+            alert("⚠️ Please upload an image before analyzing!");
+            const uploadArea = document.querySelector('.upload-area');
+            uploadArea.style.borderColor = "#e74c3c";
+            uploadArea.style.backgroundColor = "#fff0f0";
+            
+            setTimeout(() => {
+                uploadArea.style.borderColor = "#3498db";
+                uploadArea.style.backgroundColor = "#f0f8ff";
+            }, 2000);
+            
+            return false;
+        }
+        return true;
+    }
 </script>
+
 {% endblock %}

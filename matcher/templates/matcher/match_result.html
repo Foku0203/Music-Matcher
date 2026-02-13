@@ -3,7 +3,9 @@
 
 {% block content %}
 <style>
-    /* --- 1. Background & Decorations --- */
+    /* =========================================
+       Theme Style & Animation
+       ========================================= */
     body {
         margin: 0;
         height: 100vh;
@@ -17,6 +19,7 @@
         overflow: hidden;
     }
 
+    /* Floating Notes */
     .music-note { position: absolute; color: rgba(255, 255, 255, 0.2); animation: float 6s ease-in-out infinite; z-index: 1; pointer-events: none; }
     .note-1 { top: 15%; left: 10%; font-size: 100px; animation-delay: 0s; }
     .note-2 { top: 60%; right: 10%; font-size: 80px; animation-delay: 2s; }
@@ -36,7 +39,9 @@
     .wave svg { position: relative; display: block; width: calc(138% + 1.3px); height: 120px; }
     .wave .shape-fill { fill: #FFFFFF; }
 
-    /* --- 2. Result Card Styling --- */
+    /* =========================================
+       Result Card Styling
+       ========================================= */
     .result-card {
         background: white;
         width: 1050px;
@@ -187,14 +192,9 @@
         background: rgba(142, 68, 173, 0.10);
         color: #8e44ad;
     }
-    .mood-chip .dot{
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        display: inline-block;
-    }
+    .mood-chip .dot{ width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
 
-    /* FER2013 7 emotions */
+    /* FER2013 7 emotions colors */
     .dot-angry    { background: #e74c3c; }
     .dot-disgust  { background: #2ecc71; }
     .dot-fear     { background: #9b59b6; }
@@ -237,7 +237,9 @@
         background-color: #f0f0f0; margin-right: 15px;
         background-size: cover; background-position: center;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1); flex-shrink: 0;
+        transition: 0.3s;
     }
+    .song-card:hover .album-cover { transform: scale(1.05); }
 
     .song-content-link {
         display: flex; flex: 1; align-items: center;
@@ -251,15 +253,24 @@
     .spotify-badge {
         font-size: 0.65rem; color: #1db954; background: rgba(29, 185, 84, 0.1);
         padding: 2px 8px; border-radius: 10px; margin-top: 4px; display: inline-block; font-weight: 600;
+        border: 1px solid rgba(29, 185, 84, 0.2);
     }
 
-    .actions { display: flex; gap: 15px; color: #cbd5e0; margin-left: 10px; align-items: center; }
+    .actions { display: flex; gap: 10px; color: #cbd5e0; margin-left: 10px; align-items: center; }
 
     .action-btn {
-        color: #cbd5e0; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; font-size: 1rem;
+        color: #cbd5e0; cursor: pointer; transition: 0.2s; background: none; border: none; padding: 0; font-size: 1.1rem;
+        display: flex; align-items: center;
     }
     .action-btn:hover { color: #e74c3c; transform: scale(1.2); }
-    .action-btn.share:hover { color: #3498db; }
+    
+    /* Play Button */
+    .action-btn.play-btn { color: #1db954; font-size: 1.3rem; margin-right: 5px; }
+    .action-btn.play-btn:hover { color: #1ed760; transform: scale(1.1); }
+
+    /* Like/Dislike Active States */
+    .like-btn.active { color: #2ecc71; }
+    .dislike-btn.active { color: #e74c3c; }
 
     .close-x {
         position: absolute; top: 15px; right: 20px;
@@ -267,10 +278,20 @@
     }
     .close-x:hover { color: #e74c3c; }
 
-    .footer-menu { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: center; align-items: center; gap: 50px; z-index: 100; }
-    .menu-item { display: flex; align-items: center; gap: 8px; text-decoration: none; color: rgba(255,255,255,0.9); font-weight: 600; font-size: 0.9rem; transition: 0.3s; padding: 10px 20px; border-radius: 30px; background: rgba(255,255,255,0.25); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-    .menu-item.active { color: #2980b9; background: white; box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2); }
+    /* Footer Menu Style */
+    .footer-menu {
+        position: absolute; bottom: 20px; left: 0; width: 100%;
+        display: flex; justify-content: center; align-items: center; gap: 20px; z-index: 100; flex-wrap: wrap;
+    }
+    .menu-item {
+        display: flex; align-items: center; gap: 8px; text-decoration: none;
+        color: #555; font-weight: 600; font-size: 0.9rem; transition: 0.3s;
+        padding: 10px 20px; border-radius: 30px; background: rgba(255,255,255,0.9);
+        white-space: nowrap; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .menu-item:hover { background: white; color: #8e44ad; transform: translateY(-3px); }
+    .menu-item.active { color: #2980b9; background: white; border: 1px solid #3498db; }
+
     .btn-back { position: absolute; top: 30px; left: 30px; z-index: 100; color: white; text-decoration: none; font-weight: 600; font-size: 1rem; background: rgba(255, 255, 255, 0.2); padding: 10px 25px; border-radius: 30px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); transition: all 0.3s ease; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     .btn-back:hover { background: white; color: #2980b9; transform: translateX(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
 </style>
@@ -330,7 +351,6 @@
             <i class="fas fa-sync-alt refresh-btn" onclick="location.reload()" title="Refresh"></i>
         </div>
 
-        <!-- Mood filter tags (FER2013) -->
         <div class="mood-filter-bar">
             <a class="mood-chip {% if selected_mood == 'angry' %}active{% endif %}" href="?mood=angry">
                 <span class="dot dot-angry"></span> Angry
@@ -363,33 +383,54 @@
                  data-title="{{ song.title|lower }}"
                  data-artist="{{ song.artist.name|lower }}">
 
-                {% with url=song.spotify_url|default:song.preview_url %}
-                <a href="{{ url|default:'' }}"
+                {% with url=song.spotify_link %}
+                <a href="{{ url|default:'#' }}"
                    target="_blank"
                    rel="noopener noreferrer"
                    class="song-content-link"
-                   {% if not url %}onclick="return false;"{% endif %}>
+                   {% if not url %}onclick="return false;" style="cursor: default;"{% endif %}>
 
                     <div class="song-index">{{ forloop.counter }}</div>
-                    <div class="album-cover" style="background-image: url('{{ song.album.cover_url|default:'https://via.placeholder.com/50' }}');"></div>
+
+                    <div class="album-cover" 
+                         style="background-image: url('{{ song.image_url|default:'https://via.placeholder.com/50' }}');">
+                    </div>
 
                     <div class="song-info">
                         <div class="song-title">{{ song.title }}</div>
                         <div class="song-artist">{{ song.artist.name }}</div>
+                        {% if url %}
                         <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
+                        {% endif %}
                     </div>
                 </a>
-                {% endwith %}
-
+                
                 <div class="actions">
-                    <a href="{% url 'matcher:add_to_playlist' song.song_id %}" class="action-btn" title="Save to Favorites">
+                    {% if url %}
+                    <a href="{{ url }}" target="_blank" rel="noopener noreferrer" class="action-btn play-btn" title="Play">
+                        <i class="fas fa-play-circle"></i>
+                    </a>
+                    {% endif %}
+
+                    <button class="action-btn like-btn" 
+                            data-id="{{ song.song_id }}" 
+                            data-action="like"
+                            onclick="toggleInteraction(this, event)">
+                        <i class="far fa-thumbs-up"></i>
+                    </button>
+
+                    <button class="action-btn dislike-btn" 
+                            data-id="{{ song.song_id }}" 
+                            data-action="dislike"
+                            onclick="toggleInteraction(this, event)">
+                        <i class="far fa-thumbs-down"></i>
+                    </button>
+
+                    <a href="{% url 'matcher:add_to_playlist' song.song_id %}" class="action-btn" title="Save to Playlist">
                         <i class="far fa-heart"></i>
                     </a>
-
-                    <button class="action-btn share" title="Share" type="button">
-                        <i class="fas fa-share-alt"></i>
-                    </button>
                 </div>
+                {% endwith %}
             </div>
 
             {% empty %}
@@ -413,139 +454,85 @@
         <i class="fas fa-camera"></i> <span>Snap Photo</span>
     </a>
     <a href="{% url 'matcher:history' %}" class="menu-item">
-        <i class="fas fa-heart" style="color: #e74c3c;"></i> <span>Like/History</span>
+        <i class="fas fa-heart" style="color: #e74c3c;"></i> <span>Playlists</span>
     </a>
-    <a href="{% url 'matcher:home' %}" class="menu-item">
+    <a href="{% url 'matcher:browse' %}" class="menu-item">
         <i class="fab fa-spotify" style="color: #1db954;"></i> <span>Browse Songs</span>
     </a>
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('searchInput');
-    const songList = document.getElementById('songList');
-    const countEl = document.querySelector('.song-count');
+    // ✅ ฟังก์ชันสำหรับ Like/Dislike (เก็บ Data)
+    function toggleInteraction(btn, event) {
+        event.stopPropagation(); // ป้องกันไม่ให้กดแล้วไปโดนลิงก์เพลง
+        
+        const songId = btn.getAttribute('data-id');
+        const actionType = btn.getAttribute('data-action');
+        const url = `/interaction/${songId}/${actionType}/`;
 
-    if (!searchInput || !songList) return;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    const parent = btn.parentElement; 
+                    const likeBtn = parent.querySelector('.like-btn');
+                    const dislikeBtn = parent.querySelector('.dislike-btn');
 
-    // เก็บลิสต์แนะนำเดิมไว้ (รวม noResultMsg ที่ซ่อนไว้ด้วย)
-    const recommendedHTML = songList.innerHTML;
+                    // Reset ทั้งคู่
+                    if(likeBtn) {
+                        likeBtn.classList.remove('active');
+                        likeBtn.querySelector('i').className = 'far fa-thumbs-up';
+                    }
+                    if(dislikeBtn) {
+                        dislikeBtn.classList.remove('active');
+                        dislikeBtn.querySelector('i').className = 'far fa-thumbs-down';
+                    }
 
-    // เก็บ template ของ noResult ไว้ใช้ตอน render search
-    let noResultEl = document.getElementById('noResultMsg');
-    const noResultHTML = noResultEl ? noResultEl.outerHTML : '';
+                    // Active ตามค่าที่ส่งกลับมา
+                    if (data.action === 'like') {
+                        likeBtn.classList.add('active');
+                        likeBtn.querySelector('i').className = 'fas fa-thumbs-up';
+                    } else if (data.action === 'dislike') {
+                        dislikeBtn.classList.add('active');
+                        dislikeBtn.querySelector('i').className = 'fas fa-thumbs-down';
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
-    const initialCount = countEl ? (countEl.textContent || '').trim() : '';
+    // ส่วน Search Function (เหมือนเดิม)
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const songList = document.getElementById('songList');
+        const countEl = document.querySelector('.song-count');
 
-    const params = new URLSearchParams(window.location.search);
-    const currentMood = (params.get('mood') || '').toLowerCase();
+        if (!searchInput || !songList) return;
 
-    const escapeHtml = (unsafe) => {
-        return (unsafe || "").replace(/[&<"'>]/g, function (m) {
-            return ({ '&': '&amp;', '<': '&lt;', '"': '&quot;', "'": '&#039;', '>': '&gt;' }[m]);
+        // ฟังก์ชันค้นหาแบบง่าย (Client-side)
+        searchInput.addEventListener('keyup', function (e) {
+            const term = (e.target.value || '').toLowerCase().trim();
+            const cards = songList.querySelectorAll('.song-card');
+            let visibleCount = 0;
+            let hasVisible = false;
+
+            cards.forEach(card => {
+                const title = (card.getAttribute('data-title') || '');
+                const artist = (card.getAttribute('data-artist') || '');
+                if (title.includes(term) || artist.includes(term)) {
+                    card.classList.remove('hidden');
+                    visibleCount++;
+                    hasVisible = true;
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            const msg = document.getElementById('noResultMsg');
+            if (msg) msg.style.display = hasVisible ? 'none' : 'block';
+            if (countEl) countEl.textContent = String(visibleCount);
         });
-    };
-
-    // fallback filter แบบเดิม (กรองเฉพาะที่มีในหน้า) ถ้า API ใช้ไม่ได้
-    const fallbackFilter = (term) => {
-        const cards = songList.querySelectorAll('.song-card');
-        const msg = document.getElementById('noResultMsg');
-        let hasVisible = false;
-
-        cards.forEach(card => {
-            const title = (card.getAttribute('data-title') || '');
-            const artist = (card.getAttribute('data-artist') || '');
-            if (title.includes(term) || artist.includes(term)) {
-                card.classList.remove('hidden');
-                hasVisible = true;
-            } else {
-                card.classList.add('hidden');
-            }
-        });
-
-        if (msg) msg.style.display = hasVisible ? 'none' : 'block';
-        if (countEl) countEl.textContent = hasVisible ? String([...cards].filter(c => !c.classList.contains('hidden')).length) : "0";
-    };
-
-    const renderSearchResults = (items) => {
-        if (!items || items.length === 0) {
-            songList.innerHTML = noResultHTML;
-            noResultEl = document.getElementById('noResultMsg');
-            if (noResultEl) noResultEl.style.display = 'block';
-            if (countEl) countEl.textContent = "0";
-            return;
-        }
-
-        const cardsHTML = items.map((s, idx) => {
-            const title = escapeHtml(s.title);
-            const artist = escapeHtml(s.artist);
-            const cover = escapeHtml(s.cover_url || 'https://via.placeholder.com/50');
-            const url = escapeHtml(s.spotify_url || '');
-
-            const aAttrs = url
-                ? `href="${url}" target="_blank" rel="noopener noreferrer"`
-                : `href="#" onclick="return false;"`;
-
-            // ทำให้ build url favorites ได้แบบไม่ต้องเดา pattern
-            const favTemplate = "{% url 'matcher:add_to_playlist' 0 %}";
-            const favUrl = favTemplate.replace(/0\/?$/, `${s.song_id}/`);
-
-            return `
-                <div class="song-card" data-title="${(title || '').toLowerCase()}" data-artist="${(artist || '').toLowerCase()}">
-                    <a ${aAttrs} class="song-content-link">
-                        <div class="song-index">${idx + 1}</div>
-                        <div class="album-cover" style="background-image: url('${cover}');"></div>
-                        <div class="song-info">
-                            <div class="song-title">${title}</div>
-                            <div class="song-artist">${artist}</div>
-                            <div class="spotify-badge"><i class="fab fa-spotify"></i> Play on Spotify</div>
-                        </div>
-                    </a>
-                    <div class="actions">
-                        <a href="${favUrl}" class="action-btn" title="Save to Favorites">
-                            <i class="far fa-heart"></i>
-                        </a>
-                        <button class="action-btn share" title="Share" type="button">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-
-        songList.innerHTML = cardsHTML + noResultHTML;
-        noResultEl = document.getElementById('noResultMsg');
-        if (noResultEl) noResultEl.style.display = 'none';
-        if (countEl) countEl.textContent = String(items.length);
-    };
-
-    let timer = null;
-
-    searchInput.addEventListener('keyup', function (e) {
-        const term = (e.target.value || '').toLowerCase().trim();
-
-        // ล้างค้นหา -> กลับไปแนะนำเดิม
-        if (!term) {
-            songList.innerHTML = recommendedHTML;
-            if (countEl && initialCount) countEl.textContent = initialCount;
-            return;
-        }
-
-        clearTimeout(timer);
-        timer = setTimeout(async () => {
-            try {
-                const apiUrl = `{% url 'matcher:song_search_api' %}?q=${encodeURIComponent(term)}&mood=${encodeURIComponent(currentMood)}`;
-                const res = await fetch(apiUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
-                if (!res.ok) throw new Error('API not ok');
-                const data = await res.json();
-                renderSearchResults(data.results || []);
-            } catch (err) {
-                // ถ้า API ยังไม่พร้อม/ล่ม ให้ใช้ filter เดิมกันหน้าเงียบ
-                fallbackFilter(term);
-            }
-        }, 250);
     });
-});
 </script>
 
 {% endblock %}

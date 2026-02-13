@@ -7,7 +7,6 @@ from datetime import datetime
 # ==========================================
 # ⚙️ ตั้งค่า DJANGO ENVIRONMENT
 # ==========================================
-# ⚠️ ตรวจสอบชื่อโปรเจกต์ของคุณใน manage.py ให้ตรงกัน (เช่น music_matcher.settings)
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings') 
 
 # Setup Django
@@ -39,7 +38,6 @@ def import_data():
             for i, item in enumerate(data, 1):
                 # 1. จัดการ Artist
                 artist_name = item.get('artist', 'Unknown Artist')
-                # ใช้ get_or_create เพื่อกัน duplicate artist
                 artist, _ = Artist.objects.get_or_create(name=artist_name)
 
                 # 2. จัดการ Album
@@ -67,9 +65,9 @@ def import_data():
                     except ValueError:
                         pass
 
-                # เตรียม Dict ข้อมูลที่จะบันทึก
+                # เตรียม Dict ข้อมูลที่จะบันทึก (ตัด embed และ preview ออกแล้ว)
                 defaults_data = {
-                    'title': item.get('title'), # Title ย้ายมาใน defaults
+                    'title': item.get('title'),
                     'artist': artist,
                     'album': album,
                     'release_date': release_date,
@@ -79,28 +77,35 @@ def import_data():
                     'json_mood': item.get('mood', ''),
                     'json_genre': item.get('genre', ''),
                     'spotify_link': spotify_data.get('link'),
-                    'spotify_preview_url': spotify_data.get('preview_url'),
-                    'spotify_embed_url': spotify_data.get('embed'),
+                    # ❌ ตัด 2 บรรทัดนี้ออกตามที่ขอครับ
+                    # 'spotify_preview_url': ...
+                    # 'spotify_embed_url': ...
+                    
                     'valence': audio_features.get('valence', 0.5),
                     'energy': audio_features.get('energy', 0.5),
                     'tempo': audio_features.get('tempo', 120.0),
                     'danceability': audio_features.get('danceability', 0.5),
                 }
 
-                # 4. สร้างหรืออัปเดต Song (แก้ Logic ตรงนี้)
+                # 4. สร้างหรืออัปเดต Song
                 if sid:
-                    # ✅ Case A: มี Spotify ID -> ใช้ ID เป็นตัวยืนยันตัวตน (Lookup)
-                    # ถ้ามี ID นี้ในระบบแล้ว ให้อัปเดตข้อมูลอื่นแทนการสร้างใหม่
+                    # ✅ Case A: มี Spotify ID -> ใช้ ID เป็นตัวยืนยัน
                     song, created = Song.objects.update_or_create(
                         spotify_id=sid,
                         defaults=defaults_data
                     )
                 else:
                     # ✅ Case B: ไม่มี Spotify ID -> ใช้ ชื่อเพลง + ศิลปิน เป็นตัวยืนยัน
+                    # ต้อง pop title ออกจาก defaults ก่อน เพราะ title ถูกใช้เป็นตัว lookup แล้ว
+                    # (เพื่อป้องกัน error กรณีส่งค่าซ้ำซ้อน)
+                    lookup_defaults = defaults_data.copy()
+                    if 'title' in lookup_defaults:
+                        lookup_defaults.pop('title')
+                    
                     song, created = Song.objects.update_or_create(
                         title=item.get('title'),
                         artist=artist,
-                        defaults=defaults_data
+                        defaults=lookup_defaults
                     )
 
                 if created:
@@ -120,7 +125,8 @@ def import_data():
     except Exception as e:
         print(f"❌ เกิดข้อผิดพลาด: {e}")
         # ปริ้นท์บอกด้วยว่าพังที่เพลงไหน
-        print(f"   (Error at Item index {i}: {item.get('title', 'Unknown Title')})")
+        if 'item' in locals():
+            print(f"   (Error at Item index {i}: {item.get('title', 'Unknown Title')})")
 
 if __name__ == '__main__':
     import_data()
