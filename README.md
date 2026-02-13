@@ -25,7 +25,8 @@
 - **Backend**: Django (Python)  
 - **Database**: Django ORM
 - **Frontend**: Django Templates + Tailwind CSS  
-- **AI/ML (optional)**: PyTorch (Transformer Model)  
+- **AI/ML (optional)**: PyTorch (Transformer Model)
+- **UID admin1 passworld 123456
 
 ---
 
