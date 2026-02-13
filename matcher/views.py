@@ -18,6 +18,8 @@ from django.db.models import Q, Count, Avg
 from django.db import transaction
 from .models import *
 from .forms import CustomUserCreationForm, UserUpdateForm
+from django.core.files.storage import FileSystemStorage
+
 # --- TENSORFLOW ---
 try:
     from tensorflow.keras.models import load_model
@@ -30,26 +32,41 @@ except ImportError:
 
 
 # ==========================================
-# 🧠 AI CONFIGURATION
+# 🧠 AI CONFIGURATION & DYNAMIC LOADER
 # ==========================================
 EMOTION_LABELS = ['angry', 'disgust', 'fear', 'happy', 'sad', 'surprise', 'neutral']
-
-MODEL_PATH = os.path.join(settings.BASE_DIR, 'emotion_model_best.keras')
-emotion_model = None
 
 # สร้าง face cascade ไว้ครั้งเดียว
 FACE_CASCADE = cv2.CascadeClassifier(
     cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
 )
 
-if TF_AVAILABLE and os.path.exists(MODEL_PATH):
-    try:
-        emotion_model = load_model(MODEL_PATH)
-        print(f"✅ Loaded User Model: {MODEL_PATH}")
-    except Exception as e:
-        print(f"❌ Error loading model: {e}")
-else:
-    print(f"⚠️ Model not found at {MODEL_PATH}")
+# ตัวแปร Global สำหรับเก็บสถานะโมเดล
+CURRENT_MODEL_NAME = 'emotion_model_best.keras' # ตั้งค่าเริ่มต้นให้เป็นตัวนี้
+MODEL_PATH = os.path.join(settings.BASE_DIR, CURRENT_MODEL_NAME)
+emotion_model = None
+
+def load_ai_model(model_filename):
+    """ ฟังก์ชันสำหรับโหลดหรือสลับโมเดล AI """
+    global emotion_model, MODEL_PATH, CURRENT_MODEL_NAME
+    
+    CURRENT_MODEL_NAME = model_filename
+    MODEL_PATH = os.path.join(settings.BASE_DIR, model_filename)
+    
+    if TF_AVAILABLE and os.path.exists(MODEL_PATH):
+        try:
+            emotion_model = load_model(MODEL_PATH)
+            print(f"✅ โหลดโมเดลสำเร็จ: {CURRENT_MODEL_NAME}")
+            return True, f"Switched to {CURRENT_MODEL_NAME} successfully!"
+        except Exception as e:
+            print(f"❌ โหลดโมเดลไม่สำเร็จ: {e}")
+            return False, f"Error loading model: {e}"
+    else:
+        print(f"⚠️ ไม่พบไฟล์โมเดลที่: {MODEL_PATH}")
+        return False, f"Model file '{model_filename}' not found in BASE_DIR."
+
+# เรียกใช้งานครั้งแรกตอนรัน python manage.py runserver
+load_ai_model(CURRENT_MODEL_NAME)
 
 
 # ==========================================
@@ -276,42 +293,51 @@ def scan_view(request):
 
 @login_required(login_url='matcher:login')
 def match_result_view(request, scan_id):
+    # 1. ดึงข้อมูล Scan Log ของ User
     scan_log = get_object_or_404(UserScanLog, scan_id=scan_id, user=request.user)
     
+    # 2. รับค่าอารมณ์ใบหน้า (1 ใน 7 อารมณ์)
+    # ถ้ามีการกดเลือก Mood ใหม่จากหน้าเว็บ (?mood=...) ให้ใช้ค่านั้น 
+    # ถ้าไม่มี ให้ใช้ค่าที่ AI ทายได้จาก database
     face_emotion = (scan_log.detected_emotion or "neutral").lower()
-    current_emotion = request.GET.get('mood', face_emotion).lower()
+    selected_emotion = request.GET.get('mood', face_emotion).lower()
 
     # =========================================================
-    # 🎯 LOGIC: จับคู่ 7 อารมณ์หน้าคน -> Mood เพลงที่เหมาะสม
+    # 🎯 LOGIC: จับคู่ 7 อารมณ์ (Face) -> 4 อารมณ์เพลง (Music)
     # =========================================================
-    emotion_to_music_mood = {
-        'angry':    'Angry',    
-        'disgust':  'Angry',  
-        'fear':     'Relax',
-        'happy':    'Happy',
-        'sad':      'Sad', 
-        'surprise': 'Happy',
-        'neutral':  'Relax'
+    emotion_mapping = {
+        # Face Emotion  ->  Music Mood (ใน Database เพลง)
+        'angry':            'Angry',
+        'disgust':          'Angry',   # รังเกียจ -> เพลงหนักๆ/ระบายอารมณ์
+        'fear':             'Relax',   # กลัว -> เพลงผ่อนคลาย (หรือจะใช้ Sad ก็ได้แล้วแต่ชอบ)
+        'happy':            'Happy',
+        'sad':              'Sad',
+        'surprise':         'Happy',   # ตกใจ/ตื่นเต้น -> เพลงสนุก
+        'neutral':          'Relax'    # เฉยๆ -> เพลงชิลๆ
     }
 
-    target_music_mood = emotion_to_music_mood.get(current_emotion, 'Happy')
+    # แปลงเป็น Music Mood (ถ้าหาไม่เจอให้ Default เป็น Relax)
+    target_music_mood = emotion_mapping.get(selected_emotion, 'Relax')
 
     # =========================================================
-    # 🎵 QUERY: ค้นหาเพลงจาก json_mood
+    # 🎵 QUERY: ค้นหาเพลงจาก json_mood ที่แปลงแล้ว
     # =========================================================
     songs = Song.objects.none()
     try:
+        # ค้นหาเพลงที่เป็น 'Angry', 'Happy', 'Sad', หรือ 'Relax'
         songs = Song.objects.filter(json_mood__icontains=target_music_mood)
+        
+        # ถ้าหาไม่เจอ ให้ลองหาจาก Category
         if not songs.exists():
             songs = Song.objects.filter(category__name__icontains=target_music_mood)
             
-        # สุ่มลำดับเพลง และตัดมาแค่ 10 เพลง
+        # สุ่มเพลงมา 10 เพลง
         songs = songs.order_by('?')[:10]
         
     except Exception as e:
         print(f"Error finding songs: {e}")
 
-    # Fallback: ถ้าหาไม่เจอเลยจริงๆ ให้เอาเพลงทั้งหมดมาสุ่ม
+    # Fallback: ถ้ายังหาไม่เจอเลยจริงๆ ให้เอาเพลงทั้งหมดมาสุ่ม
     if not songs.exists():
         songs = Song.objects.all().order_by('?')[:10]
 
@@ -326,8 +352,13 @@ def match_result_view(request, scan_id):
 
     context = {
         'scan_log': scan_log,
-        'face_emotion': face_emotion,      # ส่งอารมณ์ดิบ 7 อย่างไปโชว์หน้าเว็บ (AI Result)
-        'mood': target_music_mood,         # ส่ง Mood เพลงที่เลือกมาไปโชว์ (Music Mood)
+        
+        # 'mood' ส่งค่า 1 ใน 7 (selected_emotion) ไปเพื่อให้หน้าเว็บแสดงผล Highlight ปุ่มถูกอัน
+        'mood': selected_emotion,  
+        
+        # ส่งค่า Music Mood ไปด้วยเผื่ออยากโชว์ว่า "กำลังแนะนำเพลงแนว Relax"
+        'music_mood': target_music_mood, 
+
         'songs': songs,
         'song': main_song,
         'user_image': scan_log.input_image.url if scan_log.input_image else None,
@@ -917,91 +948,153 @@ def record_interaction(request, song_id, action_type):
 
 
 # ========================================== #
+# ==========================================
+# 🧠 AI MODEL MANAGEMENT VIEWS
+# ==========================================
+
+@user_passes_test(is_admin, login_url='matcher:admin_login')
 def model_management(request):
-    # ดึงข้อมูลโมเดลทั้งหมด เรียงจากล่าสุด
+    """
+    ฟังก์ชันหลักสำหรับแสดงหน้า AI Model
+    รวบรวมข้อมูลทั้งจาก Directory (ไฟล์ .keras) และ Database (ประวัติการ Training)
+    """
+    # --- 1. ส่วนอ่านไฟล์ Model จากเครื่อง (สำหรับโชว์ในตาราง) ---
+    model_files = []
+    for file in os.listdir(settings.BASE_DIR):
+        if file.endswith('.keras') or file.endswith('.h5'):
+            file_path = os.path.join(settings.BASE_DIR, file)
+            size_mb = os.path.getsize(file_path) / (1024 * 1024)
+            model_files.append({
+                'filename': file,
+                'size': f"~{size_mb:.1f} MB"
+            })
+
+    # --- 2. ส่วนดึงข้อมูล Database (สำหรับโชว์ประวัติ Retrain) ---
     versions = ModelVersion.objects.all().order_by('-created_at')
-    
-    # ดึงงาน Retrain ล่าสุด
-    jobs = RetrainJob.objects.all().order_by('-started_at')[:10]
-
-    # หา Model ที่ Status = 'Active'
-    active_model = versions.filter(status='Active').first()
-
-    # นับจำนวน Recommendation ที่เคยทำทั้งหมด (Stats)
+    running_job = RetrainJob.objects.filter(status='Running').first()
+    active_db_model = versions.filter(status='Active').first()
     total_recs = Recommendation.objects.count()
 
-    context = {
-        'versions': versions,
-        'jobs': jobs,
-        'active_model': active_model,
-        'total_recs': total_recs
-    }
-    return render(request, 'matcher/model_management.html', context)
-
-# ========================================== #
-
-def start_training(request):
-    if request.method == 'POST':
-        # 1. รับค่าจากฟอร์ม
-        version_name = request.POST.get('version')
-        algorithm = request.POST.get('algorithm')
-        data_split = request.POST.get('data_split')
-        epoch = request.POST.get('epoch')
-        batch_size = request.POST.get('batch_size')
-        learning_rate = request.POST.get('learning_rate')
-        regularization_type = request.POST.get('regularization_type')
-        regularization_rate = request.POST.get('regularization_rate')
-
-        # 2. สร้าง ModelVersion ใหม่ (Status = Training)
-        new_model = ModelVersion.objects.create(
-            version=version_name,
-            algorithm=algorithm,
-            status='Training',  # กำลังเทรน
-            data_split=data_split,
-            epoch=int(epoch),
-            batch_size=int(batch_size),
-            learning_rate=float(learning_rate),
-            regularization_type=regularization_type,
-            regularization_rate=float(regularization_rate),
-            accuracy=0.0, # เริ่มต้นยังไม่มีความแม่นยำ
-            loss=1.0      # Loss เริ่มต้นสูงๆ ไว้ก่อน
-        )
-
-        # 3. สร้าง Job ในคิว (เพื่อให้ระบบหลังบ้านรู้ว่าต้องเทรนตัวนี้)
-        RetrainJob.objects.create(
-            model_version=new_model,
-            status='Running'
-        )
-
-        messages.success(request, f"Started training process for {version_name}!")
-        return redirect('matcher:model_management')
-
-    return redirect('matcher:model_management')
-
-def model_management(request):
-    versions = ModelVersion.objects.all().order_by('-created_at')
-    
-    # หาโมเดลที่กำลังเทรนอยู่ (ถ้ามี)
-    running_job = RetrainJob.objects.filter(status='Running').first()
-    
-    # หาโมเดลที่ใช้งานอยู่ (Active)
-    active_model = versions.filter(status='Active').first()
-
-    # คำนวณชื่อเวอร์ชันถัดไป (Auto-increment)
+    # คำนวณเลขเวอร์ชันถัดไปเผื่อมีการเทรนใหม่
     last_ver = versions.first()
+    next_num = 1
     if last_ver:
-        # สมมติชื่อเดิม "Model v5" -> ตัดคำแล้วบวก 1 -> "6"
         try:
             next_num = int(last_ver.version.split('v')[-1]) + 1
         except:
             next_num = versions.count() + 1
-    else:
-        next_num = 1
+
+    # นำชื่อโมเดลที่รันอยู่ตอนนี้ไปโชว์ให้เว็บรู้
+    global CURRENT_MODEL_NAME
+    active_filename = CURRENT_MODEL_NAME if 'CURRENT_MODEL_NAME' in globals() else 'Not Loaded'
 
     context = {
+        # ข้อมูลไฟล์สำหรับตาราง Switch Model
+        'active_model': active_filename,
+        'model_files': model_files,
+        
+        # ข้อมูล DB เผื่อใช้งานระบบ Retraining
         'versions': versions,
         'running_job': running_job,
-        'active_model': active_model,
-        'next_version': next_num, # ส่งค่าเลขเวอร์ชันถัดไป
+        'active_db_model': active_db_model,
+        'next_version': next_num,
+        'total_recs': total_recs
     }
     return render(request, 'matcher/model_management.html', context)
+
+
+@require_POST
+@user_passes_test(is_admin, login_url='matcher:admin_login')
+def switch_model_view(request):
+    """
+    ฟังก์ชันสลับโมเดล AI เมื่อแอดมินกดปุ่ม Switch
+    """
+    target_model = request.POST.get('model_name')
+    
+    # ตรวจสอบว่าไฟล์นั้นมีอยู่จริงในเครื่อง ป้องกัน Error
+    model_path = os.path.join(settings.BASE_DIR, target_model)
+    
+    if target_model and os.path.exists(model_path) and (target_model.endswith('.keras') or target_model.endswith('.h5')):
+        # เรียกใช้ฟังก์ชันสลับโมเดลที่เราเขียนไว้ด้านบนของ views.py
+        success, message = load_ai_model(target_model)
+        
+        if success:
+            messages.success(request, message)
+        else:
+            messages.error(request, message)
+    else:
+        messages.error(request, "Invalid model name or file does not exist in directory.")
+        
+    return redirect('matcher:model_management')
+
+
+@require_POST
+@user_passes_test(is_admin, login_url='matcher:admin_login')
+def upload_model_view(request):
+    """
+    ฟังก์ชันอัปโหลดไฟล์โมเดล .keras เข้าเครื่องผ่านหน้าเว็บ
+    """
+    if 'model_file' in request.FILES:
+        uploaded_file = request.FILES['model_file']
+        file_name = uploaded_file.name
+        
+        # ตรวจสอบนามสกุลไฟล์
+        if not (file_name.endswith('.keras') or file_name.endswith('.h5')):
+            messages.error(request, "Invalid file format. Only .keras or .h5 allowed.")
+            return redirect('matcher:model_management')
+
+        # บันทึกไฟล์ลงในโฟลเดอร์โปรเจกต์ (BASE_DIR)
+        fs = FileSystemStorage(location=settings.BASE_DIR)
+        
+        # ถ้ามีไฟล์ชื่อเดียวกันอยู่แล้ว ให้เขียนทับ (อัปเดตโมเดล)
+        if fs.exists(file_name):
+            fs.delete(file_name) 
+            
+        saved_filename = fs.save(file_name, uploaded_file)
+        
+        messages.success(request, f"Model '{saved_filename}' uploaded successfully! You can now switch to it.")
+    else:
+        messages.error(request, "No file selected.")
+
+    return redirect('matcher:model_management')
+
+
+@require_POST
+@user_passes_test(is_admin, login_url='matcher:admin_login')
+def start_training(request):
+    """
+    ฟังก์ชันสำหรับกดปุ่ม Retrain (ถ้าคุณมีฟอร์มเทรนโมเดลใหม่บนหน้าเว็บ)
+    """
+    # 1. รับค่าจากฟอร์ม
+    version_name = request.POST.get('version')
+    algorithm = request.POST.get('algorithm')
+    data_split = request.POST.get('data_split')
+    epoch = request.POST.get('epoch')
+    batch_size = request.POST.get('batch_size')
+    learning_rate = request.POST.get('learning_rate')
+    regularization_type = request.POST.get('regularization_type')
+    regularization_rate = request.POST.get('regularization_rate')
+
+    # 2. สร้าง ModelVersion ใหม่ (Status = Training)
+    new_model = ModelVersion.objects.create(
+        version=version_name,
+        algorithm=algorithm,
+        status='Training',  # กำลังเทรน
+        data_split=data_split,
+        epoch=int(epoch) if epoch else 0,
+        batch_size=int(batch_size) if batch_size else 0,
+        learning_rate=float(learning_rate) if learning_rate else 0.0,
+        regularization_type=regularization_type,
+        regularization_rate=float(regularization_rate) if regularization_rate else 0.0,
+        accuracy=0.0,
+        loss=1.0 
+    )
+
+    # 3. สร้าง Job ในคิว
+    RetrainJob.objects.create(
+        model_version=new_model,
+        status='Running'
+    )
+
+    messages.success(request, f"Started training process for {version_name}!")
+    return redirect('matcher:model_management')

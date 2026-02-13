@@ -2,117 +2,104 @@
 {% load static %}
 
 {% block content %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <style>
-    /* --- CSS เฉพาะหน้า Model Management --- */
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        gap: 25px;
-        margin-top: 20px;
-    }
-
-    .control-card {
-        background: #1b202e;
-        border-radius: 16px;
-        padding: 25px;
-        border: 1px solid rgba(255,255,255,0.05);
-        height: fit-content;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    /* Form Styles */
-    .setting-group { margin-bottom: 15px; }
-    .setting-label { display: block; color: #a0a0a0; font-size: 0.85rem; margin-bottom: 5px; font-weight: 500; }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
     
-    .dark-input, .dark-select {
-        width: 100%;
-        background: #121622;
-        border: 1px solid #2e3446;
-        color: white;
-        padding: 10px 12px;
-        border-radius: 8px;
-        outline: none;
-        transition: 0.3s;
+    /* --- Master Design Reset --- */
+    nav.navbar, footer { display: none !important; }
+    .container { width: 100% !important; max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+
+    body {
         font-family: 'Poppins', sans-serif;
-        box-sizing: border-box;
-    }
-    .dark-input:focus, .dark-select:focus { border-color: #3498db; background: #161b2a; }
-
-    /* Button Groups */
-    .control-btn-group {
-        display: flex;
-        background: #121622;
-        border-radius: 8px;
-        padding: 4px;
-        margin-bottom: 20px;
-        border: 1px solid #2e3446;
-        gap: 5px;
-    }
-    .control-btn {
-        flex: 1;
-        background: transparent;
-        border: none;
-        color: #a0a0a0;
-        padding: 10px;
-        cursor: pointer;
-        border-radius: 6px;
-        font-weight: 600;
-        transition: 0.3s;
-        display: flex; align-items: center; justify-content: center; gap: 5px;
-    }
-    .btn-run:hover, .btn-run.active { background: #27ae60; color: white; }
-    .btn-pause:hover { background: #f39c12; color: white; }
-    .btn-stop:hover { background: #c0392b; color: white; }
-
-    .btn-upload-large {
-        width: 100%;
-        background: rgba(52, 152, 219, 0.05);
-        border: 1px dashed #3498db;
-        color: #3498db;
-        padding: 20px;
-        border-radius: 10px;
-        cursor: pointer;
-        margin-top: 20px;
-        transition: 0.3s;
-        text-align: center;
-        font-size: 0.9rem;
-    }
-    .btn-upload-large:hover { background: rgba(52, 152, 219, 0.15); transform: translateY(-2px); }
-
-    /* Right Panel Styles */
-    .graph-container {
-        height: 300px;
-        background: #121622;
-        border-radius: 12px;
-        padding: 15px;
-        margin-bottom: 25px;
-        border: 1px solid #2e3446;
-        position: relative;
+        background-color: #0f1219;
+        margin: 0; padding: 0;
+        color: white; overflow-x: hidden;
     }
 
-    .model-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 10px; }
-    .model-table th { text-align: left; color: #888; padding: 12px 10px; border-bottom: 1px solid #2e3446; font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
-    .model-table td { padding: 15px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
-    .model-table tr:hover td { background: rgba(255,255,255,0.02); }
-    
-    .acc-high { color: #2ecc71; font-weight: bold; }
-    .acc-mid { color: #f1c40f; }
-    .acc-low { color: #e74c3c; }
+    .admin-container { display: flex; min-height: 100vh; }
 
-    /* Status Badges */
-    .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-    .status-Active { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
-    .status-Training { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); animation: pulse 2s infinite; }
-    .status-Draft { background: rgba(149, 165, 166, 0.15); color: #95a5a6; border: 1px solid rgba(149, 165, 166, 0.3); }
-    .status-Archived { background: #121622; color: #7f8c8d; border: 1px solid #2e3446; }
+    /* Sidebar (Master) */
+    .sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, #3a1c71, #1e2235 60%, #0f1219 100%);
+        padding: 30px 20px;
+        position: fixed; top: 0; left: 0; height: 100vh;
+        z-index: 1000; display: flex; flex-direction: column;
+        box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+    }
+    .brand { font-size: 1.8rem; font-weight: 700; margin-bottom: 40px; color: white; text-align: center; letter-spacing: 1px; }
+    .menu-list { display: flex; flex-direction: column; gap: 10px; }
+    .menu-item {
+        display: flex; align-items: center; gap: 15px; padding: 12px 20px;
+        color: #a0a0a0; text-decoration: none; font-size: 0.95rem;
+        transition: 0.3s; border-radius: 12px; font-weight: 500;
+    }
+    .menu-item:hover { background: rgba(255, 255, 255, 0.05); color: white; transform: translateX(5px); }
+    .menu-item.active { background: linear-gradient(90deg, rgba(52, 152, 219, 0.2), transparent); color: #3498db; position: relative; }
+    .menu-item.active::before { content: ''; position: absolute; left: 0; height: 100%; width: 4px; background: #3498db; border-radius: 0 5px 5px 0; }
+    .logout-btn { margin-top: auto; display: flex; align-items: center; gap: 10px; color: #7f8c8d; text-decoration: none; padding: 12px 20px; border-radius: 12px; transition: 0.3s; }
+    .logout-btn:hover { color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
 
-    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+    /* Main Content */
+    .main-content { flex: 1; margin-left: 260px; padding: 40px 50px; background-color: #121622; min-height: 100vh; }
 
-    .action-btn-group { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-    .btn-action { padding: 8px 15px; border-radius: 6px; border: none; cursor: pointer; color: white; font-weight: 500; transition: 0.2s; font-size: 0.85rem; display: flex; align-items: center; gap: 6px; }
-    .btn-action:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    /* Top Bar */
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+    .page-title { font-size: 2rem; font-weight: 700; }
+    .page-subtitle { font-size: 0.9rem; color: #888; margin-top: 5px; }
+
+    /* Custom Button */
+    .btn-primary-custom {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white; padding: 10px 20px; border-radius: 50px; border: none;
+        font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4); transition: 0.3s; text-decoration: none; font-size: 0.9rem;
+    }
+    .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6); }
+
+    .btn-success-custom {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+    }
+
+    /* Active Model Card */
+    .active-model-card {
+        background: linear-gradient(135deg, #1b202e, #2c3e50);
+        padding: 30px; border-radius: 20px; margin-bottom: 30px;
+        display: flex; gap: 30px; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        border: 1px solid rgba(52, 152, 219, 0.3); position: relative; overflow: hidden;
+    }
+    .active-model-card::after {
+        content: ''; position: absolute; top: -50%; right: -10%; width: 300px; height: 300px;
+        background: radial-gradient(circle, rgba(52,152,219,0.1) 0%, transparent 70%); border-radius: 50%;
+    }
+    .status-indicator {
+        width: 80px; height: 80px; border-radius: 50%; background: rgba(46, 204, 113, 0.1);
+        display: flex; justify-content: center; align-items: center; color: #2ecc71; font-size: 2rem;
+        border: 2px solid rgba(46, 204, 113, 0.5); box-shadow: 0 0 20px rgba(46, 204, 113, 0.2);
+    }
+    .active-details h2 { margin: 0 0 10px 0; color: white; font-size: 1.8rem; }
+    .active-details p { margin: 0; color: #bdc3c7; font-size: 0.95rem; }
+
+    /* Table */
+    .card { background: #1b202e; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .full-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+    .full-table th { 
+        color: #95a5a6; text-align: left; padding: 15px; font-weight: 600;
+        text-transform: uppercase; font-size: 0.8rem; border-bottom: 1px solid #2a3040;
+        background: #23293a; border-radius: 4px;
+    }
+    .full-table td { padding: 15px; border-bottom: 1px solid #2a3040; color: #dfe6e9; vertical-align: middle; }
+    .full-table tr:hover td { background-color: rgba(255,255,255,0.02); }
+    .full-table tr:last-child td { border-bottom: none; }
+
+    /* Badges */
+    .badge { padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+    .badge-active { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+    .badge-inactive { background: rgba(149, 165, 166, 0.15); color: #95a5a6; border: 1px solid rgba(149, 165, 166, 0.3); }
+    .badge-size { background: rgba(52, 152, 219, 0.15); color: #3498db; border: 1px solid rgba(52, 152, 219, 0.3); font-family: monospace; }
 </style>
 
 {% with current=request.resolver_match.url_name %}
@@ -136,7 +123,7 @@
             <a href="{% url 'matcher:category_management' %}" class="menu-item {% if current == 'category_management' %}active{% endif %}">
                 <i class="fas fa-tags"></i> Category & Mood
             </a>
-            <a href="{% url 'matcher:model_management' %}" class="menu-item {% if current == 'model_management' %}active{% endif %}">
+            <a href="{% url 'matcher:model_management' %}" class="menu-item {% if current == 'model_management' or not current %}active{% endif %}">
                 <i class="fas fa-brain"></i> AI Model
             </a>
         </div>
@@ -150,234 +137,140 @@
         <div class="top-bar">
             <div>
                 <div class="page-title">AI Model Management</div>
-                <div class="page-subtitle">Configure, train, and monitor your recommendation algorithms</div>
+                <div class="page-subtitle">Manage and switch Facial Emotion Recognition (FER) models</div>
             </div>
-            <div style="text-align: right;">
-                <span style="color:#aaa; font-size:0.9rem;">Server Status:</span>
-                <span style="color:#2ecc71; font-weight:600;"><i class="fas fa-circle" style="font-size:0.6rem; margin-bottom:2px;"></i> Online</span>
+            <button class="btn-primary-custom" onclick="openUploadModal()" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                <i class="fas fa-upload"></i> Upload Model
+            </button>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div style="background: rgba(46, 204, 113, 0.1); border-left: 4px solid #2ecc71; padding: 15px 20px; border-radius: 4px; margin-bottom: 20px; color: #2ecc71; font-weight: 500;">
+                    <i class="fas fa-check-circle" style="margin-right: 10px;"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="active-model-card">
+            <div class="status-indicator">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <div class="active-details">
+                <div style="color: #2ecc71; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Currently Active Model</div>
+                <h2 id="activeModelName">{{ active_model }}</h2>
+                <p>Status: <strong style="color: #fff;">Online & Predicting</strong> | Loaded successfully into memory.</p>
+            </div>
+            <div style="margin-left: auto; z-index: 2;">
+                <form method="POST" action="{% url 'matcher:switch_model' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="model_name" value="{{ active_model }}">
+                    <button type="button" class="btn-primary-custom" onclick="confirmSwitch(event, '{{ active_model }}')">
+                        <i class="fas fa-sync-alt"></i> Force Reload
+                    </button>
+                </form>
             </div>
         </div>
 
-        <div class="dashboard-grid">
-            
-            <div class="control-card">
-                <h3 style="margin-top:0; margin-bottom:20px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
-                    <i class="fas fa-sliders-h" style="color:#3498db;"></i> Configuration
-                </h3>
-
-                <form method="post" action="#"> 
-                    {% csrf_token %}
-                    
-                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                        <div class="setting-group" style="flex:1;">
-                            <label class="setting-label">Algorithm</label>
-                            <select name="algorithm" class="dark-select">
-                                <option value="Classification">CNN (Audio Feature)</option>
-                                <option value="Collaborative">Collaborative Filtering</option>
-                                <option value="Hybrid">Hybrid System</option>
-                            </select>
-                        </div>
-                        <div class="setting-group" style="flex:1;">
-                            <label class="setting-label">Version Name</label>
-                            <input type="text" name="version" class="dark-input" value="Model v{{ next_version|default:'1.0' }}" required>
-                        </div>
-                    </div>
-
-                    <div class="control-btn-group">
-                        <button type="submit" class="control-btn btn-run" title="Start Training">
-                            <i class="fas fa-play"></i> Run Training
-                        </button>
-                        <button type="button" class="control-btn btn-pause">
-                            <i class="fas fa-pause"></i>
-                        </button>
-                        <button type="button" class="control-btn btn-stop">
-                            <i class="fas fa-stop"></i>
-                        </button>
-                    </div>
-
-                    <div class="setting-group">
-                        <label class="setting-label">Data Split (Train / Val / Test)</label>
-                        <select name="data_split" class="dark-select">
-                            <option value="80/10/10">80% / 10% / 10% (Standard)</option>
-                            <option value="70/20/10">70% / 20% / 10% (Robust Val)</option>
-                            <option value="60/20/20">60% / 20% / 20% (Research)</option>
-                        </select>
-                    </div>
-
-                    <div class="setting-group">
-                        <label class="setting-label">Epochs</label>
-                        <select name="epoch" class="dark-select">
-                            <option value="16">16 Epochs</option>
-                            <option value="32" selected>32 Epochs</option>
-                            <option value="64">64 Epochs</option>
-                            <option value="100">100 Epochs</option>
-                        </select>
-                    </div>
-
-                    <div style="display: flex; gap: 15px;">
-                        <div class="setting-group" style="flex:1;">
-                            <label class="setting-label">Batch Size</label>
-                            <select name="batch_size" class="dark-select">
-                                <option value="16">16</option>
-                                <option value="32" selected>32</option>
-                                <option value="64">64</option>
-                            </select>
-                        </div>
-                        <div class="setting-group" style="flex:1;">
-                            <label class="setting-label">Learning Rate</label>
-                            <select name="learning_rate" class="dark-select">
-                                <option value="0.001">0.001</option>
-                                <option value="0.01" selected>0.01</option>
-                                <option value="0.1">0.1</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="setting-group">
-                        <label class="setting-label">Regularization (Prevent Overfitting)</label>
-                        <div style="display:flex; gap:10px;">
-                            <select name="regularization_type" class="dark-select" style="flex:1;">
-                                <option value="L1">L1 (Lasso)</option>
-                                <option value="L2" selected>L2 (Ridge)</option>
-                                <option value="None">None</option>
-                            </select>
-                            <input type="number" name="regularization_rate" class="dark-input" value="0.01" step="0.01" style="width:80px;">
-                        </div>
-                    </div>
-
-                    <div class="btn-upload-large" onclick="document.getElementById('file-upload').click()">
-                        <i class="fas fa-cloud-upload-alt" style="font-size: 1.8rem; margin-bottom: 10px; display:block;"></i>
-                        Upload Pre-trained Model (.h5 / .pkl)
-                        <input type="file" id="file-upload" name="model_file" style="display: none;">
-                    </div>
-                </form>
-            </div>
-
-            <div class="control-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h3 style="margin:0;"><i class="fas fa-chart-line" style="color:#2ecc71;"></i> Monitoring</h3>
-                    
-                    {% if running_job %}
-                    <div style="text-align:right;">
-                         <span class="status-badge status-Training">
-                            <i class="fas fa-sync fa-spin"></i> Training: {{ running_job.model_version.version }}
-                         </span>
-                    </div>
-                    {% else %}
-                    <div style="text-align:right; color:#888;">
-                        <i class="fas fa-check-circle"></i> System Idle
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="graph-container">
-                    <canvas id="trainingChart"></canvas>
-                </div>
-
-                <h4 style="margin-bottom:15px; display:flex; justify-content:space-between; align-items:center; color:#ddd;">
-                    Model History
-                    <span style="font-size:0.8rem; color:#888;">Latest 5 versions</span>
-                </h4>
-                
-                <table class="model-table">
-                    <thead>
-                        <tr>
-                            <th>Version</th>
-                            <th>Status</th>
-                            <th>Split</th>
-                            <th>Accuracy</th>
-                            <th>NDCG</th>
-                            <th>Loss</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for v in versions %}
-                        <tr>
-                            <td style="font-weight:600; color:white;">{{ v.version }}</td>
-                            <td><span class="status-badge status-{{ v.status }}">{{ v.status }}</span></td>
-                            <td style="color:#888; font-size:0.8rem;">{{ v.data_split }}</td>
-                            
-                            <td class="{% if v.accuracy > 0.8 %}acc-high{% elif v.accuracy > 0.5 %}acc-mid{% else %}acc-low{% endif %}">
-                                {{ v.accuracy|floatformat:2 }}
-                            </td>
-                            
-                            <td style="color:#3498db; font-weight:600;">{{ v.ndcg_score|floatformat:2 }}</td>
-                            <td style="color:#e74c3c;">{{ v.loss|floatformat:3 }}</td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="6" style="text-align:center; padding:30px; color:#666;">No models found. Start training first.</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-
-                <div class="action-btn-group">
-                    <button class="btn-action" style="background:#e74c3c;">
-                        <i class="fas fa-undo"></i> Rollback
-                    </button>
-                    <button class="btn-action" style="background:#34495e;">
-                        <i class="fas fa-file-export"></i> Export
-                    </button>
-                    {% if active_model %}
-                    <button class="btn-action" style="background:#2ecc71; color:#fff; cursor:default;" disabled>
-                        <i class="fas fa-check"></i> {{ active_model.version }} Active
-                    </button>
-                    {% else %}
-                    <button class="btn-action" style="background:#2980b9;">
-                        <i class="fas fa-star"></i> Promote Active
-                    </button>
-                    {% endif %}
+        <div class="card">
+            <div style="margin-bottom: 20px; font-weight: 600; color: #ccc; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <i class="fas fa-server"></i> Available Models in Directory
                 </div>
             </div>
+
+            <table class="full-table">
+                <thead>
+                    <tr>
+                        <th width="350">Filename</th>
+                        <th>File Size</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model in model_files %}
+                    <tr>
+                        <td>
+                            <div style="font-weight: 600; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-file-code" style="color: {% if model.filename == active_model %}#f1c40f{% else %}#7f8c8d{% endif %};"></i> 
+                                {{ model.filename }}
+                            </div>
+                        </td>
+                        <td><span class="badge badge-size">{{ model.size }}</span></td>
+                        <td>
+                            {% if model.filename == active_model %}
+                                <span class="badge badge-active">Active</span>
+                            {% else %}
+                                <span class="badge badge-inactive">Standby</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right;">
+                            {% if model.filename == active_model %}
+                                <button class="btn-primary-custom btn-success-custom" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                    <i class="fas fa-check"></i> In Use
+                                </button>
+                            {% else %}
+                                <form method="POST" action="{% url 'matcher:switch_model' %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="model_name" value="{{ model.filename }}">
+                                    <button type="button" class="btn-primary-custom" onclick="confirmSwitch(event, '{{ model.filename }}')">
+                                        <i class="fas fa-power-off"></i> Switch
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: #888;">No AI Models found in root directory.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
 
     </div>
 </div>
+
+<div id="uploadModal" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
+    <div class="modal-content" style="background: #1b202e; width: 500px; padding: 30px; border-radius: 20px; position: relative; border: 1px solid #2e3446; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 1.5rem;">Upload AI Model</h3>
+        <button onclick="closeUploadModal()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: #777; font-size: 1.5rem; cursor: pointer;">&times;</button>
+        
+        <form method="POST" action="{% url 'matcher:upload_model' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 10px; color: #ccc; font-size: 0.9rem;">Select Model File (.keras or .h5)</label>
+                <input type="file" name="model_file" accept=".keras,.h5" required style="width: 100%; padding: 12px; background: #121622; border: 1px solid #2e3446; border-radius: 8px; color: white;">
+            </div>
+            
+            <div style="text-align: right;">
+                <button type="button" onclick="closeUploadModal()" class="btn-primary-custom" style="background: #444; margin-right: 10px; box-shadow: none;">Cancel</button>
+                <button type="submit" class="btn-primary-custom" style="background: linear-gradient(135deg, #9b59b6, #8e44ad);">
+                    <i class="fas fa-cloud-upload-alt"></i> Upload
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 {% endwith %}
 
 <script>
-    const ctx = document.getElementById('trainingChart').getContext('2d');
-    const trainingChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], // Epochs
-            datasets: [{
-                label: 'Training Loss',
-                data: [0.9, 0.7, 0.6, 0.5, 0.45, 0.4, 0.38, 0.35, 0.33, 0.3],
-                borderColor: '#3498db',
-                backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                borderWidth: 2,
-                tension: 0.4,
-                fill: true
-            }, {
-                label: 'Validation Loss',
-                data: [0.95, 0.75, 0.65, 0.55, 0.5, 0.48, 0.45, 0.44, 0.43, 0.42],
-                borderColor: '#2ecc71',
-                borderWidth: 2,
-                borderDash: [5, 5],
-                tension: 0.4,
-                pointRadius: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { labels: { color: '#aaa' } }
-            },
-            scales: {
-                x: { 
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { color: '#888' }
-                },
-                y: { 
-                    grid: { color: 'rgba(255,255,255,0.05)' },
-                    ticks: { color: '#888' }
-                }
-            }
+    function openUploadModal() {
+        document.getElementById('uploadModal').style.display = 'flex';
+    }
+
+    function closeUploadModal() {
+        document.getElementById('uploadModal').style.display = 'none';
+    }
+
+    function confirmSwitch(event, modelName) {
+        if(confirm(`Are you sure you want to switch the active AI to: ${modelName}?\n\nThis will unload the current model and load the new one into memory.`)) {
+            event.target.closest('form').submit(); 
         }
-    });
+    }
 </script>
 
 {% endblock %}

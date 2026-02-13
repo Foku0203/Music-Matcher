@@ -62,6 +62,8 @@ urlpatterns = [
     # --- AI Model ---
     path('admin-custom/models/', views.model_management, name='model_management'),
     path('admin-custom/models/train/', views.start_training, name='start_training'),
+    path('admin/switch-model/', views.switch_model_view, name='switch_model'),
+    path('admin/upload-model/', views.upload_model_view, name='upload_model'),
 
     # ==============================
     # 📥 System / Import Data
